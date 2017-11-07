@@ -146,13 +146,17 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bubblesort.cpp" />
     <ClCompile Include="display.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="selectionsort.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bubblesort.h" />
     <ClInclude Include="display.h" />
     <ClInclude Include="renderer.h" />
+    <ClInclude Include="selectionsort.h" />
     <ClInclude Include="sortalgorithm.h" />
     <ClInclude Include="visualization.h" />
   </ItemGroup>

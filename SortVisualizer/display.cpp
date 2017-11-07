@@ -17,10 +17,11 @@ void Display::createWindow()
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	window = glfwCreateWindow(width, height, "Sort Visualizer", glfwGetPrimaryMonitor(), NULL);
+	window = glfwCreateWindow(width, height, "Sort Visualizer", NULL, NULL);
 	if (!window)
 		std::cout << "ERROROROROROROROR" << std::endl;
 	glfwShowWindow(window);
+	glfwMakeContextCurrent(window);
 
 }
 
@@ -33,4 +34,9 @@ void Display::updateWindow()
 void Display::closeWindow()
 {
 	glfwTerminate();
+}
+
+bool Display::shouldClose()
+{
+	return glfwWindowShouldClose(window);
 }

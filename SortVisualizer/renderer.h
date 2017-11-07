@@ -1,5 +1,7 @@
 #pragma once
 #include <algorithm>
+#include <cmath>
+#include <thread>
 #include "sortalgorithm.h"
 #include "display.h"
 class Renderer
@@ -8,7 +10,8 @@ public:
 	Renderer(int numValues);
 	virtual ~Renderer();
 	void setAlgorithm(SortAlgorithm* algo);
-	void start();
+	void init();
+	void loop();
 private:
 
 	SortAlgorithm* algo;

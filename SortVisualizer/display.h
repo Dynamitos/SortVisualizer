@@ -13,4 +13,6 @@ public:
 private:
 	GLFWwindow* window;
 	int width, height;
+public:
+	bool shouldClose();
 };
