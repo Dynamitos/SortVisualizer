@@ -150,6 +150,7 @@
     <ClCompile Include="bubblesort.cpp" />
     <ClCompile Include="display.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="quicksort.cpp" />
     <ClCompile Include="radixsort.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="selectionsort.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="bogosort.h" />
     <ClInclude Include="bubblesort.h" />
     <ClInclude Include="display.h" />
+    <ClInclude Include="quicksort.h" />
     <ClInclude Include="radixsort.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="selectionsort.h" />
