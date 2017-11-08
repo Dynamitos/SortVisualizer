@@ -7,10 +7,10 @@
 
 int main(int argc, char* argv[])
 {
-	Renderer* renderer = new Renderer(1000000);
-	SortAlgorithm* bubbleSort = new StdSort();
+	Renderer* renderer = new Renderer(10000);
+	SortAlgorithm* sort = new BogoSort();
 	renderer->init(0);
-	renderer->setAlgorithm(bubbleSort);
+	renderer->setAlgorithm(sort);
 	renderer->loop();
 	delete renderer;
 	return 0;
