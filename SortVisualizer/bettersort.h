@@ -1,5 +1,10 @@
 #pragma once
 #include "sortalgorithm.h"
+struct Partition 
+{
+	int position;
+	int size;
+};
 class BetterSort : public SortAlgorithm
 {
 public:
@@ -7,5 +12,6 @@ public:
 private:
 	void quicksort(std::vector<float>& arr, int left, int right);
 	int partition(std::vector<float>& arr, int left, int right);
-	void merge(std::vector<float>& arr, int partitions);
+	void mergeSort(std::vector<float>& arr, std::vector<Partition> partitions);
+	void mergePartitions(Partition leftPart, Partition rightPart, std::vector<float>::iterator result);
 };
