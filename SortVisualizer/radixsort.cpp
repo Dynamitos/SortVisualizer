@@ -14,16 +14,16 @@ void RadixSort::sort(std::vector<float>& floatData, int delay)
         data[i] = (int)(floatData[i] * 256);
     }
 
-    std::vector<float> bukkets[1 << BITS];
+    const int SIZE = 1 << BITS;
+    std::vector<int> bukkets[SIZE];
 
-    for (int i = 0; i < bukkets[0].size(); i++)
+    for (int i = 0; i < SIZE; i++)
     {
-        bukkets[i] = std::vector<float>();
+        bukkets[i] = std::vector<int>();
         bukkets[i].push_back(0);
     }
 
     int id;
-    std::vector<float> al;
     int max = (1 << 24) - 1;
 
     for (int bits = (1 << BITS) - 1, r = 0; bits <= max; bits <<= BITS, r += BITS)
@@ -34,13 +34,13 @@ void RadixSort::sort(std::vector<float>& floatData, int delay)
             id >>= r;
 
             bukkets[id].push_back(data[i]);
-            bukkets[id][0] = bukkets[id].size()+1;
+            bukkets[id][0] = bukkets[id][0] + 1;
         }
 
         for (int i = 0, j = 0; i<data.size(); j++)
         {
-            al = bukkets[j];
-            int size = al[0] - 1;
+            std::vector<int> &al = bukkets[j];
+            int size = al[0] + 1;
 
             for (int x = 1; x<size; x++, i++)
             {
@@ -49,8 +49,11 @@ void RadixSort::sort(std::vector<float>& floatData, int delay)
 
             al.clear();
             al.push_back(0);
+        }
 
-            
+        for (int i = 0; i < data.size(); i++)
+        {
+            floatData[i] = (float)data[i] / 256;
         }
     }
 }

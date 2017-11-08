@@ -8,8 +8,8 @@
 
 int main(int argc, char* argv[])
 {
-	Renderer renderer(10);
-	RadixSort sort;
+	Renderer renderer(10000);
+	SelectionSort sort;
 	renderer.init(1);
 	renderer.setAlgorithm(&sort);
     renderer.loop();
