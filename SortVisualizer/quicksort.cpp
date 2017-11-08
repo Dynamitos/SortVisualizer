@@ -6,22 +6,22 @@ QuickSort::QuickSort()
 
 void QuickSort::sort(std::vector<float>& data, int delay)
 {
-	std::vector<std::thread> threads;
-	threads.resize(std::thread::hardware_concurrency());
+	/*std::vector<std::thread> threads;
+	threads.resize(std::thread::hardware_concurrency() -1);
 
 	int dataPerThread = data.size() / threads.size();
 	for (int i = 0; i < threads.size(); ++i)
 	{
-		std::thread& t = threads[i];
-		t = std::thread(&quicksort, data.data(), i * dataPerThread, i * dataPerThread + dataPerThread);
+		threads[i] = std::thread(&QuickSort::quicksort, this, std::ref(data), i * dataPerThread, i * dataPerThread + dataPerThread);//std::thread([=] { quicksort(data, i * dataPerThread, i * dataPerThread + dataPerThread); });
 	}
 	for (auto& t : threads)
 	{
 		t.join();
-	}
+	}*/
+	quicksort(data, 1, data.size() - 1);
 }
 
-void QuickSort::quicksort(float arr[], int left, int right)
+void QuickSort::quicksort(std::vector<float>& arr, int left, int right)
 {
 	int index = partition(arr, left, right);
 	if (left < index - 1)
@@ -30,16 +30,16 @@ void QuickSort::quicksort(float arr[], int left, int right)
 		quicksort(arr, index, right);
 }
 
-int QuickSort::partition(float arr[], int left, int right)
+int QuickSort::partition(std::vector<float>& arr, int left, int right)
 {
 	int i = left, j = right;
 	float tmp;
 	float pivot = arr[(left + right) / 2];
 	while (i <= j)
 	{
-		if (arr[i] < pivot)
+		while (arr[i] < pivot)
 			i++;
-		if (arr[j] > pivot)
+		while (arr[j] > pivot)
 			j--;
 		if (i <= j)
 		{
