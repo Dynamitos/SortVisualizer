@@ -9,11 +9,64 @@ MergeSort::MergeSort()
 
 void MergeSort::sort(std::vector<float>& data, int intDelay)
 {
-    data = recursiveSort(data, 0, data.size() - 1);
+    this->intDelay = intDelay;
+    recursiveSort(std::vector<float>(data.size()), data, 0, data.size() - 1);
 }
 
 
-std::vector<float> MergeSort::recursiveSort(std::vector<float> data, int start, int end)
+
+
+void MergeSort::recursiveSort(std::vector<float>& sortedData, std::vector<float>& readData, int start, int end)
+{
+    if (start == end)
+        return;
+    if (end - start == 1)
+    {
+        floatHelper = readData[start];
+        readData[start] = std::min(readData[start], readData[end]);
+        readData[end] = std::max(floatHelper, readData[end]);
+        return;
+    }
+
+    int zzz = start + (end - start) / 2;
+
+    recursiveSort(sortedData, readData, start, zzz);
+    recursiveSort(sortedData, readData, zzz + 1, end);
+
+    int i = start;
+    int j = zzz + 1;
+
+    for (int x = start; x <= end; x++)
+    {
+        if (i > zzz)
+        {
+            if (j > end)
+                break;
+            sortedData[x] = readData[j++];
+        }
+        else if (j > end)
+        {
+            if (i > zzz)
+                break;
+            sortedData[x] = readData[i++];
+        }
+        else if (readData[j] < readData[i])
+            sortedData[x] = readData[j++];
+        else
+            sortedData[x] = readData[i++];
+    }
+
+    memcpy(&(readData[start]), &(sortedData[start]), sizeof(float) * (end - start + 1));
+    
+    std::this_thread::sleep_for(std::chrono::milliseconds(intDelay));
+}
+
+
+
+
+
+
+/*std::vector<float> MergeSort::recursiveSort(std::vector<float> data, int start, int end)
 {
     if (start == end)
         return std::vector<float>{data[start]};
@@ -49,4 +102,4 @@ std::vector<float> MergeSort::recursiveSort(std::vector<float> data, int start, 
     }
 
     return sortedArray;
-}
+}*/

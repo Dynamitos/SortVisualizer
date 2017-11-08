@@ -11,8 +11,8 @@
 
 int main(int argc, char* argv[])
 {
-	Renderer renderer(1024*1024);
-	StdSort sort;
+	Renderer renderer(1000000);
+	MergeSort sort;
 	renderer.init(0);
 	renderer.setAlgorithm(&sort);
 	renderer.loop();

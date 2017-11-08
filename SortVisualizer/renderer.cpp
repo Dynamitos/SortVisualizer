@@ -65,7 +65,7 @@ void Renderer::init(float delay)
 	GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
 	program = glCreateProgram();
 
-	const char vertCode[] = "#version 450 \n \
+	const char vertCode[] = "#version 400 \n \
 		layout(location = 0) in vec2 position_VS_in; \n \
 		layout(location = 1) in float data_VS_in; \n \
 		layout(location = 0) out vec2 position_FS_out; \n \
@@ -82,7 +82,7 @@ void Renderer::init(float delay)
 	glShaderSource(vertShader, 1, &pointer, &shaderLength);
 	glCompileShader(vertShader);
 
-	const char fragCode[] = "#version 450\n \
+	const char fragCode[] = "#version 400\n \
 		layout(location = 0) in vec2 position_FS_in; \n \
 		layout(location = 1) in float data_FS_in;\n \
 		layout(location = 0) out vec4 color;\n \
