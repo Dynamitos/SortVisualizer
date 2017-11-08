@@ -17,6 +17,8 @@ void Display::createWindow()
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
+	glfwSwapInterval(1);
+
 	window = glfwCreateWindow(width, height, "Sort Visualizer", NULL, NULL);
 	if (!window)
 		std::cout << "ERROROROROROROROR" << std::endl;

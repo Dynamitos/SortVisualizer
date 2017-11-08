@@ -16,8 +16,12 @@ void BubbleSort::sort(std::vector<float>& data)
 		{
 			if (data[j + 1] < data[j])
 			{
-				std::iter_swap(data.begin() + j, data.begin() + j + 1);
+				//std::iter_swap(data.begin() + j, data.begin() + j + 1);
+				helper = data[j];
+				data[j] = data[j + 1];
+				data[j + 1] = helper;
 				flag = 1;
+				//std::this_thread::sleep_for(std::chrono::milliseconds(1));
 			}
 		}
 	}

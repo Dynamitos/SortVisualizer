@@ -18,5 +18,6 @@ void SelectionSort::sort(std::vector<float>& data)
 		}
 		if(bestPosition != i)
 			std::iter_swap(data.begin() + i, data.begin() + bestPosition);
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 }

@@ -100,7 +100,7 @@ void Renderer::init()
 
 void Renderer::loop()
 {
-	std::thread sorter([=] { algo->sort(data); });
+	std::thread sorter([this] { algo->sort(data); });
 	while (!display->shouldClose())
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
