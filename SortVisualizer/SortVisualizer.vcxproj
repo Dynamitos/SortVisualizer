@@ -146,6 +146,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bettersort.cpp" />
     <ClCompile Include="bogosort.cpp" />
     <ClCompile Include="bubblesort.cpp" />
     <ClCompile Include="display.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="stdsort.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bettersort.h" />
     <ClInclude Include="bogosort.h" />
     <ClInclude Include="bubblesort.h" />
     <ClInclude Include="display.h" />
