@@ -14,5 +14,5 @@ void StdSort::sort(std::vector<float>& data, int delay)
 		//  return (arg1 > arg2) - (arg1 < arg2); // possible shortcut
 		//  return arg1 - arg2; // erroneous shortcut (fails if INT_MIN is present)
 	});*/
-	std::sort(data.begin() + 1, data.end());
+	std::sort(data.begin(), data.end());
 }

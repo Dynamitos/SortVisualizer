@@ -5,7 +5,7 @@ void SelectionSort::sort(std::vector<float>& data, int delay)
 	float bestValue;
 	int bestPosition;
 	float helper;
-	for (int i = 1; i < data.size() - 1; ++i)
+	for (int i = 0; i < data.size() - 1; ++i)
 	{
 		bestValue = data[i];
 		bestPosition = i;

@@ -52,5 +52,10 @@ int BetterSort::partition(std::vector<float>& arr, int left, int right)
 
 void BetterSort::merge(std::vector<float>& arr, int partitions)
 {
+	int sizePerPartition = arr.size() / partitions;
+	for (int i = 0; i < partitions; ++i)
+	{
+
+	}
 }
 

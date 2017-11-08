@@ -10,8 +10,8 @@
 
 int main(int argc, char* argv[])
 {
-	Renderer renderer(1024 * 512);
-	BetterSort sort;
+	Renderer renderer(1024*1024);
+	StdSort sort;
 	renderer.init(0);
 	renderer.setAlgorithm(&sort);
 	renderer.loop();

@@ -32,7 +32,7 @@ void Renderer::init(float delay)
 	glGenBuffers(1, &vertBuffer);
 	glGenBuffers(1, &valueBuffer);
 	
-	data[0] = 1.f;
+	data[0] = 0.f;
 	for (int i = 1; i < data.size(); i++)
 	{
 		data[i] = i / (float)data.size();
@@ -65,12 +65,14 @@ void Renderer::init(float delay)
 	GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
 	program = glCreateProgram();
 
-	const char vertCode[] = "\n#version 410 \n \
-		layout(location = 0) in vec2 verts_VS_in; \n \
+	const char vertCode[] = "#version 450 \n \
+		layout(location = 0) in vec2 position_VS_in; \n \
 		layout(location = 1) in float data_VS_in; \n \
-		layout(location = 0) out float data_FS_out; \n \
+		layout(location = 0) out vec2 position_FS_out; \n \
+		layout(location = 1) out float data_FS_out; \n \
         void main(){\n  \
-			gl_Position = vec4(verts_VS_in, 0, 1); \n \
+			gl_Position = vec4(position_VS_in, 0, 1); \n \
+			position_FS_out = position_VS_in; \n \
 			data_FS_out = data_VS_in; \n \
 		} \n \
 		";
@@ -80,11 +82,19 @@ void Renderer::init(float delay)
 	glShaderSource(vertShader, 1, &pointer, &shaderLength);
 	glCompileShader(vertShader);
 
-	const char fragCode[] = "#version 410\n \
-		layout(location = 0) in float data_FS_in;\n \
+	const char fragCode[] = "#version 450\n \
+		layout(location = 0) in vec2 position_FS_in; \n \
+		layout(location = 1) in float data_FS_in;\n \
 		layout(location = 0) out vec4 color;\n \
+		vec3 hsv2rgb(vec3 c) \n \
+		{ \n \
+			vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0); \n \
+			vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www); \n \
+			return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y); \n \
+		} \n \
         void main(){\n \
-			color = vec4(data_FS_in, 0, 0.f, 1.f);\n \
+			vec3 hsv = vec3(data_FS_in, length(position_FS_in), 1.f);\n \
+			color = vec4(hsv2rgb(hsv), 1.f); \n \
 		}\n \
 		";
 	
@@ -101,7 +111,8 @@ void Renderer::init(float delay)
 
 void Renderer::loop()
 {
-	std::thread sorter([this] {
+	std::thread sorter([this] 
+	{
 		auto start = std::chrono::high_resolution_clock::now();
 		algo->sort(data, delay); 
 		auto end = std::chrono::high_resolution_clock::now();
@@ -115,7 +126,8 @@ void Renderer::loop()
 		glUseProgram(program);
 		glBindBuffer(GL_ARRAY_BUFFER, valueBuffer);
 		glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), NULL, GL_STREAM_DRAW);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, data.size() * sizeof(float), data.data());
+		glBufferSubData(GL_ARRAY_BUFFER, sizeof(float), (data.size()-1) * sizeof(float), data.data()+1);
+	
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, vertices.size()/2);

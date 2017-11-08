@@ -8,7 +8,7 @@ void BubbleSort::sort(std::vector<float>& data, int delay)
 {
 	int flag = 1;
 	float helper;
-	for (int i = 1; (i <= data.size()) && flag; ++i)
+	for (int i = 0; (i <= data.size()) && flag; ++i)
 	{
 		flag = 0;
 		//first data is 1 for center

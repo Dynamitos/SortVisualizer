@@ -5,7 +5,7 @@ void BogoSort::sort(std::vector<float>& data, int delay)
 	bool sorted = false;
 	while (!sorted)
 	{
-		std::random_shuffle(data.begin() + 1, data.end());
+		std::random_shuffle(data.begin(), data.end());
 
 		sorted = true;
 		for (int i = 1; i < data.size() - 1; ++i)

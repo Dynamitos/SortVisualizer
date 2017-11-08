@@ -18,7 +18,7 @@ void QuickSort::sort(std::vector<float>& data, int delay)
 	{
 		t.join();
 	}*/
-	quicksort(data, 1, data.size() - 1);
+	quicksort(data, 0, data.size() - 1);
 }
 
 void QuickSort::quicksort(std::vector<float>& arr, int left, int right)
