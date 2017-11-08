@@ -101,7 +101,13 @@ void Renderer::init(float delay)
 
 void Renderer::loop()
 {
-	std::thread sorter([this] { algo->sort(data, delay); std::cout << "Finished" << std::endl; });
+	std::thread sorter([this] {
+		auto start = std::chrono::high_resolution_clock::now();
+		algo->sort(data, delay); 
+		auto end = std::chrono::high_resolution_clock::now();
+		float runtime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+		std::cout << "Runtime: " << runtime << std::endl; 
+	});
 	while (!display->shouldClose())
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

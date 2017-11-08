@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{F31A1120-4D21-41B1-A0AD-FBD0EF6BAF0B}</ProjectGuid>
     <RootNamespace>SortVisualizer</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -150,6 +150,7 @@
     <ClCompile Include="bubblesort.cpp" />
     <ClCompile Include="display.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="quicksort.cpp" />
     <ClCompile Include="radixsort.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="selectionsort.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="bogosort.h" />
     <ClInclude Include="bubblesort.h" />
     <ClInclude Include="display.h" />
+    <ClInclude Include="quicksort.h" />
     <ClInclude Include="radixsort.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="selectionsort.h" />
