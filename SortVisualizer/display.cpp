@@ -11,17 +11,20 @@ Display::~Display()
 
 void Display::createWindow()
 {
-	if (!glfwInit())
-		std::cout << "Error initing glfw" << std::endl;
-	
-	glfwWindowHint(GLFW_SAMPLES, 4);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    if (!glfwInit())
+        std::cout << "Error initing glfw" << std::endl;
 
-	glfwSwapInterval(1);
+    glfwWindowHint(GLFW_SAMPLES, 4);
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	window = glfwCreateWindow(width, height, "Sort Visualizer", NULL, NULL);
-	if (!window)
-		std::cout << "ERROROROROROROROR" << std::endl;
+    glfwSwapInterval(1);
+
+    window = glfwCreateWindow(width, height, "Sort Visualizer", NULL, NULL);
+    if (!window)
+        std::cout << "ERROROROROROROROR" << std::endl;
+
+    glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {if (action == GLFW_PRESS && key == GLFW_KEY_ESCAPE) glfwSetWindowShouldClose(window, GLFW_TRUE); });
+
 	glfwShowWindow(window);
 	glfwMakeContextCurrent(window);
 
