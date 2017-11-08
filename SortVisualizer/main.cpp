@@ -5,7 +5,7 @@
 
 int main(int argc, char* argv[])
 {
-	Renderer* renderer = new Renderer(10000);
+	Renderer* renderer = new Renderer(100);
 	SortAlgorithm* bubbleSort = new BubbleSort();
 	renderer->init();
 	renderer->setAlgorithm(bubbleSort);
