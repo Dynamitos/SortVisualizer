@@ -10,7 +10,7 @@ public:
 	Renderer(int numValues);
 	virtual ~Renderer();
 	void setAlgorithm(SortAlgorithm* algo);
-	void init();
+	void init(float delay);
 	void loop();
 private:
 
@@ -22,5 +22,6 @@ private:
 	GLuint vertBuffer;
 	GLuint valueBuffer;
 	GLuint program;
+	float delay;
 	int numValues;
 };

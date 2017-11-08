@@ -17,10 +17,11 @@ void Renderer::setAlgorithm(SortAlgorithm * algo)
 	this->algo = algo;
 }
 
-void Renderer::init()
+void Renderer::init(float delay)
 {
 	display = new Display();
 	display->createWindow();
+	this->delay = delay;
 	glewExperimental = true;
 	if (glewInit())
 		std::cout << "Error glew" << std::endl;
@@ -100,7 +101,7 @@ void Renderer::init()
 
 void Renderer::loop()
 {
-	std::thread sorter([this] { algo->sort(data); });
+	std::thread sorter([this] { algo->sort(data, delay); std::cout << "Finished" << std::endl; });
 	while (!display->shouldClose())
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

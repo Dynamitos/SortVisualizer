@@ -5,5 +5,5 @@ class BubbleSort : public SortAlgorithm
 {
 public:
 	BubbleSort();
-	virtual void sort(std::vector<float>& data);
+	virtual void sort(std::vector<float>& data, int delay);
 };
