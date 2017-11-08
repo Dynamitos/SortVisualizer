@@ -2,6 +2,7 @@
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
 #include <iostream>
+#include <chrono>
 class Display
 {
 public:
@@ -10,9 +11,10 @@ public:
 	void createWindow();
 	void updateWindow();
 	void closeWindow();
+	bool shouldClose();
 private:
 	GLFWwindow* window;
 	int width, height;
-public:
-	bool shouldClose();
+	int nbFrames;
+	double lastTime;
 };

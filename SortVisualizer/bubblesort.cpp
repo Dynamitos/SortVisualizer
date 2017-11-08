@@ -4,7 +4,7 @@ BubbleSort::BubbleSort()
 {
 }
 
-void BubbleSort::sort(std::vector<float>& data)
+void BubbleSort::sort(std::vector<float>& data, int delay)
 {
 	int flag = 1;
 	float helper;
@@ -21,7 +21,7 @@ void BubbleSort::sort(std::vector<float>& data)
 				data[j] = data[j + 1];
 				data[j + 1] = helper;
 				flag = 1;
-				//std::this_thread::sleep_for(std::chrono::milliseconds(1));
+				std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 			}
 		}
 	}

@@ -146,18 +146,24 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bogosort.cpp" />
     <ClCompile Include="bubblesort.cpp" />
     <ClCompile Include="display.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="radixsort.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="selectionsort.cpp" />
+    <ClCompile Include="stdsort.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bogosort.h" />
     <ClInclude Include="bubblesort.h" />
     <ClInclude Include="display.h" />
+    <ClInclude Include="radixsort.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="selectionsort.h" />
     <ClInclude Include="sortalgorithm.h" />
+    <ClInclude Include="stdsort.h" />
     <ClInclude Include="visualization.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

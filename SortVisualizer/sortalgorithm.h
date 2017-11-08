@@ -3,9 +3,10 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <algorithm>
 class SortAlgorithm
 {
 public:
-	virtual void sort(std::vector<float>& data) = 0;
+	virtual void sort(std::vector<float>& data, int delay) = 0;
 protected:
 };

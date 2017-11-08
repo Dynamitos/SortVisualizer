@@ -1,9 +1,10 @@
 #include "selectionsort.h"
 
-void SelectionSort::sort(std::vector<float>& data)
+void SelectionSort::sort(std::vector<float>& data, int delay)
 {
 	float bestValue;
 	int bestPosition;
+	float helper;
 	for (int i = 1; i < data.size() - 1; ++i)
 	{
 		bestValue = data[i];
@@ -16,8 +17,12 @@ void SelectionSort::sort(std::vector<float>& data)
 				bestPosition = j;
 			}
 		}
-		if(bestPosition != i)
-			std::iter_swap(data.begin() + i, data.begin() + bestPosition);
-		std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		if (bestPosition != i)
+		{
+			helper = data[i];
+			data[i] = data[bestPosition];
+			data[bestPosition] = helper;
+		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 	}
 }

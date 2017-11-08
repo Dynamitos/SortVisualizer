@@ -25,11 +25,20 @@ void Display::createWindow()
 	glfwShowWindow(window);
 	glfwMakeContextCurrent(window);
 
+	lastTime = glfwGetTime();
 }
 
 void Display::updateWindow()
 {
 	glfwPollEvents();
+	nbFrames++;
+	double now = glfwGetTime();
+	if (now - lastTime >= 1.f)
+	{
+		lastTime++;
+		std::cout << "Frametime: " << 1000.0f / (double)nbFrames << "ms" << std::endl;
+		nbFrames = 0;
+	}
 	glfwSwapBuffers(window);
 }
 
