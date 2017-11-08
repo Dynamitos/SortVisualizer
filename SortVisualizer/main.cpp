@@ -9,7 +9,7 @@
 
 int main(int argc, char* argv[])
 {
-	Renderer renderer(10000000);
+	Renderer renderer(1000);
 	RadixSort sort;
 	renderer.init(0);
 	renderer.setAlgorithm(&sort);
