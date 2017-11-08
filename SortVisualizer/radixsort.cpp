@@ -1,7 +1,56 @@
 #include "radixsort.h"
 
-void RadixSort::sort(std::vector<float>& data, float delay)
+RadixSort::RadixSort()
 {
-	static const int base = 2;
+}
 
+void RadixSort::sort(std::vector<float>& floatData, int delay)
+{
+	static const int BITS = 1;
+
+    std::vector<int> data(floatData.size());
+    for (int i = 0; i < floatData.size(); i++)
+    {
+        data[i] = (int)(floatData[i] * 256);
+    }
+
+    std::vector<float> bukkets[1 << BITS];
+
+    for (int i = 0; i < bukkets[0].size(); i++)
+    {
+        bukkets[i] = std::vector<float>();
+        bukkets[i].push_back(0);
+    }
+
+    int id;
+    std::vector<float> al;
+    int max = (1 << 24) - 1;
+
+    for (int bits = (1 << BITS) - 1, r = 0; bits <= max; bits <<= BITS, r += BITS)
+    {
+        for (int i = 0; i<data.size(); i++)
+        {
+            id = data[i] & bits;
+            id >>= r;
+
+            bukkets[id].push_back(data[i]);
+            bukkets[id][0] = bukkets[id].size()+1;
+        }
+
+        for (int i = 0, j = 0; i<data.size(); j++)
+        {
+            al = bukkets[j];
+            int size = al[0] - 1;
+
+            for (int x = 1; x<size; x++, i++)
+            {
+                data[i] = al[x];
+            }
+
+            al.clear();
+            al.push_back(0);
+
+            
+        }
+    }
 }

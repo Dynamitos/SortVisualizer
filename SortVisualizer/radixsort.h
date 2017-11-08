@@ -3,5 +3,6 @@
 class RadixSort : public SortAlgorithm
 {
 public:
-	virtual void sort(std::vector<float>& data, float delay);
+    RadixSort();
+	virtual void sort(std::vector<float>& data, int delay);
 };
