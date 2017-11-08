@@ -7,11 +7,12 @@
 #include "bettersort.h"
 #include "stdsort.h"
 #include "quicksort.h"
+#include "mergesort.h"
 
 int main(int argc, char* argv[])
 {
-	Renderer renderer(1024 * 512);
-	BetterSort sort;
+	Renderer renderer(1000);
+	RadixSort sort;
 	renderer.init(0);
 	renderer.setAlgorithm(&sort);
 	renderer.loop();
