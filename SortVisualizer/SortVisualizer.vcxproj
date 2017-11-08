@@ -151,6 +151,7 @@
     <ClCompile Include="bubblesort.cpp" />
     <ClCompile Include="display.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mergesort.cpp" />
     <ClCompile Include="quicksort.cpp" />
     <ClCompile Include="radixsort.cpp" />
     <ClCompile Include="renderer.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="bogosort.h" />
     <ClInclude Include="bubblesort.h" />
     <ClInclude Include="display.h" />
+    <ClInclude Include="mergesort.h" />
     <ClInclude Include="quicksort.h" />
     <ClInclude Include="radixsort.h" />
     <ClInclude Include="renderer.h" />

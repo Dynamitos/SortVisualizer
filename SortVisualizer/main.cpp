@@ -7,6 +7,7 @@
 #include "bettersort.h"
 #include "stdsort.h"
 #include "quicksort.h"
+#include "mergesort.h"
 
 int main(int argc, char* argv[])
 {
