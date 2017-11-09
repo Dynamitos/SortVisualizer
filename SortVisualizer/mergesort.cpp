@@ -36,7 +36,34 @@ void MergeSort::sort(std::vector<float>& data, int intDelay)
     this->intDelay = intDelay;
 
     float* floatData = &(data[0]);
-    recursiveSort(new float[data.size()], floatData, 0, data.size() - 1);
+    float* sortedData = new float[data.size()];
+
+    std::thread* threads = new std::thread[std::thread::hardware_concurrency()];
+
+    int count = std::thread::hardware_concurrency();
+    int blockSize = data.size() / count;
+
+    std::cout << "Block size: " << blockSize << std::endl;
+
+
+
+    for(int i = 0, x = 0, y=blockSize;  i < count;  i++, x+=blockSize, y+=blockSize)
+    {     
+        threads[i] = std::thread(&MergeSort::recursiveSort, this, std::ref(sortedData), std::ref(floatData), x, y-1);
+    }
+
+    for (int i = 0; i < count; i++)
+    {
+        threads[i].join();  
+    }
+
+    for (int i = 0, x = 0, y = 2*blockSize;  i < count;  i++, x += 2*blockSize, y += 2*blockSize)
+    {
+        merge(sortedData, floatData, x, y+2*blockSize-1, x, y, y-1, y + 2*blockSize-1);
+    }
+
+    //delete readData;
+    //delete threads;
 }
 
 
@@ -117,7 +144,31 @@ void MergeSort::recursiveSort(float* sortedData, float* readData, int start, int
     std::cout << "Hello world: " << v1[0] << " " << v1[1] << std::endl;*/
 
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(intDelay));
+    std::this_thread::sleep_for(std::chrono::nanoseconds(intDelay));
+}
+
+
+void MergeSort::merge(float* sortedData, float* readData, int sortStart, int sortEnd, int leftStart, int rightStart, int leftEnd, int rightEnd)
+{
+    for (int x = sortStart; x <= sortEnd; x++)
+    {
+        if (leftStart > leftEnd)
+        {
+            if (rightStart > rightEnd)
+                break;
+            sortedData[x] = readData[rightStart++];
+        }
+        else if (rightStart > rightEnd)
+        {
+            if (leftStart > leftEnd)
+                break;
+            sortedData[x] = readData[leftStart++];
+        }
+        else if (readData[rightStart] < readData[leftStart])
+            sortedData[x] = readData[rightStart++];
+        else
+            sortedData[x] = readData[leftStart++];
+    }
 }
 
 

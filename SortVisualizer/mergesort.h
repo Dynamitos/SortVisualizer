@@ -14,5 +14,6 @@ public:
 
 private:
     void recursiveSort(float* sortedData, float* readData, int start, int end);
+    void merge(float* sortedData, float* readData, int sortStart, int sortEnd, int leftStart, int right, int leftEnd, int rightEnd);
 };
 
