@@ -6,8 +6,8 @@ class RadixSort : public SortAlgorithm
 {
 public:
     RadixSort();
-	virtual void sort(std::vector<float>& data, int delay);
-    virtual void sort2(std::vector<float>& data, int delay);
+	virtual void sort(float data[], int size, int intDelay);
+    virtual void sort2(float data[], int size, int intDelay);
 };
 
 template <typename T>

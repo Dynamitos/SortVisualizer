@@ -13,7 +13,7 @@ struct Partition
 class RapidQuickSort : public SortAlgorithm
 {
 public:
-	virtual void sort(std::vector<float>& data, int delay);
+	virtual void sort(float data[], int size, int intDelay);
 private:
 	void selectionSort(float* data, int left, int right);
 	void quicksort(float *data, int left, int right);

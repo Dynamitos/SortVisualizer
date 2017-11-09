@@ -4,5 +4,5 @@
 class BogoSort : public SortAlgorithm
 {
 public:
-	virtual void sort(std::vector<float>& data, int delay);
+	virtual void sort(float data[], int size, int intDelay);
 };

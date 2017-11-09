@@ -31,16 +31,15 @@ MergeSort::MergeSort()
 }
 
 
-void MergeSort::sort(std::vector<float>& data, int intDelay)
+void MergeSort::sort(float data[], int size, int intDelay)
 {
     this->intDelay = intDelay;
 
-    float* floatData = &(data[0]);
-    float* sortedData = new float[data.size()];
+    float* sortedData = new float[size];
 
     float realCount = std::thread::hardware_concurrency();
     int intCount = (int)realCount;
-    int blockSize = data.size() / intCount;
+    int blockSize = size / intCount;
 
     std::thread* threads = new std::thread[intCount];
 
@@ -50,11 +49,11 @@ void MergeSort::sort(std::vector<float>& data, int intDelay)
     int i, x, y;
     for(i = 0, x = 0, y=blockSize;  i<intCount;  i++, x+=blockSize, y+=blockSize)
     {     
-        threads[i] = std::thread(&MergeSort::recursiveSort, this, std::ref(sortedData), std::ref(floatData), x, y-1);
+        threads[i] = std::thread(&MergeSort::recursiveSort, this, std::ref(sortedData), std::ref(data), x, y-1);
     }
 
     if(realCount > intCount)
-        threads[i] = std::thread(&MergeSort::recursiveSort, this, std::ref(sortedData), std::ref(floatData), x, data.size()-1);
+        threads[i] = std::thread(&MergeSort::recursiveSort, this, std::ref(sortedData), std::ref(data), x, size-1);
 
 
     for (int i = 0; i < intCount; i++)
@@ -67,7 +66,7 @@ void MergeSort::sort(std::vector<float>& data, int intDelay)
         int incrementer = j * blockSize;
         for (int i=0, x=0, y=x+((j*blockSize)>>1)+1;  i<intCount;  i+=j, x+=incrementer, y+=incrementer)
         {
-            merge(sortedData, floatData, x, y, y-1, x+j*blockSize-1);
+            merge(sortedData, data, x, y, y-1, x+j*blockSize-1);
         }
     }
 
