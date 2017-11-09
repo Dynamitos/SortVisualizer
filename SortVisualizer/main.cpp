@@ -1,4 +1,5 @@
 #include <GL\glew.h>
+#include "gradientvisualization.h"
 #include "renderer.h"
 #include "selectionsort.h"
 #include "bogosort.h"
@@ -11,10 +12,11 @@
 
 int main(int argc, char* argv[])
 {
-	Renderer renderer(10000000);
-	RadixSort sort;
-	renderer.init(0);
-	renderer.setAlgorithm(&sort);
-	renderer.loop();
+	Visualization* renderer = new GradientVisualization(10000000);
+	MergeSort sort;
+	renderer->init(0);
+	renderer->setAlgorithm(&sort);
+	renderer->loop();
+	delete renderer;
 	return 0;
 }
