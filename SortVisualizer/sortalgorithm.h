@@ -4,10 +4,12 @@
 #include <chrono>
 #include <thread>
 #include <algorithm>
-#include <list>
+#include <minmax.h>
 class SortAlgorithm
 {
 public:
 	virtual void sort(std::vector<float>& data, int delay) = 0;
 protected:
+    int intHelper, intDelay;
+    float floatHelper;
 };

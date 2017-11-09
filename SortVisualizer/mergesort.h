@@ -13,6 +13,7 @@ public:
     virtual void sort(std::vector<float>& data, int intDelay);
 
 private:
-    std::vector<float> recursiveSort(std::vector<float>, int start, int end);
+    void recursiveSort(float* sortedData, float* readData, int start, int end);
+    void merge(float* sortedData, float* readData, int sortStart, int sortEnd, int leftStart, int right, int leftEnd, int rightEnd);
 };
 

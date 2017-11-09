@@ -4,29 +4,69 @@ void BetterSort::sort(std::vector<float>& data, int delay)
 {
 	std::vector<std::thread> threads;
 	threads.resize(std::thread::hardware_concurrency());
+	
+	std::vector<Partition> partitions;
+	partitions.push_back(Partition(data.data(), 0, data.size() - 1));
+	std::vector<Partition> newPartitions;
+	while (partitions.size() < threads.size())
+	{
+		for (auto& part : partitions)
+		{
+			divideData(newPartitions, part);
+			if (newPartitions.size() == threads.size())
+			{
+				break;
+			}
+		}
+		partitions = newPartitions;
+	}
 
 	int dataPerThread = data.size() / threads.size();
 	for (int i = 0; i < threads.size(); ++i)
 	{
-		threads[i] = std::thread(&BetterSort::quicksort, this, std::ref(data), i * dataPerThread, i * dataPerThread + dataPerThread);
-		std::cout << "Thread " << i << " starting " << i*dataPerThread << " ending " << i*dataPerThread + dataPerThread << std::endl;
+		threads[i] = std::thread(&BetterSort::quicksort, this, partitions[i].arr, partitions[i].left, partitions[i].right);
 	}
 	for (auto& t : threads)
 	{
 		t.join();
 	}
-	int partitions = threads.size();
-	std::vector<Partition> partPos;
-	int dataPerPart = data.size() / partitions;
-	for (int i = 0; i < partitions; ++i)
-	{
-		partPos.push_back(Partition{ i * dataPerPart, dataPerPart });
-	}
-	mergeSort(data, partPos);
+	//merge(data, threads.size());
 }
 
-void BetterSort::quicksort(std::vector<float>& arr, int left, int right)
+void BetterSort::selectionSort(float* data, int left, int right)
 {
+	float bestValue;
+	int bestPosition;
+	float helper;
+	for (int i = left; i < right; ++i)
+	{
+		bestValue = data[i];
+		bestPosition = i;
+		for (int j = i + 1; j < right; ++j)
+		{
+			if (data[j] < bestValue)
+			{
+				bestValue = data[j];
+				bestPosition = j;
+			}
+		}
+		if (bestPosition != i)
+		{
+			helper = data[i];
+			data[i] = data[bestPosition];
+			data[bestPosition] = helper;
+		}
+	}
+
+}
+
+void BetterSort::quicksort(float* arr, int left, int right)
+{
+	if (right - left < 5)
+	{
+		selectionSort(arr, left, right);
+		return;
+	}
 	int index = partition(arr, left, right);
 	if (left < index - 1)
 		quicksort(arr, left, index - 1);
@@ -34,7 +74,7 @@ void BetterSort::quicksort(std::vector<float>& arr, int left, int right)
 		quicksort(arr, index, right);
 }
 
-int BetterSort::partition(std::vector<float>& arr, int left, int right)
+int BetterSort::partition(float* arr, int left, int right)
 {
 	int i = left, j = right;
 	float tmp;
@@ -56,63 +96,43 @@ int BetterSort::partition(std::vector<float>& arr, int left, int right)
 	}
 	return i;
 }
-
-void BetterSort::mergeSort(std::vector<float>& arr, std::vector<Partition> partitions)
+void BetterSort::divideData(std::vector<Partition>& parts, Partition & part)
 {
-	while (partitions.size() > 1) {
-		for(int i = 0; i < partitions.size() - 1; i++)
-		{
-			Partition& left = partitions[i];
-			Partition& right = partitions[i + 1];
-			mergePartitions(left, right, arr.begin());
-			left.size += right.size;
-			partitions.erase(partitions.begin() + i + 1);
-		}
-	}
-	
+	int middle = partition(part.arr, part.left, part.right);
+	parts.push_back(Partition(part.arr, middle, part.right));
+	part.right = middle - 1;
+	parts.push_back(part);
 }
-
-void BetterSort::mergePartitions(Partition leftPart, Partition rightPart, std::vector<float>::iterator result)
+/*
+void BetterSort::merge(std::vector<float>& arr, int numParts)
 {
-	std::vector<float> left;// (result + leftPart.position, result + leftPart.position + leftPart.size - 1);
-	std::vector<float> right;// (result + rightPart.position, result + rightPart.position + rightPart.size - 1);
-	
-	for (int i = 0; i < leftPart.size; ++i)
+	std::vector<float> copy = arr;
+	int sizePerPartition = arr.size() / numParts;
+	std::vector<Partition> partitions(numParts);
+	int position;
+	for (int i = 0; i < numParts; ++i)
 	{
-		left.push_back(result[leftPart.position + i]);
+		position = i * sizePerPartition;
+		partitions[i] = Partition(&copy[position], sizePerPartition);
 	}
-	for (int i = 0; i < rightPart.size; ++i)
+	float min;
+	int bestPos;
+	for (int i = 0; i < arr.size(); ++i)
 	{
-		right.push_back(result[rightPart.position + i]);
-	}
-	auto l = left.begin(), r = right.begin();
-	while (l != left.end() && r != right.end())
-	{
-		if (*l < *r)
+		min = partitions[0].get();
+		bestPos = 0;
+		for (int j = 1; j < partitions.size(); ++j)
 		{
-			*result = *l;
-			l++;
-			result++;
+			if (partitions[j].get() < min)
+			{
+				min = partitions[j].get();
+				bestPos = j;
+			}
 		}
-		else
-		{
-			*result = *r;
-			r++;
-			result++;
-		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(3));
+		arr[i] = min;
+		std::cout << min << std::endl;
+		partitions[bestPos].increment();
+		//std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
-	while (l != left.end())
-	{
-		*result = *l;
-		l++;
-		result++;
-	}
-	while (r != right.end())
-	{
-		*result = *r;
-		r++;
-		result++;
-	}
-	std::cout << "Merging partition " << leftPart.position << " " << leftPart.size << " with " << rightPart.position << " " << rightPart.size << std::endl;
 }
+*/

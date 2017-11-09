@@ -17,7 +17,6 @@ void Display::createWindow()
     glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-    glfwSwapInterval(1);
 
     window = glfwCreateWindow(width, height, "Sort Visualizer", NULL, NULL);
     if (!window)
@@ -39,7 +38,7 @@ void Display::updateWindow()
 	if (now - lastTime >= 1.f)
 	{
 		lastTime++;
-		std::cout << "Frametime: " << 1000.0f / (double)nbFrames << "ms" << std::endl;
+		//std::cout << "Frametime: " << 1000.0f / (double)nbFrames << "ms" << std::endl;
 		nbFrames = 0;
 	}
 	glfwSwapBuffers(window);
