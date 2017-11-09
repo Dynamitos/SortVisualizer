@@ -1,16 +1,14 @@
 #pragma once
 #include "sortalgorithm.h"
-class Partition
+struct Partition
 {
-public:
-	Partition();
-	Partition(float* ptr, int size);
-	void increment();
-	float operator*(void) const;
-private:
-	float* ptr;
-	int size;
-	int counter;
+	Partition(float* arr, int left, int right)
+		: arr(arr)
+		, left(left)
+		, right(right)
+	{}
+	float* arr;
+	int left, right;
 };
 class BetterSort : public SortAlgorithm
 {
@@ -20,5 +18,6 @@ private:
 	void selectionSort(float* data, int left, int right);
 	void quicksort(float *data, int left, int right);
 	int partition(float* data, int left, int right);
+	void divideData(std::vector<Partition>& parts, Partition& part);
 	void merge(std::vector<float>& arr, int partitions);
 };

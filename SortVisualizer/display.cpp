@@ -38,7 +38,7 @@ void Display::updateWindow()
 	if (now - lastTime >= 1.f)
 	{
 		lastTime++;
-		std::cout << "Frametime: " << 1000.0f / (double)nbFrames << "ms" << std::endl;
+		//std::cout << "Frametime: " << 1000.0f / (double)nbFrames << "ms" << std::endl;
 		nbFrames = 0;
 	}
 	glfwSwapBuffers(window);
