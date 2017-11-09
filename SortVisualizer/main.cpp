@@ -12,7 +12,7 @@
 int main(int argc, char* argv[])
 {
 	Renderer renderer(10000000);
-	MergeSort sort;
+	RadixSort sort;
 	renderer.init(0);
 	renderer.setAlgorithm(&sort);
 	renderer.loop();

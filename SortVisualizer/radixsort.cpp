@@ -23,9 +23,10 @@ void RadixSort::sort(float data[], int arraySize, int intDelay)
     int max_combinations = (MAX_BYTES_RAM / arraySize) / 4;
     int required_combinations = 1, BITS = 0;
 
-    for (int c=2;  c<=max_combinations && c<=256;  c*=c, BITS*=2)
+    for (int c=2, b=1;  c<=max_combinations && c<=256;  c*=c, b*=2)
     {
         required_combinations = c;
+        BITS = b;
     }
 
     std::cout << "Required combinations: " << required_combinations << " required bits: " << BITS << std::endl;
@@ -71,8 +72,7 @@ void RadixSort::sort(float data[], int arraySize, int intDelay)
                 intData[i] = al[x];
             }
 
-            al[0] = 0;
-            al[1] = 2;
+            al[0] = 1;
         }
 
         for (int i = 0; i < arraySize; i++)
