@@ -8,6 +8,7 @@ void BogoSort::sort(std::vector<float>& data, int delay)
 		std::random_shuffle(data.begin(), data.end());
 
 		sorted = true;
+#pragma loop(hint_parallel(8))
 		for (int i = 1; i < data.size() - 1; ++i)
 		{
 			if (data[i] > data[i + 1])

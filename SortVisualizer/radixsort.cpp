@@ -6,7 +6,7 @@ RadixSort::RadixSort()
 
 void RadixSort::sort(std::vector<float>& floatData, int delay)
 {
-	static const int BITS = 4;
+	static const int BITS = 8;
 
     int* data = new int[floatData.size()];
     for (int i = 0; i < floatData.size(); i++)

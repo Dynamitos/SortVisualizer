@@ -42,10 +42,10 @@
     <ClCompile Include="quicksort.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bettersort.cpp">
+    <ClCompile Include="mergesort.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mergesort.cpp">
+    <ClCompile Include="rapidquicksort.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,10 +80,10 @@
     <ClInclude Include="quicksort.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bettersort.h">
+    <ClInclude Include="mergesort.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mergesort.h">
+    <ClInclude Include="rapidquicksort.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
