@@ -17,4 +17,6 @@ private:
 	int width, height;
 	int nbFrames;
 	double lastTime;
+public:
+	void showWindow();
 };
