@@ -9,7 +9,7 @@ void BetterSort::sort(std::vector<float>& data, int delay)
 	for (int i = 0; i < threads.size(); ++i)
 	{
 		threads[i] = std::thread(&BetterSort::quicksort, this, data.data(), i * dataPerThread, i * dataPerThread + dataPerThread);
-		std::cout << "Thread " << i << " starting " << i*dataPerThread << " ending " << i*dataPerThread + dataPerThread << std::endl;
+		//std::cout << "Thread " << i << " starting " << i*dataPerThread << " ending " << i*dataPerThread + dataPerThread << std::endl;
 	}
 	for (auto& t : threads)
 	{

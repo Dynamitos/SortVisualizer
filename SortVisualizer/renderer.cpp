@@ -19,6 +19,7 @@ void Renderer::setAlgorithm(SortAlgorithm * algo)
 
 void Renderer::init(float delay)
 {
+	auto start = std::chrono::high_resolution_clock::now();
 	display = new Display();
 	display->createWindow();
 	this->delay = delay;
@@ -33,15 +34,18 @@ void Renderer::init(float delay)
 	glGenBuffers(1, &valueBuffer);
 	
 	data[0] = 0.f;
+	srand(NULL);
+#pragma loop(hint_parallel(8))
 	for (int i = 1; i < data.size(); i++)
 	{
-		data[i] = i / (float)data.size();
+		data[i] = rand()/(float)RAND_MAX;
 	}
-	std::random_shuffle(data.begin() + 1, data.end());
+	//std::random_shuffle(data.begin() + 1, data.end());
 	vertices.resize(data.size() * 2 + 4);
 	vertices[0] = 0.0f;
 	vertices[1] = 0.0f;
 
+#pragma loop(hint_parallel(8))
 	for (int i = 0; i < numValues + 1; ++i)
 	{
 		float angle = 2 * 3.141592653f * i / numValues;
@@ -80,14 +84,14 @@ void Renderer::init(float delay)
 	GLint shaderLength = sizeof(vertCode);
 	const GLchar* pointer = &vertCode[0];
 
-	char log[1000];
-	int length;
+//	char log[1000];
+//	int length;
 
 	glShaderSource(vertShader, 1, &pointer, &shaderLength);
 	glCompileShader(vertShader);
 
-	glGetShaderInfoLog(vertShader, 1000, &length, log);
-	std::cout << log << std::endl;
+//	glGetShaderInfoLog(vertShader, 1000, &length, log);
+//	std::cout << log << std::endl;
 	const char fragCode[] = "#version 410\n \
 		layout(location = 0) in vec2 position_FS_in; \n \
 		layout(location = 1) in float data_FS_in;\n \
@@ -109,14 +113,18 @@ void Renderer::init(float delay)
 	glShaderSource(fragShader, 1, &pointer, &shaderLength);
 	glCompileShader(fragShader);
 
-	glGetShaderInfoLog(fragShader, 1000, &length, log);
-	std::cout << log << std::endl;
+//	glGetShaderInfoLog(fragShader, 1000, &length, log);
+//	std::cout << log << std::endl;
 	glAttachShader(program, vertShader);
 	glAttachShader(program, fragShader);
 	glLinkProgram(program);
 	glValidateProgram(program);
-	glGetProgramInfoLog(program, 1000, &length, log);
-	std::cout << log << std::endl;
+//	glGetProgramInfoLog(program, 1000, &length, log);
+//	std::cout << log << std::endl;
+	auto end = std::chrono::high_resolution_clock::now();
+	float runtime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+	std::cout << "Init took: " << runtime << "ms" << std::endl;
+
 }
 
 void Renderer::loop()
