@@ -49,8 +49,8 @@ void MergeSort::recursiveSort(float* sortedData, float* readData, int start, int
     if (end & start == 1)
     {
         floatHelper = readData[start];
-        readData[start] = std::min(readData[start], readData[end]);
-        readData[end] = std::max(floatHelper, readData[end]);
+        readData[start] = min(readData[start], readData[end]);
+        readData[end] = max(floatHelper, readData[end]);
         return;
     }
 
