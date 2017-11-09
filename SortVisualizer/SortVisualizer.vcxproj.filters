@@ -48,6 +48,12 @@
     <ClCompile Include="rapidquicksort.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="visualization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gradientvisualization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sortalgorithm.h">
@@ -84,6 +90,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="rapidquicksort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gradientvisualization.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

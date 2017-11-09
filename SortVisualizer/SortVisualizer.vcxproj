@@ -145,6 +145,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="gradientvisualization.cpp" />
     <ClCompile Include="rapidquicksort.cpp" />
     <ClCompile Include="bogosort.cpp" />
     <ClCompile Include="bubblesort.cpp" />
@@ -156,8 +157,10 @@
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="selectionsort.cpp" />
     <ClCompile Include="stdsort.cpp" />
+    <ClCompile Include="visualization.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="gradientvisualization.h" />
     <ClInclude Include="rapidquicksort.h" />
     <ClInclude Include="bogosort.h" />
     <ClInclude Include="bubblesort.h" />

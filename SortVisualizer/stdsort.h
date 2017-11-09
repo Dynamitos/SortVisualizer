@@ -3,5 +3,5 @@
 class StdSort : public SortAlgorithm
 {
 public:
-	virtual void sort(float data[], int size, int intDelay);
+	virtual void sort(float* data, int size, int intDelay);
 };

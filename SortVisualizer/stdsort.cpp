@@ -1,6 +1,6 @@
 #include "stdsort.h"
 
-void StdSort::sort(std::vector<float>& data, int delay)
+void StdSort::sort(float* data, int size, int delay)
 {
 	/*std::qsort(data.data(), data.size(), sizeof(float), [](const void* a, const void* b)
 	{
@@ -14,5 +14,5 @@ void StdSort::sort(std::vector<float>& data, int delay)
 		//  return (arg1 > arg2) - (arg1 < arg2); // possible shortcut
 		//  return arg1 - arg2; // erroneous shortcut (fails if INT_MIN is present)
 	});*/
-	std::sort(data.begin(), data.end());
+	//std::sort(data.begin(), data.end());
 }
