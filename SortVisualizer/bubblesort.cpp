@@ -4,12 +4,10 @@ BubbleSort::BubbleSort()
 {
 }
 
-void BubbleSort::sort(std::vector<float>& floats, int delay)
+void BubbleSort::sort(float* data, int length, int delay)
 {
 	int flag = 1;
 	float helper;
-	int length = floats.size();
-	float* data = floats.data();
 	for (int i = 0; (i <= length) && flag; ++i)
 	{
 		flag = 0;

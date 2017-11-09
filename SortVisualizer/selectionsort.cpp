@@ -1,12 +1,10 @@
 #include "selectionsort.h"
 
-void SelectionSort::sort(std::vector<float>& floats, int delay)
+void SelectionSort::sort(float* data, int size, int delay)
 {
 	float bestValue;
 	int bestPosition;
 	float helper;
-	float* data = floats.data();
-	int size = floats.size();
 	for (int i = 0; i < size - 1; ++i)
 	{
 		bestValue = data[i];

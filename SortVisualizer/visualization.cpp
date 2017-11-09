@@ -38,7 +38,7 @@ void Visualization::startSort()
 	sorter = std::thread([this]
 	{
 		auto start = std::chrono::high_resolution_clock::now();
-		algorithm->sort(data, delay);
+//		algorithm->sort(data, delay);
 		auto end = std::chrono::high_resolution_clock::now();
 		float runtime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 		std::cout << "Runtime: " << runtime << std::endl;
@@ -56,4 +56,5 @@ GLuint Visualization::loadShader(std::string filename, GLenum shaderType)
 	std::vector<char> buffer;
 
 	GLuint shaderID = glCreateShader(shaderType);
+	return shaderID;
 }

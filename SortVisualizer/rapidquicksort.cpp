@@ -1,12 +1,12 @@
 #include "rapidquicksort.h"
 
-void RapidQuickSort::sort(std::vector<float>& data, int delay)
+void RapidQuickSort::sort(float* data, int size, int delay)
 {
 	int numThreads = std::thread::hardware_concurrency();
 	std::thread* threads = new std::thread[numThreads];
 	
 	std::vector<Partition> partitions;
-	partitions.push_back(Partition(data.data(), 0, data.size() - 1));
+	partitions.push_back(Partition(data, 0, size - 1));
 	std::vector<Partition> newPartitions;
 	while (partitions.size() < numThreads)
 	{
