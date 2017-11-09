@@ -4,7 +4,7 @@
 #include "bogosort.h"
 #include "bubblesort.h"
 #include "radixsort.h"
-#include "bettersort.h"
+#include "rapidquicksort.h"
 #include "stdsort.h"
 #include "quicksort.h"
 #include "mergesort.h"
@@ -12,7 +12,7 @@
 int main(int argc, char* argv[])
 {
 	Renderer renderer(100000000);
-	MergeSort sort;
+	RadixSort sort;
 	renderer.init(0);
 	renderer.setAlgorithm(&sort);
 	renderer.loop();

@@ -10,7 +10,7 @@ struct Partition
 	float* arr;
 	int left, right;
 };
-class BetterSort : public SortAlgorithm
+class RapidQuickSort : public SortAlgorithm
 {
 public:
 	virtual void sort(std::vector<float>& data, int delay);
@@ -19,5 +19,4 @@ private:
 	void quicksort(float *data, int left, int right);
 	int partition(float* data, int left, int right);
 	void divideData(std::vector<Partition>& parts, Partition& part);
-	void merge(std::vector<float>& arr, int partitions);
 };
