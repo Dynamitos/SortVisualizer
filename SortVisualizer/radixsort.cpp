@@ -23,7 +23,7 @@ void RadixSort::sort(float data[], int arraySize, int intDelay)
     int max_combinations = (MAX_BYTES_RAM / arraySize) / 4;
     int required_combinations = 1, BITS = 0;
 
-    for (int c=2;  c<=max_combinations && c<=256;  c<<=1, BITS++)
+    for (int c=2;  c<=max_combinations && c<=256;  c*=c, BITS*=2)
     {
         required_combinations = c;
     }
