@@ -11,7 +11,7 @@ class MergeSort : public SortAlgorithm
 {
 public:
     MergeSort();
-    virtual void sort(std::vector<float>& data, int intDelay);
+    virtual void sort(float data[], int size, int intDelay);
 
 private:
     void recursiveSort(float* sortedData, float* readData, int start, int end);

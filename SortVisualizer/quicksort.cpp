@@ -4,9 +4,9 @@ QuickSort::QuickSort()
 {
 }
 
-void QuickSort::sort(std::vector<float>& data, int delay)
+void QuickSort::sort(float data[], int arraySize, int intDelay)
 {
-	quicksort(data.data(), 0, data.size() - 1);
+	quicksort(data, 0, arraySize - 1);
 }
 
 void QuickSort::quicksort(float* arr, int left, int right)

@@ -8,7 +8,7 @@
 class SortAlgorithm
 {
 public:
-	virtual void sort(std::vector<float>& data, int delay) = 0;
+	virtual void sort(float data[], int size, int intDelay) = 0;
 protected:
     int intHelper, intDelay;
     float floatHelper;
