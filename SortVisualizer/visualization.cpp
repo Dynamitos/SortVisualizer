@@ -59,12 +59,12 @@ void Visualization::waitSort()
 
 GLuint Visualization::loadShader(std::string filename, GLenum shaderType)
 {
-	std::ifstream file(filename, std::ios::ate);
+	std::ifstream file(filename, std::ios::in | std::ios::ate);
 	if (!file.is_open())
 	{
 		throw std::runtime_error("failed to open file!");
 	}
-	size_t fileSize = (size_t)file.tellg();
+    std::streampos fileSize = file.tellg();
 	std::vector<char> buffer(fileSize);
 
 	file.seekg(0);
