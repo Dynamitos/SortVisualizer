@@ -2,13 +2,13 @@
 
 void BetterSort::sort(std::vector<float>& data, int delay)
 {
-	/*std::vector<std::thread> threads;
+	std::vector<std::thread> threads;
 	threads.resize(std::thread::hardware_concurrency());
 
 	int dataPerThread = data.size() / threads.size();
 	for (int i = 0; i < threads.size(); ++i)
 	{
-		threads[i] = std::thread(&BetterSort::quicksort, this, std::ref(data), i * dataPerThread, i * dataPerThread + dataPerThread);
+		threads[i] = std::thread(&BetterSort::quicksort, this, data.data(), i * dataPerThread, i * dataPerThread + dataPerThread);
 		std::cout << "Thread " << i << " starting " << i*dataPerThread << " ending " << i*dataPerThread + dataPerThread << std::endl;
 	}
 	for (auto& t : threads)
@@ -16,8 +16,8 @@ void BetterSort::sort(std::vector<float>& data, int delay)
 		t.join();
 	}
 	merge(data, threads.size());
-	*/
-	quicksort(data.data(), 0, data.size() - 1);
+	
+	//quicksort(data.data(), 0, data.size() - 1);
 
 }
 
