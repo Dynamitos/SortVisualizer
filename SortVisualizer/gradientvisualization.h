@@ -5,9 +5,15 @@ class GradientVisualization : public Visualization
 {
 public:
 	GradientVisualization(int numElements);
-	void init();
+	virtual ~GradientVisualization();
+	void init(int delay);
+	void loop();
 private:
-	int vaoID;
-	int vertexBuffer;
-	int valueBuffer;
+	GLuint vaoID;
+	GLuint vertexBuffer;
+	GLuint valueBuffer;
+	GLint programID;
+	GLint vertShader;
+	GLint fragShader;
+	float* vertices;
 };

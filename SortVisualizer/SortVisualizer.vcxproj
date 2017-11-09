@@ -96,6 +96,9 @@
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)external\bin\$(PlatformName)" "$(TargetDir)"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)external\shader" "$(TargetDir)"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -109,6 +112,9 @@
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)external\bin\$(PlatformName)" "$(TargetDir)"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)external\shader" "$(TargetDir)"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -126,6 +132,9 @@
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)external\bin\$(PlatformName)" "$(TargetDir)"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)external\shader" "$(TargetDir)"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -143,6 +152,9 @@
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)external\bin\$(PlatformName)" "$(TargetDir)"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)external\shader" "$(TargetDir)"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="gradientvisualization.cpp" />

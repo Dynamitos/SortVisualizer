@@ -6,17 +6,20 @@ class Visualization
 {
 public:
 	Visualization(int numElements);
-	virtual void init();
+	virtual ~Visualization();
+	virtual void init(int delay);
 	void setAlgorithm(SortAlgorithm* algorithm);
 	virtual void loop() = 0;
 	void startSort();
 	void waitSort();
 protected:
-	int numElements;
 	float* data;
+	size_t sizeData;
 	float* gpuData;
+	size_t sizeGPU;
 	Display* display;
 	SortAlgorithm* algorithm;
+	int delay;
 	GLuint loadShader(std::string filename, GLenum shaderType);
 private:
 	std::thread sorter;
