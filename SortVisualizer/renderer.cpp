@@ -137,6 +137,7 @@ void Renderer::loop()
 		float runtime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 		std::cout << "Runtime: " << runtime << std::endl; 
 	});
+	display->showWindow();
 	while (!display->shouldClose())
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

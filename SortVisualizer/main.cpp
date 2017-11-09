@@ -11,8 +11,8 @@
 
 int main(int argc, char* argv[])
 {
-	Renderer renderer(100000000);
-	RadixSort sort;
+	Renderer renderer(10000000);
+	RapidQuickSort sort;
 	renderer.init(0);
 	renderer.setAlgorithm(&sort);
 	renderer.loop();

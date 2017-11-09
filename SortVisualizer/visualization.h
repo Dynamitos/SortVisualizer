@@ -2,4 +2,6 @@
 
 class Visualization
 {
+public:
+	Visualization(int numElements);
 };

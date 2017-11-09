@@ -24,7 +24,6 @@ void Display::createWindow()
 
     glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {if (action == GLFW_PRESS && key == GLFW_KEY_ESCAPE) glfwSetWindowShouldClose(window, GLFW_TRUE); });
 
-	glfwShowWindow(window);
 	glfwMakeContextCurrent(window);
 
 	lastTime = glfwGetTime();
@@ -52,4 +51,9 @@ void Display::closeWindow()
 bool Display::shouldClose()
 {
 	return glfwWindowShouldClose(window);
+}
+
+void Display::showWindow()
+{
+	glfwShowWindow(window);
 }
