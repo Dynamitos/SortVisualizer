@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <cmath>
+#include <stdio.h>
 
 #include "sortalgorithm.h"
 
@@ -14,6 +15,6 @@ public:
 
 private:
     void recursiveSort(float* sortedData, float* readData, int start, int end);
-    void merge(float* sortedData, float* readData, int sortStart, int sortEnd, int leftStart, int right, int leftEnd, int rightEnd);
+    void merge(float* sortedData, float* readData, int leftStart, int right, int leftEnd, int rightEnd);
 };
 

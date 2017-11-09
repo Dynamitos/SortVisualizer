@@ -38,28 +38,37 @@ void MergeSort::sort(std::vector<float>& data, int intDelay)
     float* floatData = &(data[0]);
     float* sortedData = new float[data.size()];
 
-    std::thread* threads = new std::thread[std::thread::hardware_concurrency()];
+    float realCount = std::thread::hardware_concurrency();
+    int intCount = (int)realCount;
+    int blockSize = data.size() / intCount;
 
-    int count = std::thread::hardware_concurrency();
-    int blockSize = data.size() / count;
+    std::thread* threads = new std::thread[intCount];
 
-    std::cout << "Block size: " << blockSize << std::endl;
+    if (realCount > intCount)
+        intCount--;
 
-
-
-    for(int i = 0, x = 0, y=blockSize;  i < count;  i++, x+=blockSize, y+=blockSize)
+    int i, x, y;
+    for(i = 0, x = 0, y=blockSize;  i<intCount;  i++, x+=blockSize, y+=blockSize)
     {     
         threads[i] = std::thread(&MergeSort::recursiveSort, this, std::ref(sortedData), std::ref(floatData), x, y-1);
     }
 
-    for (int i = 0; i < count; i++)
+    if(realCount > intCount)
+        threads[i] = std::thread(&MergeSort::recursiveSort, this, std::ref(sortedData), std::ref(floatData), x, data.size()-1);
+
+
+    for (int i = 0; i < intCount; i++)
     {
         threads[i].join();  
     }
 
-    for (int i = 0, x = 0, y = 2*blockSize;  i < count;  i++, x += 2*blockSize, y += 2*blockSize)
-    {
-        merge(sortedData, floatData, x, y+2*blockSize-1, x, y, y-1, y + 2*blockSize-1);
+    for (int j = 2; j <= intCount; j*=2)
+    {       
+        int incrementer = j * blockSize;
+        for (int i=0, x=0, y=x+((j*blockSize)>>1)+1;  i<intCount;  i+=j, x+=incrementer, y+=incrementer)
+        {
+            merge(sortedData, floatData, x, y, y-1, x+j*blockSize-1);
+        }
     }
 
     //delete readData;
@@ -109,6 +118,8 @@ void MergeSort::recursiveSort(float* sortedData, float* readData, int start, int
         else
             sortedData[x] = readData[i++];
     }
+    
+    //merge(sortedData, readData, start, j, zzz, end);
 
     memcpy(&(readData[start]), &(sortedData[start]), sizeof(float) * (diff + 1));
 
@@ -148,9 +159,12 @@ void MergeSort::recursiveSort(float* sortedData, float* readData, int start, int
 }
 
 
-void MergeSort::merge(float* sortedData, float* readData, int sortStart, int sortEnd, int leftStart, int rightStart, int leftEnd, int rightEnd)
+void MergeSort::merge(float* sortedData, float* readData, int leftStart, int rightStart, int leftEnd, int rightEnd)
 {
-    for (int x = sortStart; x <= sortEnd; x++)
+    int diff = (rightEnd - leftStart) + 1;
+    int begin = leftStart;
+
+    for (int x = leftStart; x <= rightEnd; x++)
     {
         if (leftStart > leftEnd)
         {
@@ -169,6 +183,7 @@ void MergeSort::merge(float* sortedData, float* readData, int sortStart, int sor
         else
             sortedData[x] = readData[leftStart++];
     }
+    memcpy(&(readData[begin]), &(sortedData[begin]), sizeof(float) * diff);
 }
 
 

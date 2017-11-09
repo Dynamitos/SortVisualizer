@@ -8,30 +8,28 @@ RadixSort::RadixSort()
 
 
 
-void RadixSort::sort2(std::vector<float>& floatData, int delay)
+void RadixSort::sort(std::vector<float>& floatData, int delay)
 {
-    static const int MAX_BYTES_RAM = 3000000000;
-    
-    const int BITS = 8;
+    static const int MAX_BYTES_RAM = 2100000000;
 
+    if (MAX_BYTES_RAM / 4 < floatData.size())
+        return;
+    
     /*
     4 * floatData.size() * combinations <= MAX_BYTES_RAM
     (MAX_BYTES_RAM / floatData.size()) / 4 <= combinations
     */
 
     int max_combinations = (MAX_BYTES_RAM / floatData.size()) / 4;
-    int required_combinations = 1, bits = 1;
+    int required_combinations = 1, BITS = 0;
 
-    if (max_combinations / 2 > 256)
-        return;
-
-    for (int i = 0, c=1;  i<256;  i++, bits++, c*=2)
+    for (int c=2;  c<=max_combinations && c<=256;  c<<=1, BITS++)
     {
-        if (c <= max_combinations)
-        {
-            required_combinations = c;
-        }
+        required_combinations = c;
     }
+
+    std::cout << "Required combinations: " << required_combinations << " required bits: " << BITS << std::endl;
+
 
     int* data = new int[floatData.size()];
     for (int i = 0; i < floatData.size(); i++)
@@ -40,13 +38,13 @@ void RadixSort::sort2(std::vector<float>& floatData, int delay)
     }
 
     const int SIZE = required_combinations;
-    int* bukkets[SIZE];
+    int** bukkets = new int*[SIZE];
 
     for (int i = 0; i < SIZE; i++)
     {
-        bukkets[i] = new int[floatData.size()+2];
-        bukkets[i][0] = 0;
-        bukkets[i][1] = 2;
+        bukkets[i] = new int[floatData.size()+1];
+        // curr position
+        bukkets[i][0] = 1;
     }
 
     int id;
@@ -59,14 +57,14 @@ void RadixSort::sort2(std::vector<float>& floatData, int delay)
             id = data[i] & bits;
             id >>= r;
 
-            bukkets[id][bukkets[i][1]] = data[i];
-            bukkets[id][bukkets[i][1]] = bukkets[id][bukkets[i][1]] + 1;
+            bukkets[id][bukkets[id][0]] = data[i];
+            bukkets[id][0] = bukkets[id][0] + 1;
         }
 
         for (int i = 0, j = 0; i<floatData.size(); j++)
         {
             int* &al = bukkets[j];
-            int size = al[0] + 1;
+            int size = al[0];
 
             for (int x = 1; x<size; x++, i++)
             {
@@ -86,7 +84,7 @@ void RadixSort::sort2(std::vector<float>& floatData, int delay)
 
 
 
-void RadixSort::sort(std::vector<float>& floatData, int delay)
+void RadixSort::sort2(std::vector<float>& floatData, int delay)
 {
 	static const int BITS = 8;
 
