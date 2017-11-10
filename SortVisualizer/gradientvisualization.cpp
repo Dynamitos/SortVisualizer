@@ -22,7 +22,7 @@ void GradientVisualization::init(int delay)
 	vertices[0] = 0.0f;
 	vertices[1] = 0.0f;
 
-#pragma loop(hint_parallel(8))
+#pragma loop(hint_parallel(0))
 	for (int i = 0; i < sizeGPU - 1; ++i)
 	{
 		float angle = 2 * 3.141592653f * i / sizeData;

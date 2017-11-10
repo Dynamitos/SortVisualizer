@@ -27,7 +27,7 @@ void Visualization::init(int delay)
 
 	glClearColor(0, 0, 0, 1);
 
-#pragma loop(hint_parallel(8))
+#pragma loop(hint_parallel(0))
 	for (int i = 0; i < sizeData; i++)
 	{
 		data[i] = rand() / (float)RAND_MAX;
@@ -48,7 +48,7 @@ void Visualization::startSort()
 		algorithm->sort(data, sizeData, delay);
 		auto end = std::chrono::high_resolution_clock::now();
 		float runtime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-		std::cout << "Runtime: " << runtime << std::endl;
+		std::cout << "Runtime: " << runtime << "ms" << std::endl;
 	});
 }
 

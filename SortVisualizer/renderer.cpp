@@ -35,7 +35,7 @@ void Renderer::init(float delay)
 	
 	data[0] = 0.f;
 	srand(NULL);
-#pragma loop(hint_parallel(8))
+#pragma loop(hint_parallel(0))
 	for (int i = 1; i < data.size(); i++)
 	{
 		data[i] = rand()/(float)RAND_MAX;

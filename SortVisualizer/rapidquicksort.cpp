@@ -60,11 +60,11 @@ void RapidQuickSort::selectionSort(float* data, int left, int right)
 
 void RapidQuickSort::quicksort(float* arr, int left, int right)
 {
-	if (right - left < 5)
+	/*if (right - left < 5)
 	{
 		selectionSort(arr, left, right);
 		return;
-	}
+	}*/
 	int index = partition(arr, left, right);
 	if (left < index - 1)
 		quicksort(arr, left, index - 1);
