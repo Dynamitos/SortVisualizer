@@ -11,12 +11,10 @@ void BubbleSort::sort(float* data, int length, int delay)
 	for (int i = 0; (i <= length) && flag; ++i)
 	{
 		flag = 0;
-		//first data is 1 for center
-		for (int j = 1; j < (length - 1 - i); ++j)
+		for (int j = 0; j < (length - 1 - i); ++j)
 		{
 			if (data[j + 1] < data[j])
 			{
-				//std::iter_swap(data.begin() + j, data.begin() + j + 1);
 				helper = data[j];
 				data[j] = data[j + 1];
 				data[j + 1] = helper;

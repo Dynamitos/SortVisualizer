@@ -3,11 +3,23 @@
 GradientVisualization::GradientVisualization(int numElements)
 	: Visualization(numElements)
 {
+	sizeGPU = numElements + 2;
+	gpuData = new float[sizeGPU];
+	gpuData[0] = 0.f;
+	gpuData[sizeGPU - 1] = 1.f;
+	data = &gpuData[1];
 }
 
 GradientVisualization::~GradientVisualization()
 {
+	glDeleteBuffers(1, &vertexBuffer);
+	glDeleteBuffers(1, &valueBuffer);
+	glDeleteVertexArrays(1, &vaoID);
+	glDetachShader(programID, vertShader);
+	glDetachShader(programID, fragShader);
+	glDeleteProgram(programID);
 	delete vertices;
+	delete gpuData;
 }
 
 void GradientVisualization::init(int delay)

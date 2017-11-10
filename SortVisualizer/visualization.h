@@ -15,8 +15,6 @@ public:
 protected:
 	float* data;
 	size_t sizeData;
-	float* gpuData;
-	size_t sizeGPU;
 	Display* display;
 	SortAlgorithm* algorithm;
 	int delay;
