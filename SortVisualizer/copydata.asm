@@ -14,14 +14,22 @@ copyData:
     ;set the loop counter
     mov rcx, r8
 
-    copyLoop:
-        mov rdx, QWORD [rbx]
-        mov QWORD [rax], rdx
+    ;copyLoop:
+    ;    mov rdx, QWORD [rbx]
+    ;    mov QWORD [rax], rdx
 
-        inc rax
-        inc rbx
+    ;    inc rax
+    ;    inc rbx
+        
+    ;    loop copyLoop
 
-        loop copyLoop
+    ;[FASTER]:
+
+    ; clear direction
+    cld
+    mov rsi, rbx
+    mov rdi, rax      
+    rep movsd
 
     add rsp, 20h
 
