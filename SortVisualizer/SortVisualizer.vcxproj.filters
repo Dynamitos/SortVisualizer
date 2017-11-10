@@ -97,26 +97,12 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="memorycopy.asm">
-      <Filter>Resource Files</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="memorycopy.obj">
-      <Filter>Resource Files</Filter>
-    </Object>
     <Object Include="copydata.obj">
-      <Filter>Resource Files</Filter>
-    </Object>
-    <Object Include="copydataf.obj">
       <Filter>Resource Files</Filter>
     </Object>
   </ItemGroup>
   <ItemGroup>
     <None Include="copydata.asm">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="copydataf.asm">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

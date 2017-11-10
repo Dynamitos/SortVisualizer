@@ -5,6 +5,7 @@
 #include <cstdio>
 
 #include "gradientvisualization.h"
+#include "col"
 #include "renderer.h"
 #include "selectionsort.h"
 #include "bogosort.h"
@@ -15,15 +16,17 @@
 #include "quicksort.h"
 #include "mergesort.h"
 
-extern "C"
-{
-    void copyData(int* dst, int* src, int size);
-    //void copyDataf(float* dst, float* src, int size);
-}
-
 int main(int argc, char* argv[])
 {
-    // Test1: Integer test
+    Visualization* renderer = new ColumnVisualizer(10000000);
+    MergeSort sort;
+    renderer->init(0);
+    renderer->setAlgorithm(&sort);
+    renderer->loop();
+    delete renderer;
+    return 0;
+
+    /*// Test1: Integer test
     const int SIZE = 500000000;
     int* data1 = new int[SIZE];
     int* data2 = new int[SIZE];
@@ -51,7 +54,7 @@ int main(int argc, char* argv[])
 
     std::cout << "It took " << millis << " ms to copy" << std::endl;
 
-    /*// Test2: Float test
+    // Test2: Float test
     float dataf1[4]{ 1.1f, 1.2f, 1.3f, 1.4f };
     float dataf2[4]{ 1.5f, 1.6f, 1.7f, 1.8f };
 
@@ -61,11 +64,5 @@ int main(int argc, char* argv[])
 
     system("PAUSE");
 
-	/*Visualization* renderer = new GradientVisualization(10000000);
-	MergeSort sort;
-	renderer->init(0);
-	renderer->setAlgorithm(&sort);
-	renderer->loop();
-	delete renderer;
-	return 0;*/
+	/**/
 }
