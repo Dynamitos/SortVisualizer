@@ -3,16 +3,11 @@
 Visualization::Visualization(int numElements)
 {
 	this->sizeData = numElements;
-	sizeGPU = numElements + 2;
-	gpuData = new float[sizeGPU];
-	gpuData[0] = 0.f;
-	gpuData[sizeGPU - 1] = 1.f;
-	data = &gpuData[1];
+	
 }
 
 Visualization::~Visualization()
 {
-	delete gpuData;
 }
 
 void Visualization::init(int delay)
@@ -75,7 +70,16 @@ GLuint Visualization::loadShader(std::string filename, GLenum shaderType)
 	GLuint shaderID = glCreateShader(shaderType);
 	const GLchar* pointer = buffer.data();
 	GLint shaderLength = fileSize;
+
 	glShaderSource(shaderID, 1, &pointer, &shaderLength);
 	glCompileShader(shaderID);
+
+
+#ifdef NDEBUG
+	char log[1000];
+	GLint length;
+	glGetShaderInfoLog(shaderID, 1000, &length, log);
+	std::cout << log << std::endl;
+#endif //!NDEBUG
 	return shaderID;
 }

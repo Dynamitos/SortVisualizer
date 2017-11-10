@@ -1,21 +1,21 @@
 #pragma once
 #include "visualization.h"
 
-class GradientVisualization : public Visualization
+class ColumnVisualization : public Visualization
 {
 public:
-	GradientVisualization(int numElements);
-	virtual ~GradientVisualization();
+	ColumnVisualization(int numElements);
+	virtual ~ColumnVisualization();
 	void init(int delay);
 	void loop();
 private:
 	GLuint vaoID;
 	GLuint vertexBuffer;
+	GLuint positionBuffer;
 	GLuint valueBuffer;
+	float* vertices;
+	float* positions;
 	GLint programID;
 	GLint vertShader;
 	GLint fragShader;
-	float* gpuData;
-	size_t sizeGPU;
-	float* vertices;
 };
