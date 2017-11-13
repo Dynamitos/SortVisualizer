@@ -1,8 +1,10 @@
 #include "vulkanvisualization.h"
+#include "loader.h"
 
 VulkanVisualization::VulkanVisualization(int numElements)
 	: Visualization(numElements) {
 	context = DataManager::getInstance().getContext();
+	
 }
 
 VulkanVisualization::~VulkanVisualization()
@@ -10,25 +12,26 @@ VulkanVisualization::~VulkanVisualization()
 }
 void VulkanVisualization::init(int delay)
 {
-	Visualization::init(delay);
+	display->createWindow(true);
 	initInstance();
 	setupDebugCallback();
 	createSurface();
 	pickPhysicalDevice();
 	createLogicalDevice();
-	createSemaphores();
 	createSwapChain();
 	createImageViews();
 	createRenderPass();
 	createPipeline();
 	createCommandPools();
-	createCommandBuffers();
+	createSemaphores();
 	createDepthResources();
 	createFramebuffers();
-	createVertices();
+	createData();
+	createCommandBuffers();
 	glfwSetWindowUserPointer(display->getWindow(), this);
 	glfwSetWindowSizeCallback(display->getWindow(), onWindowResized);
 	display->showWindow();
+	Visualization::init(delay);
 }
 #undef max
 #undef min
@@ -94,6 +97,7 @@ void VulkanVisualization::loop()
 	}
 	waitSort();
 }
+
 
 
 
@@ -204,7 +208,8 @@ void VulkanVisualization::createLogicalDevice()
 	vkGetDeviceQueue(context->device, context->indices.presentFamily, 0, &context->presentQueue);
 	vkGetDeviceQueue(context->device, context->indices.transferFamily, 0, &context->transferQueue);
 
-	context->resAllocator = ResourceAllocator::getInstance();
+	context->loader = new Loader(context);
+	context->resAllocator = new ResourceAllocator(context);
 }
 
 void VulkanVisualization::createSwapChain()
@@ -336,8 +341,8 @@ void VulkanVisualization::createImageViews()
 }
 void VulkanVisualization::createFramebuffers()
 {
-	context->frameBuffers.resize(context->swapChainImages.size());
 
+	context->frameBuffers.resize(context->swapChainImages.size());
 	for (uint32_t i = 0; i < context->swapChainImages.size(); i++)
 	{
 		std::vector<VkImageView> attachments = {
@@ -390,7 +395,7 @@ void VulkanVisualization::createDepthResources()
 		VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
 		context->depthImage, context->depthMemory);
 	context->resAllocator->createImageView(context->depthImage, depthFormat, VK_IMAGE_ASPECT_DEPTH_BIT, context->depthImageView);
-	util::transitionImageLayout(context->depthImage, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
+	util::transitionImageLayout(context->depthImage, depthFormat, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
 }
 
 void VulkanVisualization::createCommandBuffers()
@@ -490,11 +495,6 @@ void VulkanVisualization::recreateSwapChain()
 	createDepthResources();
 	createPipeline();
 	createFramebuffers();
-}
-
-void VulkanVisualization::createVertices()
-{
-	throw std::logic_error("The method or operation is not implemented.");
 }
 
 void VulkanVisualization::onWindowResized(GLFWwindow * window, int width, int height)

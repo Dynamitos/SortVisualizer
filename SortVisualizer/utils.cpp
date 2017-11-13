@@ -203,21 +203,27 @@ VkRenderPassCreateInfo init::RenderPassCreateInfo()
 	return renderPassCreateInfo;
 }
 
-VkImageMemoryBarrier init::ImageMemoryBarrier(VkImage image, VkImageLayout oldLayout, VkImageLayout newLayout, uint32_t srcQueue, uint32_t dstQueue)
+VkImageMemoryBarrier init::ImageMemoryBarrier(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout)
 {
 	VkImageMemoryBarrier barrier = {};
 	barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
 	barrier.oldLayout = oldLayout;
 	barrier.newLayout = newLayout;
-	barrier.srcQueueFamilyIndex = srcQueue;
-	barrier.dstQueueFamilyIndex = dstQueue;
+	barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 	barrier.image = image;
+
 	if (newLayout == VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL) {
 		barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
+
+		if (format == VK_FORMAT_D32_SFLOAT_S8_UINT || format == VK_FORMAT_D24_UNORM_S8_UINT) {
+			barrier.subresourceRange.aspectMask |= VK_IMAGE_ASPECT_STENCIL_BIT;
+		}
 	}
 	else {
 		barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 	}
+
 	barrier.subresourceRange.baseMipLevel = 0;
 	barrier.subresourceRange.levelCount = 1;
 	barrier.subresourceRange.baseArrayLayer = 0;
@@ -869,7 +875,7 @@ VkShaderModule util::loadShader(const char * filename)
 	moduleInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
 	moduleInfo.codeSize = buffer.size();
 	moduleInfo.pCode = (uint32_t*)buffer.data();
-	VK_CHECK(vkCreateShaderModule(context->device, &moduleInfo, context->allocator, &module));
+	VK_CHECK(vkCreateShaderModule(context->device, &moduleInfo, nullptr, &module));
 	return module;
 }
 uint32_t util::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
@@ -933,49 +939,6 @@ void util::endSingleTimeCommands(VkCommandBuffer commandBuffer)
 	vkFreeCommandBuffers(context->device, context->cmdTempPool, 1, &commandBuffer);
 }
 
-VkCommandBuffer util::beginTransferCommand()
-{
-	VulkanContext* context = DataManager::getInstance().getContext();
-	VkCommandBufferAllocateInfo allocInfo =
-		init::CommandBufferAllocateInfo(
-			context->transferPool,
-			VK_COMMAND_BUFFER_LEVEL_PRIMARY,
-			1);
-
-	VkCommandBuffer commandBuffer;
-	vkAllocateCommandBuffers(context->device, &allocInfo, &commandBuffer);
-
-	VkCommandBufferBeginInfo beginInfo =
-		init::CommandBufferBeginInfo();
-	beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-
-	vkBeginCommandBuffer(commandBuffer, &beginInfo);
-
-	return commandBuffer;
-}
-void util::endTransferCommands(VkCommandBuffer commandBuffer)
-{
-	VulkanContext* context = DataManager::getInstance().getContext();
-	vkEndCommandBuffer(commandBuffer);
-
-	VkSubmitInfo submitInfo =
-		init::SubmitInfo();
-	submitInfo.commandBufferCount = 1;
-	submitInfo.pCommandBuffers = &commandBuffer;
-
-	vkQueueSubmit(context->transferQueue, 1, &submitInfo, context->utilFence);
-
-	VkResult res;
-	do
-	{
-		res = vkWaitForFences(context->device, 1, &context->utilFence, VK_TRUE, 100000);
-	} while (res == VK_TIMEOUT);
-	vkResetFences(context->device, 1, &context->utilFence);
-
-	//vkQueueWaitIdle(context->graphicsQueue);
-	//vkDeviceWaitIdle(context->device);
-	vkFreeCommandBuffers(context->device, context->transferPool, 1, &commandBuffer);
-}
 void util::copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size)
 {
 	VulkanContext* context = DataManager::getInstance().getContext();
@@ -988,26 +951,15 @@ void util::copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size)
 	endSingleTimeCommands(commandBuffer);
 }
 
-void util::transitionImageLayout(VkImage image, VkImageLayout oldLayout, VkImageLayout newLayout, uint32_t sourceIndex, uint32_t targetIndex)
+void util::transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout)
 {
 	VkCommandBuffer commandBuffer = beginSingleTimeCommands();
 
-	VkImageMemoryBarrier barrier = init::ImageMemoryBarrier(image, oldLayout, newLayout);
+	VkImageMemoryBarrier barrier = init::ImageMemoryBarrier(image, format, oldLayout, newLayout);
 
-	vkCmdPipelineBarrier(commandBuffer, VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, 0, 0, nullptr, 0, nullptr, 1, &barrier);
+	vkCmdPipelineBarrier(commandBuffer, VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT, VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT, 0, 0, nullptr, 0, nullptr, 1, &barrier);
 
 	endSingleTimeCommands(commandBuffer);
-}
-
-void util::transferImageQueue(VkImage image, VkImageLayout oldLayout, VkImageLayout newLayout)
-{
-	VkCommandBuffer buffer = beginTransferCommand();
-
-	VkImageMemoryBarrier barrier = init::ImageMemoryBarrier(image, oldLayout, newLayout);
-
-	vkCmdPipelineBarrier(buffer, VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, 0, 0, nullptr, 0, nullptr, 1, &barrier);
-
-	endTransferCommands(buffer);
 }
 
 void util::copyImage(VkImage srcImage, VkImage dstImage, uint32_t width, uint32_t height)

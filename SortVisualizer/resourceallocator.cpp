@@ -3,11 +3,11 @@
 #include "utils.h"
 
 
-ResourceAllocator::ResourceAllocator() :
-	m_ChunkAllocator{ 256 * 1024 * 1024 }
+ResourceAllocator::ResourceAllocator(VulkanContext* context) 
+	: m_ChunkAllocator{ 256 * 1024 * 1024 }
+	, context(context)
 {
 
-	context = DataManager::getInstance().getContext();
 	std::array<VkDescriptorPoolSize, 4> poolSizes;
 	poolSizes[0].type = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
 	poolSizes[0].descriptorCount = 255;
@@ -24,7 +24,7 @@ ResourceAllocator::ResourceAllocator() :
 				poolSizes.data(),
 				512);
 
-	VK_CHECK(vkCreateDescriptorPool(context->device, &poolInfo, context->allocator, &descriptorPool));
+	VK_CHECK(vkCreateDescriptorPool(context->device, &poolInfo, nullptr, &descriptorPool));
 }
 
 ResourceAllocator::ResourceAllocator(const ResourceAllocator & src) :
@@ -88,7 +88,7 @@ void ResourceAllocator::allocateTexture(std::string fileName, VkDescriptorSetLay
 	samplerInfo.minLod = 0.0f;
 	samplerInfo.maxLod = 0.0f;
 
-	VK_CHECK(vkCreateSampler(context->device, &samplerInfo, context->allocator, &tex->sampler));
+	VK_CHECK(vkCreateSampler(context->device, &samplerInfo, nullptr, &tex->sampler));
 	
 	VkDescriptorSetAllocateInfo allocateInfo =
 		init::DescriptorSetAllocateInfo(
@@ -117,9 +117,9 @@ void ResourceAllocator::allocateTexture(std::string fileName, VkDescriptorSetLay
 
 void ResourceAllocator::freeTexture(Texture * texture)
 {
-	vkDestroySampler(context->device, texture->sampler, context->allocator);
-	vkDestroyImageView(context->device, texture->imageView, context->allocator);
-	vkDestroyImage(context->device, texture->image, context->allocator);
+	vkDestroySampler(context->device, texture->sampler, nullptr);
+	vkDestroyImageView(context->device, texture->imageView, nullptr);
+	vkDestroyImage(context->device, texture->image, nullptr);
 	deallocate(texture->deviceMemory);
 }
 */
@@ -133,12 +133,12 @@ void ResourceAllocator::createFramebuffer(std::vector<VkImageView> attachments, 
 			context->swapChainExtent.width,
 			context->swapChainExtent.height,
 			1);
-	VK_CHECK(vkCreateFramebuffer(context->device, &createInfo, context->allocator, &framebuffer));
+	VK_CHECK(vkCreateFramebuffer(context->device, &createInfo, nullptr, &framebuffer));
 }
 
 void ResourceAllocator::destroyFramebuffer(VkFramebuffer & framebuffer)
 {
-	vkDestroyFramebuffer(context->device, framebuffer, context->allocator);
+	vkDestroyFramebuffer(context->device, framebuffer, nullptr);
 }
 
 
@@ -148,7 +148,7 @@ void ResourceAllocator::createBuffer(VkDeviceSize size, VkBufferUsageFlags usage
 		init::BufferCreateInfo(
 			usages,
 			size);
-	VK_CHECK(vkCreateBuffer(context->device, &createInfo, context->allocator, &buffer));
+	VK_CHECK(vkCreateBuffer(context->device, &createInfo, nullptr, &buffer));
 
 	VkMemoryRequirements requirements;
 	vkGetBufferMemoryRequirements(context->device, buffer, &requirements);
@@ -160,7 +160,7 @@ void ResourceAllocator::createBuffer(VkDeviceSize size, VkBufferUsageFlags usage
 
 void ResourceAllocator::destroyBuffer(VkBuffer & buffer, MemoryBlock & block)
 {
-	vkDestroyBuffer(context->device, buffer, context->allocator);
+	vkDestroyBuffer(context->device, buffer, nullptr);
 
 	deallocate(block);
 }
@@ -185,7 +185,7 @@ void ResourceAllocator::createImage(uint32_t width, uint32_t height, VkFormat fo
 	//imageInfo.pQueueFamilyIndices = queues.data();
 	//imageInfo.queueFamilyIndexCount = static_cast<uint32_t>(queues.size());
 
-	VK_CHECK(vkCreateImage(context->device, &imageInfo, context->allocator, &image));
+	VK_CHECK(vkCreateImage(context->device, &imageInfo, nullptr, &image));
 
 	VkMemoryRequirements memRequirements;
 	vkGetImageMemoryRequirements(context->device, image, &memRequirements);
@@ -198,7 +198,7 @@ void ResourceAllocator::createImage(uint32_t width, uint32_t height, VkFormat fo
 
 void ResourceAllocator::destroyImage(VkImage & image, MemoryBlock & imageMemory)
 {
-	vkDestroyImage(context->device, image, context->allocator);
+	vkDestroyImage(context->device, image, nullptr);
 
 	deallocate(imageMemory);
 }
@@ -216,12 +216,12 @@ void ResourceAllocator::createImageView(VkImage image, VkFormat format, VkImageA
 	viewInfo.subresourceRange.baseArrayLayer = 0;
 	viewInfo.subresourceRange.layerCount = 1;
 
-	VK_CHECK(vkCreateImageView(context->device, &viewInfo, context->allocator, &imageView));
+	VK_CHECK(vkCreateImageView(context->device, &viewInfo, nullptr, &imageView));
 }
 
 void ResourceAllocator::destroyImageView(VkImageView & imageView)
 {
-	vkDestroyImageView(context->device, imageView, context->allocator);
+	vkDestroyImageView(context->device, imageView, nullptr);
 }
 
 
@@ -240,8 +240,8 @@ UniformBuffer * ResourceAllocator::allocateUniformBuffer(VkDeviceSize size)
 
 void ResourceAllocator::deallocateUniformBuffer(UniformBuffer * buffer)
 {
-	vkDestroyBuffer(context->device, buffer->stagingBuffer, context->allocator);
-	vkDestroyBuffer(context->device, buffer->deviceBuffer, context->allocator);
+	vkDestroyBuffer(context->device, buffer->stagingBuffer, nullptr);
+	vkDestroyBuffer(context->device, buffer->deviceBuffer, nullptr);
 
 	deallocate(buffer->stagingMemory);
 	deallocate(buffer->deviceMemory);
@@ -259,8 +259,8 @@ StorageBuffer* ResourceAllocator::allocateStorageBuffer(VkDeviceSize size)
 }
 void ResourceAllocator::deallocateStorageBuffer(StorageBuffer * buffer)
 {
-	vkDestroyBuffer(context->device, buffer->stagingBuffer, context->allocator);
-	vkDestroyBuffer(context->device, buffer->deviceBuffer, context->allocator);
+	vkDestroyBuffer(context->device, buffer->stagingBuffer, nullptr);
+	vkDestroyBuffer(context->device, buffer->deviceBuffer, nullptr);
 
 	deallocate(buffer->deviceMemory);
 	deallocate(buffer->stagingMemory);
@@ -292,22 +292,11 @@ void ResourceAllocator::deallocate(MemoryBlock & block)
 
 void ResourceAllocator::destroy()
 {
-	vkDestroyDescriptorPool(context->device, descriptorPool, context->allocator);
+	vkDestroyDescriptorPool(context->device, descriptorPool, nullptr);
 	for (auto& m : m_Chunks)
 	{
 		m->destroy();
 	}
-}
-
-std::unique_ptr<ResourceAllocator> ResourceAllocator::m_instance;
-std::once_flag ResourceAllocator::m_onceFlag;
-ResourceAllocator * ResourceAllocator::getInstance()
-{
-	std::call_once(m_onceFlag,
-		[] {
-		m_instance.reset(new ResourceAllocator);
-	});
-	return m_instance.get();
 }
 
 bool MemoryBlock::operator==(MemoryBlock const & chunk)
@@ -337,7 +326,7 @@ MemoryChunk::MemoryChunk(VkDeviceSize size, int memoryTypeIndex):
 	block.offset = 0;
 	block.size = size;
 	
-	VK_CHECK(vkAllocateMemory(m_context->device, &allocateInfo, m_context->allocator, &m_Memory));
+	VK_CHECK(vkAllocateMemory(m_context->device, &allocateInfo, nullptr, &m_Memory));
 	block.memory = m_Memory;
 	
 	VkPhysicalDeviceMemoryProperties memProperties;
@@ -421,7 +410,7 @@ MemoryChunk::~MemoryChunk()
 }
 void MemoryChunk::destroy()
 {
-	vkFreeMemory(m_context->device, m_Memory, m_context->allocator);
+	vkFreeMemory(m_context->device, m_Memory, nullptr);
 }
 ChunkAllocator::ChunkAllocator(VkDeviceSize size):
 	m_Size{ size }

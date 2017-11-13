@@ -61,7 +61,6 @@ struct VulkanContext
 	VkSemaphore renderFinishedSemaphore;
 	VkFence utilFence;
 	QueueFamilyIndices indices;
-	VkAllocationCallbacks* allocator;
 	ResourceAllocator* resAllocator;
 	Loader* loader;
 };
@@ -127,11 +126,8 @@ namespace util
 	uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 	VkCommandBuffer beginSingleTimeCommands();
 	void endSingleTimeCommands(VkCommandBuffer commandBuffer);
-	VkCommandBuffer beginTransferCommand();
-	void endTransferCommands(VkCommandBuffer commandBuffer);
 	void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
-	void transitionImageLayout(VkImage image, VkImageLayout oldLayout, VkImageLayout newLayout, uint32_t sourceIndex = VK_QUEUE_FAMILY_IGNORED, uint32_t targetIndex = VK_QUEUE_FAMILY_IGNORED);
-	void transferImageQueue(VkImage image, VkImageLayout oldLayout, VkImageLayout newLayout);
+	void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
 	void copyImage(VkImage srcImage, VkImage dstImage, uint32_t width, uint32_t height);
 	VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
 	VkFormat findDepthFormat();
@@ -245,7 +241,7 @@ namespace init
 
 	VkRenderPassCreateInfo RenderPassCreateInfo();
 
-	VkImageMemoryBarrier ImageMemoryBarrier(VkImage image, VkImageLayout oldLayout, VkImageLayout newLayout, uint32_t srcQueue = VK_QUEUE_FAMILY_IGNORED, uint32_t dstQueue = VK_QUEUE_FAMILY_IGNORED);
+	VkImageMemoryBarrier ImageMemoryBarrier(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
 
 	VkBufferMemoryBarrier BufferMemoryBarrier();
 

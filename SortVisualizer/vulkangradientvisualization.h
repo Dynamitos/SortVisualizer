@@ -11,6 +11,7 @@ protected:
 	void render(VkCommandBuffer& cmdBuffer);
 	void createPipeline();
 	void destroyPipeline();
+	void createData();
 	void createLayoutDescriptions();
 private:
 	VkShaderModule vertModule;

@@ -10,7 +10,7 @@ public:
 	virtual void init(int delay);
 	void loop();
 protected:
-	virtual void render(VkCommandBuffer cmdBuffer) = 0;
+	virtual void render(VkCommandBuffer& cmdBuffer) = 0;
 	void initInstance();
 	void setupDebugCallback();
 	void createSurface();
@@ -25,7 +25,7 @@ protected:
 	void createCommandPools();
 	void createDepthResources();
 	void createCommandBuffers();
-	void createVertices();
+	virtual void createData() = 0;
 	void destroySwapChain();
 	void destroyImageViews();
 	void destroyRenderPass();

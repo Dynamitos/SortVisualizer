@@ -5,17 +5,6 @@ VulkanGradientVisualization::VulkanGradientVisualization(int numElements)
 	:VulkanVisualization(numElements)
 {
 	sizeGPU = numElements + 2;
-
-	dataBlock = new StorageBuffer();
-	context->resAllocator->createBuffer(sizeGPU * sizeof(float), VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT, dataBlock->stagingBuffer, dataBlock->stagingMemory);
-	vkMapMemory(context->device, dataBlock->stagingMemory.memory, 0, VK_WHOLE_SIZE, 0, (void**)&gpuData);
-	gpuData[0] = 0.f;
-	gpuData[sizeGPU - 1] = 1.f;
-	data = &gpuData[1];
-
-	context->resAllocator->createBuffer(sizeGPU * sizeof(float), VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, dataBlock->deviceBuffer, dataBlock->deviceMemory);
-
-	util::copyBuffer(dataBlock->stagingBuffer, dataBlock->deviceBuffer, sizeGPU);
 }
 
 VulkanGradientVisualization::~VulkanGradientVisualization()
@@ -26,19 +15,6 @@ VulkanGradientVisualization::~VulkanGradientVisualization()
 void VulkanGradientVisualization::init(int delay)
 {
 	VulkanVisualization::init(delay);
-	float* vertices = new float[sizeGPU * 2];
-	vertices[0] = 0.0f;
-	vertices[1] = 0.0f;
-
-#pragma loop(hint_parallel(0))
-	for (int i = 0; i < sizeGPU - 1; ++i)
-	{
-		float angle = 2 * 3.141592653f * i / sizeData;
-		vertices[i * 2 + 2] = cos(angle);
-		vertices[i * 2 + 3] = sin(angle);
-	}
-	vertexBlock = context->loader->createVertexBuffer(vertices, sizeGPU, sizeof(float));
-
 }
 
 void VulkanGradientVisualization::render(VkCommandBuffer & cmdBuffer)
@@ -48,7 +24,7 @@ void VulkanGradientVisualization::render(VkCommandBuffer & cmdBuffer)
 	VkBuffer buffers[] = { vertexBlock->buf, dataBlock->deviceBuffer };
 	VkDeviceSize offsets[] = { 0, 0 };
 	vkCmdBindVertexBuffers(cmdBuffer, 0, 2, buffers, offsets);
-	vkCmdDraw(cmdBuffer, sizeGPU, 0, 0, 0);
+	vkCmdDraw(cmdBuffer, sizeGPU, 1, 0, 0);
 }
 
 void VulkanGradientVisualization::createPipeline()
@@ -82,7 +58,7 @@ void VulkanGradientVisualization::createPipeline()
 
 	VkPipelineInputAssemblyStateCreateInfo inputAssemby =
 		init::PipelineInputAssemblyStateCreateInfo(
-			VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST,
+			VK_PRIMITIVE_TOPOLOGY_TRIANGLE_FAN,
 			0,
 			VK_FALSE);
 
@@ -149,7 +125,7 @@ void VulkanGradientVisualization::createPipeline()
 			nullptr,
 			0);
 	
-	VK_CHECK(vkCreatePipelineLayout(context->device, &pipelineLayoutInfo, context->allocator, &pipelineLayout));
+	VK_CHECK(vkCreatePipelineLayout(context->device, &pipelineLayoutInfo, nullptr, &pipelineLayout));
 
 	VkGraphicsPipelineCreateInfo pipelineInfo = {};
 	pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
@@ -168,7 +144,7 @@ void VulkanGradientVisualization::createPipeline()
 	pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
 
-	VK_CHECK(vkCreateGraphicsPipelines(context->device, VK_NULL_HANDLE, 1, &pipelineInfo, context->allocator, &pipeline));
+	VK_CHECK(vkCreateGraphicsPipelines(context->device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline));
 }
 
 
@@ -203,4 +179,49 @@ void VulkanGradientVisualization::destroyPipeline()
 {
 	vkDestroyPipelineLayout(context->device, pipelineLayout, nullptr);
 	vkDestroyPipeline(context->device, pipeline, nullptr);
+}
+
+void VulkanGradientVisualization::createData()
+{
+
+	dataBlock = new StorageBuffer();
+	context->resAllocator->createBuffer(sizeGPU * sizeof(float), VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT, dataBlock->stagingBuffer, dataBlock->stagingMemory);
+	vkMapMemory(context->device, dataBlock->stagingMemory.memory, 0, VK_WHOLE_SIZE, 0, (void**)&gpuData);
+	gpuData[0] = 0.f;
+	gpuData[sizeGPU - 1] = 1.f;
+	data = &gpuData[1];
+
+	context->resAllocator->createBuffer(sizeGPU * sizeof(float), VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, dataBlock->deviceBuffer, dataBlock->deviceMemory);
+
+	VkCommandBuffer cmdBuffer = util::beginSingleTimeCommands();
+
+	VkBufferCopy copyRegion = {};
+	copyRegion.size = sizeGPU * sizeof(float);
+	vkCmdCopyBuffer(cmdBuffer, dataBlock->stagingBuffer, dataBlock->deviceBuffer, 1, &copyRegion);
+
+	VkBufferMemoryBarrier barrier = init::BufferMemoryBarrier();
+	barrier.buffer = dataBlock->deviceBuffer;
+	barrier.offset = 0;
+	barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+	barrier.dstAccessMask = 0;
+	barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+
+	vkCmdPipelineBarrier(cmdBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT, 0, 0, nullptr, 1, &barrier, 0, nullptr);
+
+	util::endSingleTimeCommands(cmdBuffer);
+
+	float* vertices = new float[sizeGPU * 2];
+	vertices[0] = 0.0f;
+	vertices[1] = 0.0f;
+
+#pragma loop(hint_parallel(0))
+	for (int i = 0; i < sizeGPU - 1; ++i)
+	{
+		float angle = 2 * 3.141592653f * i / sizeData;
+		vertices[i * 2 + 2] = cos(angle);
+		vertices[i * 2 + 3] = sin(angle);
+	}
+	vertexBlock = context->loader->createVertexBuffer(vertices, sizeGPU, sizeof(float)*2);
+
 }

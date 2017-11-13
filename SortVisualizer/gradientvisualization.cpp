@@ -26,6 +26,13 @@ void GradientVisualization::init(int delay)
 {
 	Visualization::init(delay);
 
+	glewExperimental = true;
+	if (glewInit())
+		std::cout << "Error glew" << std::endl;
+
+	glClearColor(0, 0, 0, 1);
+
+
 	glGenVertexArrays(1, &vaoID);
 	glGenBuffers(1, &vertexBuffer);
 	glGenBuffers(1, &valueBuffer);

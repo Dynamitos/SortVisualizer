@@ -63,7 +63,8 @@ bool isPowerOfTwo(VkDeviceSize size);
 class ResourceAllocator : public AbstractAllocator
 {
 public:
-	static ResourceAllocator* getInstance();
+	ResourceAllocator(VulkanContext* context);
+	ResourceAllocator(const ResourceAllocator& src);
 	virtual ~ResourceAllocator();
 	//void allocateTexture(std::string fileName, VkDescriptorSetLayout layout, uint32_t imageBinding, Texture* tex);
 	//void freeTexture(Texture* texture);
@@ -85,10 +86,6 @@ public:
 	void destroy();
 private:
 	VulkanContext* context;
-	ResourceAllocator(void);
-	ResourceAllocator(const ResourceAllocator& src);
-	static std::unique_ptr<ResourceAllocator> m_instance;
-	static std::once_flag m_onceFlag;
 	VkDescriptorPool descriptorPool;
 	ChunkAllocator m_ChunkAllocator;
 	std::vector<std::shared_ptr<MemoryChunk>> m_Chunks;

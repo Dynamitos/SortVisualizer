@@ -1,11 +1,9 @@
 #include "datamanager.h"
 #include "utils.h"
-#include "loader.h"
 
 DataManager::DataManager()
 {
 	this->context = new VulkanContext();
-	context->loader = new Loader(context);
 }
 
 std::unique_ptr<DataManager> DataManager::m_instance;
