@@ -1,4 +1,4 @@
-#version 450
+#version 410
 layout(location = 0) in vec2 position_VS_in;
 layout(location = 1) in float transform_VS_in;
 layout(location = 2) in float data_VS_in;

@@ -106,9 +106,21 @@
     <Object Include="copydata.obj">
       <Filter>Resource Files</Filter>
     </Object>
+    <Object Include="floattest.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
+    <Object Include="asmpartition.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
   </ItemGroup>
   <ItemGroup>
     <None Include="copydata.asm">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="floattest.asm">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="asmpartition.asm">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
