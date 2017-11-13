@@ -6,10 +6,21 @@ asmpartition:
 
     ; Store input data into local fields
     mov QWORD r10, rcx; arr
-    mov DWORD r11d, edx  ;left
-    mov DWORD r12d, r8d   ;right
+    mov DWORD r11d, edx  ;left and i
+    mov DWORD r12d, r8d   ;right and j
     mov QWORD r13, r9   ;index
 
+    mov eax, 4h
+    mov esi, r11d
+    mul esi
+    mov esi, eax
+
+    mov eax, 4h
+    mov edi, r12d
+    mul edi
+    mov edi, eax
+
+    ; r14d....pivot
     ; r15d....tmp
 
     finit
@@ -31,96 +42,62 @@ asmpartition:
 
     ; Erste Schleife: while(i <= j)
         firstLoop:
-            cmp r11d, r12d
+            cmp rsi, rdi
             jg endLoops              
 
-        ; Zweite Schleife: while(arrr11d < pivot)
+        ; Zweite Schleife: while(arr[r11d] < pivot)
             secondLoop:
-                mov rcx, r10
-                mov ebx, 4
-                mov DWORD eax, r11d
-                mul ebx
-                add rcx, rax
-                
                 mov [rsp+8h], r14d
                 fld DWORD [rsp+8h]
-                fld DWORD [rcx]
+                fld DWORD [r10+rsi]
                 fcomip st0, st1
                 fstp
 
                 jnb thirdLoop
                 ;; [DONE] ;;               
 
-                inc r11d            
+                add rsi, 4       
+                inc r11d
                 
                 jmp secondLoop
 
         ; Dritte Schleife: while(arrr12d > pivot)
             thirdLoop:
-                mov rcx, r10
-                mov DWORD eax, r12d
-                mov ebx, 4
-                mul ebx
-                add rcx, rax              
-
                 mov [rsp+8h], r14d
                 fld DWORD [rsp+8h]
-                fld DWORD [rcx]
+                fld DWORD [r10+rdi]
                 fcomip st0, st1
                 fstp
                 jna ifStatement
 
                 ; Vermindere j
-                dec r12d         
+                sub rdi, 4
 
                 jmp thirdLoop
 
         ; If-Statement: if(i <= j)
             ifStatement:
-                mov DWORD [rsp+8h], r12d
-                mov DWORD [rsp+16h], r11d
-
-                fld DWORD [rsp+8h]
-                fld DWORD [rsp+16h]
-                fcomip st0, st1
-                fstp
+                cmp rsi, rdi
                 ja endLoops                           
                 
-                ; Store tmp: [rax] = arr[11d]
-                mov DWORD eax, r11d
-                mov ebx, 4               
-                mul ebx
-                add rax, r10               
-                mov DWORD r15d, [rax]                   
+                ; Store tmp: [rax] = arr[11d]     
+                mov DWORD r15d, [r10+rsi]                   
             
                 ; Store arr[j] in r9
-                mov DWORD eax, r12d
-                mov ebx, 4
-                mul ebx
-                add rax, r10
-                mov DWORD r9d, [rax]              
+                mov DWORD r9d, [r10+rdi]            
 
                 ; Store arr[j] in arr[i]
-                mov rcx, r10
-                mov DWORD eax, r11d
-                mov ebx, 4
-                mul ebx
-                add rcx, rax
-                mov DWORD [rcx], r9d              
+                mov DWORD [r10+rsi], r9d
 
                 ; Store tmp in arrr12d
-                mov rcx, r10
-                mov DWORD eax, r12d
-                mov ebx, 4
-                mul ebx
-                add rcx, rax
-                mov DWORD [rcx], r15d
+                mov DWORD [r10+rdi], r15d         
 
                 ; Increment i
+                add rsi, 4h
                 inc r11d
 
                 ; Decrement j
-                dec r12d
+                sub rdi, 4h
               
                 jmp firstLoop
 
