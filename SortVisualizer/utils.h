@@ -15,6 +15,7 @@
 #endif
 #include "display.h"
 #include "resourceallocator.h"
+class Loader;
 
 struct QueueFamilyIndices {
 	uint32_t graphicsFamily = -1;
@@ -34,7 +35,6 @@ struct Input
 };
 struct VulkanContext
 {
-	Display* display;
 	VkInstance instance;
 	VkPhysicalDevice physicalDevice;
 	VkDevice device;
@@ -63,7 +63,7 @@ struct VulkanContext
 	QueueFamilyIndices indices;
 	VkAllocationCallbacks* allocator;
 	ResourceAllocator* resAllocator;
-	//Loader* loader;
+	Loader* loader;
 };
 
 #define SHADER_PATH ""

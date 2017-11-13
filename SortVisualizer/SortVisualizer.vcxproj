@@ -162,6 +162,7 @@
     <ClCompile Include="columnvisualization.cpp" />
     <ClCompile Include="datamanager.cpp" />
     <ClCompile Include="gradientvisualization.cpp" />
+    <ClCompile Include="loader.cpp" />
     <ClCompile Include="rapidquicksort.cpp" />
     <ClCompile Include="bogosort.cpp" />
     <ClCompile Include="bubblesort.cpp" />
@@ -176,12 +177,14 @@
     <ClCompile Include="stdsort.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="visualization.cpp" />
+    <ClCompile Include="vulkangradientvisualization.cpp" />
     <ClCompile Include="vulkanvisualization.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="columnvisualization.h" />
     <ClInclude Include="datamanager.h" />
     <ClInclude Include="gradientvisualization.h" />
+    <ClInclude Include="loader.h" />
     <ClInclude Include="rapidquicksort.h" />
     <ClInclude Include="bogosort.h" />
     <ClInclude Include="bubblesort.h" />

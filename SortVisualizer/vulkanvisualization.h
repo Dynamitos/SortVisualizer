@@ -7,9 +7,9 @@ class VulkanVisualization : public Visualization
 public:
 	VulkanVisualization(int numElements);
 	virtual ~VulkanVisualization();
-	void init(int delay) = 0;
-	void loop() = 0;
-private:
+	virtual void init(int delay);
+	void loop();
+protected:
 	virtual void render(VkCommandBuffer cmdBuffer) = 0;
 	void initInstance();
 	void setupDebugCallback();

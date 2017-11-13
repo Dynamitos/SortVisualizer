@@ -3,6 +3,14 @@
 VulkanVisualization::VulkanVisualization(int numElements)
 	: Visualization(numElements) {
 	context = DataManager::getInstance().getContext();
+}
+
+VulkanVisualization::~VulkanVisualization()
+{
+}
+void VulkanVisualization::init(int delay)
+{
+	Visualization::init(delay);
 	initInstance();
 	setupDebugCallback();
 	createSurface();
@@ -18,15 +26,75 @@ VulkanVisualization::VulkanVisualization(int numElements)
 	createDepthResources();
 	createFramebuffers();
 	createVertices();
-	glfwSetWindowUserPointer(context->display->getWindow(), this);
-	glfwSetWindowSizeCallback(context->display->getWindow(), onWindowResized);
-	context->display->showWindow();
-
+	glfwSetWindowUserPointer(display->getWindow(), this);
+	glfwSetWindowSizeCallback(display->getWindow(), onWindowResized);
+	display->showWindow();
 }
-
-VulkanVisualization::~VulkanVisualization()
+#undef max
+#undef min
+void VulkanVisualization::loop()
 {
+	startSort();
+	while (!display->shouldClose())
+	{
+		uint32_t imageIndex;
+		VkResult result = vkAcquireNextImageKHR(context->device, context->swapChain, std::numeric_limits<uint64_t>::max(), context->imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
+
+		VkSemaphore waitSemaphores[] = { context->imageAvailableSemaphore };
+		if (result == VK_ERROR_OUT_OF_DATE_KHR) {
+			recreateSwapChain();
+			return;
+		}
+		else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
+			throw std::runtime_error("failed to acquire swap chain image!");
+		}
+		VkSubmitInfo submitInfo =
+			init::SubmitInfo();
+
+
+		VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+		submitInfo.waitSemaphoreCount = 1;
+		submitInfo.pWaitSemaphores = waitSemaphores;
+		submitInfo.pWaitDstStageMask = waitStages;
+		submitInfo.commandBufferCount = 1;
+		submitInfo.pCommandBuffers = &context->commandBuffers[imageIndex];
+
+
+		VkSemaphore signalSemaphores[] = { context->renderFinishedSemaphore };
+		submitInfo.signalSemaphoreCount = 1;
+		submitInfo.pSignalSemaphores = signalSemaphores;
+
+		VK_CHECK(vkQueueSubmit(context->graphicsQueue, 1, &submitInfo, renderFence));
+		VkPresentInfoKHR presentInfo = {};
+		presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+
+		presentInfo.waitSemaphoreCount = 1;
+		presentInfo.pWaitSemaphores = signalSemaphores;
+
+		VkSwapchainKHR swapChains[] = { context->swapChain };
+		presentInfo.swapchainCount = 1;
+		presentInfo.pSwapchains = swapChains;
+
+		presentInfo.pImageIndices = &imageIndex;
+		VkResult fenceRes;
+		do
+		{
+			fenceRes = vkWaitForFences(context->device, 1, &renderFence, VK_TRUE, 100000000);
+		} while (fenceRes == VK_TIMEOUT);
+
+		result = vkQueuePresentKHR(context->presentQueue, &presentInfo);
+
+		vkResetFences(context->device, 1, &renderFence);
+		if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR) {
+			recreateSwapChain();
+		}
+		else if (result != VK_SUCCESS) {
+			throw std::runtime_error("failed to present swap chain image!");
+		}
+	}
+	waitSort();
 }
+
 
 
 void VulkanVisualization::initInstance()
@@ -76,7 +144,7 @@ void VulkanVisualization::setupDebugCallback()
 
 void VulkanVisualization::createSurface()
 {
-	glfwCreateWindowSurface(context->instance, context->display->getWindow(), nullptr, &context->surface);
+	glfwCreateWindowSurface(context->instance, display->getWindow(), nullptr, &context->surface);
 }
 
 void VulkanVisualization::pickPhysicalDevice()
@@ -145,7 +213,7 @@ void VulkanVisualization::createSwapChain()
 
 	VkSurfaceFormatKHR surfaceFormat = util::chooseSwapSurfaceFormat(swapChainSupport.formats);
 	VkPresentModeKHR presentMode = util::chooseSwapPresentMode(swapChainSupport.presentModes);
-	VkExtent2D extent = util::chooseSwapExtent(swapChainSupport.capabilities, context->display);
+	VkExtent2D extent = util::chooseSwapExtent(swapChainSupport.capabilities, display);
 
 	context->swapChainImageFormat = surfaceFormat.format;
 	context->swapChainExtent = extent;
@@ -345,7 +413,7 @@ void VulkanVisualization::createCommandBuffers()
 
 		vkBeginCommandBuffer(context->commandBuffers[i], &beginInfo);
 
-//		auto entities = DataManager::getInstance().getCurrentLevel()->getEntities();
+		//		auto entities = DataManager::getInstance().getCurrentLevel()->getEntities();
 
 		VkRenderPassBeginInfo renderPassInfo = {};
 		renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;

@@ -7,7 +7,7 @@
 class Display
 {
 public:
-	Display(int width = 1920, int height = 1080);
+	Display(int width = 1280, int height = 720);
 	virtual ~Display();
 	void createWindow();
 	void updateWindow();
