@@ -2,7 +2,6 @@
 #include <Windows.h>
 #include <iostream>
 #include <chrono>
-#include <cstdio>
 
 #include "gradientvisualization.h"
 #include "columnvisualization.h"
@@ -15,12 +14,6 @@
 #include "stdsort.h"
 #include "quicksort.h"
 #include "mergesort.h"
-
-extern "C"
-{
-    void copyData(int* dst, int* src, int size);
-    //void copyDataf(float* dst, float* src, int size);
-}
 
 int main(int argc, char* argv[])
 {

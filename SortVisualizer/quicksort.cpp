@@ -1,5 +1,12 @@
 #include "quicksort.h"
 
+
+extern "C"
+{
+    inline int asmpartition(float* arr, int left, int right);
+}
+
+
 QuickSort::QuickSort()
 {
 }
@@ -11,7 +18,10 @@ void QuickSort::sort(float data[], int arraySize, int intDelay)
 
 void QuickSort::quicksort(float* arr, int left, int right)
 {
-	int index = partition(arr, left, right);
+    int index = 0;
+    index = partition(arr, left, right);
+
+    //index = asmpartition(arr, left, right);
 	if (left < index - 1)
 		quicksort(arr, left, index - 1);
 	if (index < right)

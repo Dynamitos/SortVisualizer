@@ -23,7 +23,7 @@ void Visualization::init(int delay)
 
 #pragma loop(hint_parallel(0))
 	for (int i = 0; i < sizeData; i++)
-	{
+    {
 		data[i] = rand() / (float)RAND_MAX;
 	}
 

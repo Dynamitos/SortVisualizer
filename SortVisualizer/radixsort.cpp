@@ -77,7 +77,7 @@ void RadixSort::sort(float data[], int arraySize, int intDelay)
 
         for (int i = 0; i < arraySize; i++)
         {
-            data[i] = (float)intData[i] / 256;
+            data[i] = (float)intData[i] / 256.0f;
         }
     }
 }
