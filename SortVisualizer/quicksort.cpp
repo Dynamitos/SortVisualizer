@@ -1,12 +1,6 @@
 #include "quicksort.h"
 
 
-extern "C"
-{
-    inline int asmpartition(float* arr, int left, int right);
-}
-
-
 QuickSort::QuickSort()
 {
 }

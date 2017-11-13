@@ -1,5 +1,11 @@
 #include "rapidquicksort.h"
 
+extern "C"
+{
+    inline int asmpartition(float* arr, int left, int right);
+}
+
+
 void RapidQuickSort::sort(float* data, int size, int delay)
 {
 	int numThreads = std::thread::hardware_concurrency();
@@ -65,7 +71,8 @@ void RapidQuickSort::quicksort(float* arr, int left, int right)
 		selectionSort(arr, left, right);
 		return;
 	}*/
-	int index = partition(arr, left, right);
+	//int index = partition(arr, left, right);
+    int index = asmpartition(arr, left, right);
 	if (left < index - 1)
 		quicksort(arr, left, index - 1);
 	if (index < right)
