@@ -3,7 +3,6 @@
 Visualization::Visualization(int numElements)
 {
 	this->sizeData = numElements;
-	
 }
 
 Visualization::~Visualization()

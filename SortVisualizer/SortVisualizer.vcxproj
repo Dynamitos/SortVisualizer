@@ -69,20 +69,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)external\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)external\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)external\include;$(Vulkan_SDK)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)external\lib\x86;$(Vulkan_SDK)\Lib32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)external\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)external\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)external\include;$(Vulkan_SDK)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)external\lib\x86;$(Vulkan_SDK)\Lib32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)external\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)external\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)external\include;$(Vulkan_SDK)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)external\lib\x64;$(Vulkan_SDK)\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)external\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)external\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)external\include;$(Vulkan_SDK)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)external\lib\x64;$(Vulkan_SDK)\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -92,7 +92,7 @@
       <PreprocessorDefinitions>NDEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)external\bin\$(PlatformName)" "$(TargetDir)"</Command>
@@ -109,7 +109,7 @@
       <PreprocessorDefinitions>NDEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)external\bin\$(PlatformName)" "$(TargetDir)"</Command>
@@ -129,7 +129,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)external\bin\$(PlatformName)" "$(TargetDir)"</Command>
@@ -149,7 +149,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)external\bin\$(PlatformName)" "$(TargetDir)"</Command>
@@ -160,7 +160,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="columnvisualization.cpp" />
+    <ClCompile Include="datamanager.cpp" />
     <ClCompile Include="gradientvisualization.cpp" />
+    <ClCompile Include="loader.cpp" />
     <ClCompile Include="rapidquicksort.cpp" />
     <ClCompile Include="bogosort.cpp" />
     <ClCompile Include="bubblesort.cpp" />
@@ -170,13 +172,19 @@
     <ClCompile Include="quicksort.cpp" />
     <ClCompile Include="radixsort.cpp" />
     <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="resourceallocator.cpp" />
     <ClCompile Include="selectionsort.cpp" />
     <ClCompile Include="stdsort.cpp" />
+    <ClCompile Include="utils.cpp" />
     <ClCompile Include="visualization.cpp" />
+    <ClCompile Include="vulkangradientvisualization.cpp" />
+    <ClCompile Include="vulkanvisualization.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="columnvisualization.h" />
+    <ClInclude Include="datamanager.h" />
     <ClInclude Include="gradientvisualization.h" />
+    <ClInclude Include="loader.h" />
     <ClInclude Include="rapidquicksort.h" />
     <ClInclude Include="bogosort.h" />
     <ClInclude Include="bubblesort.h" />
@@ -185,9 +193,11 @@
     <ClInclude Include="quicksort.h" />
     <ClInclude Include="radixsort.h" />
     <ClInclude Include="renderer.h" />
+    <ClInclude Include="resourceallocator.h" />
     <ClInclude Include="selectionsort.h" />
     <ClInclude Include="sortalgorithm.h" />
     <ClInclude Include="stdsort.h" />
+    <ClInclude Include="utils.h" />
     <ClInclude Include="visualization.h" />
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +207,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </Object>
+    <ClInclude Include="vulkangradientvisualization.h" />
+    <ClInclude Include="vulkanvisualization.h" />
+  </ItemGroup>
+  <ItemGroup>
     <Object Include="copydata.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
