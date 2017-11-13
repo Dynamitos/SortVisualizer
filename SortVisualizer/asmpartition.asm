@@ -2,53 +2,48 @@ section .text
 global asmpartition
 
 asmpartition:
-    push rbp
-    mov rbp, rsp
-    sub rsp, 40h
+    sub rsp, 20h
 
     ; Store input data into local fields
-    mov QWORD [rsp], rcx; arr
-    mov DWORD [rsp+30h], edx  ;left
-    mov DWORD [rsp+8h], r8d   ;right
-    mov QWORD [rsp+16h], r9   ;index
+    mov QWORD r10, rcx; arr
+    mov DWORD r11d, edx  ;left
+    mov DWORD r12d, r8d   ;right
+    mov QWORD r13, r9   ;index
+
+    ; r15d....tmp
 
     finit
 
     ; Calculate offset for pivot: rax
-        mov eax, DWORD [rsp+30h]
-        mov ebx, DWORD [rsp+8h]
-        add eax, ebx
+        mov eax, DWORD r11d
+        add eax, r12d
         mov ebx, 2
         xor rdx, rdx
-        div ebx 
+        div ebx
 
     ; Set pivot
-        mov rbx, [rsp]
+        mov rbx, r10
         mov rcx, 4
         mul rcx
 
         add rbx, rax
-        mov ecx, DWORD [rbx]
-        mov DWORD [rsp+12h], ecx
-
-        ;; [DONE] ;;
+        mov DWORD r14d, [rbx]
 
     ; Erste Schleife: while(i <= j)
         firstLoop:
-            mov DWORD eax, [rsp+30h]
-            mov DWORD ebx, [rsp+8h]
-            cmp eax, ebx
+            cmp r11d, r12d
             jg endLoops              
 
-        ; Zweite Schleife: while(arr[rsp+30h] < pivot)
+        ; Zweite Schleife: while(arrr11d < pivot)
             secondLoop:
-                mov rcx, [rsp]
-                mov DWORD eax, [rsp+30h]
+                mov rcx, r10
                 mov ebx, 4
+                mov DWORD eax, r11d
                 mul ebx
                 add rcx, rax
                 
-                fld DWORD [rsp+12h]
+                mov [rsp+8h], r14d
+                fld DWORD [rsp+8h]
                 fld DWORD [rcx]
                 fcomip st0, st1
                 fstp
@@ -56,95 +51,82 @@ asmpartition:
                 jnb thirdLoop
                 ;; [DONE] ;;               
 
-                mov DWORD eax, [rsp+30h]
-                inc eax
-                mov DWORD [rsp+30h], eax               
+                inc r11d            
                 
                 jmp secondLoop
 
-        ; Dritte Schleife: while(arr[rsp+8h] > pivot)
+        ; Dritte Schleife: while(arrr12d > pivot)
             thirdLoop:
-                mov rcx, [rsp]
-                mov DWORD eax, [rsp+8h]
+                mov rcx, r10
+                mov DWORD eax, r12d
                 mov ebx, 4
                 mul ebx
                 add rcx, rax              
 
-                fld DWORD [rsp+12h]
+                mov [rsp+8h], r14d
+                fld DWORD [rsp+8h]
                 fld DWORD [rcx]
                 fcomip st0, st1
                 fstp
                 jna ifStatement
 
                 ; Vermindere j
-                mov DWORD eax, [rsp+8h]
-                dec eax
-                mov DWORD [rsp+8h], eax              
+                dec r12d         
 
                 jmp thirdLoop
 
         ; If-Statement: if(i <= j)
             ifStatement:
+                mov DWORD [rsp+8h], r12d
+                mov DWORD [rsp+16h], r11d
+
                 fld DWORD [rsp+8h]
-                fld DWORD [rsp+30h]
+                fld DWORD [rsp+16h]
                 fcomip st0, st1
                 fstp
                 ja endLoops                           
                 
-                ; Store tmp: [rax] = arr[rsp+30h]
-                mov rcx, [rsp]
-                mov DWORD eax, [rsp+30h]
+                ; Store tmp: [rax] = arr[11d]
+                mov DWORD eax, r11d
                 mov ebx, 4               
                 mul ebx
-                add rcx, rax               
-                mov DWORD ebx, [rcx]
-                mov DWORD [rsp+1eh], ebx                   
+                add rax, r10               
+                mov DWORD r15d, [rax]                   
             
                 ; Store arr[j] in r9
-                mov rcx, [rsp]
-                mov DWORD eax, [rsp+8h]
+                mov DWORD eax, r12d
                 mov ebx, 4
                 mul ebx
-                add rcx, rax
-                xor r9, r9
-                mov DWORD r9d, [rcx]              
+                add rax, r10
+                mov DWORD r9d, [rax]              
 
                 ; Store arr[j] in arr[i]
-                mov rcx, [rsp]
-                mov DWORD eax, [rsp+30h]
+                mov rcx, r10
+                mov DWORD eax, r11d
                 mov ebx, 4
                 mul ebx
                 add rcx, rax
                 mov DWORD [rcx], r9d              
 
-                ; Store tmp in arr[rsp+8h]
-                mov rcx, [rsp]
-                mov DWORD eax, [rsp+8h]
+                ; Store tmp in arrr12d
+                mov rcx, r10
+                mov DWORD eax, r12d
                 mov ebx, 4
                 mul ebx
                 add rcx, rax
-                mov DWORD r9d, [rsp+1eh]
-                mov DWORD [rcx], r9d           
+                mov DWORD [rcx], r15d
 
                 ; Increment i
-                mov DWORD eax, [rsp+30h]
-                inc eax
-                mov [rsp+30h], eax
+                inc r11d
 
                 ; Decrement j
-                mov DWORD eax, [rsp+8h]
-                dec eax
-                mov DWORD [rsp+8h], eax
+                dec r12d
               
                 jmp firstLoop
 
     endLoops:       
         ; Store index
-        mov DWORD eax, [rsp+30h]
-        mov QWORD rbx, [rsp+16h]
-        mov DWORD [rbx], eax
+        mov DWORD eax, r11d
 
-        add rsp, 40h
-        mov rsp, rbp
-        pop rbp
+        add rsp, 20h
         ret

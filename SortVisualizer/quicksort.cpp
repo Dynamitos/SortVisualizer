@@ -3,7 +3,7 @@
 
 extern "C"
 {
-    void asmpartition(float* arr, int left, int right, int* index);
+    inline int asmpartition(float* arr, int left, int right);
 }
 
 
@@ -19,9 +19,9 @@ void QuickSort::sort(float data[], int arraySize, int intDelay)
 void QuickSort::quicksort(float* arr, int left, int right)
 {
     int index = 0;
-    //index = partition(arr, left, right);
+    index = partition(arr, left, right);
 
-    asmpartition(arr, left, right, &index);
+    //index = asmpartition(arr, left, right);
 	if (left < index - 1)
 		quicksort(arr, left, index - 1);
 	if (index < right)
