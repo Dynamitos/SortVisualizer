@@ -9,6 +9,7 @@ ColumnVisualization::ColumnVisualization(int numElements)
 
 ColumnVisualization::~ColumnVisualization()
 {
+	delete data;
 	delete vertices;
 }
 

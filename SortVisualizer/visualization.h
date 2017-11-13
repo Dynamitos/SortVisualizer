@@ -1,5 +1,6 @@
 #pragma once
 #include <fstream>
+#include "datamanager.h"
 #include "sortalgorithm.h"
 #include "display.h"
 class Visualization
