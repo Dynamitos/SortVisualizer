@@ -165,6 +165,7 @@
   <ItemGroup>
     <ClCompile Include="benchmark.cpp" />
     <ClCompile Include="columnvisualization.cpp" />
+    <ClCompile Include="datamanager.cpp" />
     <ClCompile Include="gradientvisualization.cpp" />
     <ClCompile Include="rapidquicksort.cpp" />
     <ClCompile Include="bogosort.cpp" />
@@ -175,9 +176,13 @@
     <ClCompile Include="quicksort.cpp" />
     <ClCompile Include="radixsort.cpp" />
     <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="resourceallocator.cpp" />
     <ClCompile Include="selectionsort.cpp" />
     <ClCompile Include="stdsort.cpp" />
+    <ClCompile Include="utils.cpp" />
     <ClCompile Include="visualization.cpp" />
+    <ClCompile Include="vulkangradientvisualization.cpp" />
+    <ClCompile Include="vulkanvisualization.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="benchmark.h" />
@@ -191,10 +196,14 @@
     <ClInclude Include="quicksort.h" />
     <ClInclude Include="radixsort.h" />
     <ClInclude Include="renderer.h" />
+    <ClInclude Include="resourceallocator.h" />
     <ClInclude Include="selectionsort.h" />
     <ClInclude Include="sortalgorithm.h" />
     <ClInclude Include="stdsort.h" />
+    <ClInclude Include="utils.h" />
     <ClInclude Include="visualization.h" />
+    <ClInclude Include="vulkangradientvisualization.h" />
+    <ClInclude Include="vulkanvisualization.h" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="asmbubblesort.obj">
