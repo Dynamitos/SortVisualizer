@@ -13,6 +13,7 @@ Visualization::~Visualization()
 void Visualization::init(int delay)
 {
 	this->delay = delay;
+	srand(time(NULL));
 
 #pragma loop(hint_parallel(0))
 	for (int i = 0; i < sizeData; i++)

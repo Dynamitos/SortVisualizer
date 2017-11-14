@@ -11,6 +11,7 @@ Display::~Display()
 
 void Display::createWindow(bool noContext)
 {
+	this->noContext = noContext;
     if (!glfwInit())
         std::cout << "Error initing glfw" << std::endl;
 
@@ -43,7 +44,10 @@ void Display::updateWindow()
 		//std::cout << "Frametime: " << 1000.0f / (double)nbFrames << "ms" << std::endl;
 		nbFrames = 0;
 	}
-	glfwSwapBuffers(window);
+	if (!noContext)
+	{
+		glfwSwapBuffers(window);
+	}
 }
 
 void Display::closeWindow()

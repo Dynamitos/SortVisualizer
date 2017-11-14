@@ -21,6 +21,7 @@ private:
 	int width, height;
 	int nbFrames;
 	double lastTime;
+	bool noContext;
 public:
 	void showWindow();
 };

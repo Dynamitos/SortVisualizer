@@ -7,6 +7,7 @@ QuickSort::QuickSort()
 
 void QuickSort::sort(float data[], int arraySize, int intDelay)
 {
+	this->intDelay = intDelay;
 	quicksort(data, 0, arraySize - 1);
 }
 
@@ -14,7 +15,7 @@ void QuickSort::quicksort(float* arr, int left, int right)
 {
     int index = 0;
     index = partition(arr, left, right);
-
+	std::this_thread::sleep_for(std::chrono::milliseconds(intDelay));
     //index = asmpartition(arr, left, right);
 	if (left < index - 1)
 		quicksort(arr, left, index - 1);
