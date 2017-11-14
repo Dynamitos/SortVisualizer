@@ -7,27 +7,10 @@ extern "C"
     void memoryCopy(float* dst, float* src, int bytes);
 }
 
-/*extern "C"
-{
-    void memoryIntCopy(int* dst, int* src, int bytes);
-}*/
-
-/*extern "C"
-{
-    void memoryCopy(int* bytes);
-}*/
-
-/*void memoryCopy(float& dst, float& src, int bytes)
-{
-    _asm
-    {
-       
-    }
-}*/
-
 
 MergeSort::MergeSort()
 {
+    this->name = "Merge sort";
 }
 
 
@@ -69,9 +52,6 @@ void MergeSort::sort(float data[], int size, int intDelay)
             merge(sortedData, data, x, y, y-1, x+j*blockSize-1);
         }
     }
-
-    //delete readData;
-    //delete threads;
 }
 
 

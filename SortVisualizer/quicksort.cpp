@@ -3,6 +3,7 @@
 
 QuickSort::QuickSort()
 {
+    this->name = "Quick sort";
 }
 
 void QuickSort::sort(float data[], int arraySize, int intDelay)

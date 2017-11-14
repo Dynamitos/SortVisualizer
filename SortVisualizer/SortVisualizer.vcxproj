@@ -93,7 +93,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)external\bin\$(PlatformName)" "$(TargetDir)"</Command>
@@ -111,7 +111,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)external\bin\$(PlatformName)" "$(TargetDir)"</Command>
@@ -132,7 +132,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)external\bin\$(PlatformName)" "$(TargetDir)"</Command>
@@ -153,7 +153,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)external\bin\$(PlatformName)" "$(TargetDir)"</Command>
@@ -163,10 +163,9 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="benchmark.cpp" />
     <ClCompile Include="columnvisualization.cpp" />
-    <ClCompile Include="datamanager.cpp" />
     <ClCompile Include="gradientvisualization.cpp" />
-    <ClCompile Include="loader.cpp" />
     <ClCompile Include="rapidquicksort.cpp" />
     <ClCompile Include="bogosort.cpp" />
     <ClCompile Include="bubblesort.cpp" />
@@ -176,19 +175,14 @@
     <ClCompile Include="quicksort.cpp" />
     <ClCompile Include="radixsort.cpp" />
     <ClCompile Include="renderer.cpp" />
-    <ClCompile Include="resourceallocator.cpp" />
     <ClCompile Include="selectionsort.cpp" />
     <ClCompile Include="stdsort.cpp" />
-    <ClCompile Include="utils.cpp" />
     <ClCompile Include="visualization.cpp" />
-    <ClCompile Include="vulkangradientvisualization.cpp" />
-    <ClCompile Include="vulkanvisualization.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="benchmark.h" />
     <ClInclude Include="columnvisualization.h" />
-    <ClInclude Include="datamanager.h" />
     <ClInclude Include="gradientvisualization.h" />
-    <ClInclude Include="loader.h" />
     <ClInclude Include="rapidquicksort.h" />
     <ClInclude Include="bogosort.h" />
     <ClInclude Include="bubblesort.h" />
@@ -197,22 +191,24 @@
     <ClInclude Include="quicksort.h" />
     <ClInclude Include="radixsort.h" />
     <ClInclude Include="renderer.h" />
-    <ClInclude Include="resourceallocator.h" />
     <ClInclude Include="selectionsort.h" />
     <ClInclude Include="sortalgorithm.h" />
     <ClInclude Include="stdsort.h" />
-    <ClInclude Include="utils.h" />
     <ClInclude Include="visualization.h" />
   </ItemGroup>
   <ItemGroup>
+    <Object Include="asmbubblesort.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </Object>
     <Object Include="asmpartition.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </Object>
-    <ClInclude Include="vulkangradientvisualization.h" />
-    <ClInclude Include="vulkanvisualization.h" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="copydata.obj">
@@ -229,6 +225,7 @@
     </Object>
   </ItemGroup>
   <ItemGroup>
+    <None Include="asmbubblesort.asm" />
     <None Include="asmpartition.asm" />
     <None Include="copydata.asm" />
     <None Include="floattest.asm" />

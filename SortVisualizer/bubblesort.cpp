@@ -1,12 +1,23 @@
 #include "bubblesort.h"
 
+#define USE_ASSEMBLY 1
+
+extern "C"
+{
+    inline void asmbubblesort(float* data, int length, int delay);
+}
+
 BubbleSort::BubbleSort()
 {
+    this->name = "Bubble sort";
 }
 
 void BubbleSort::sort(float* data, int length, int delay)
 {
-	int flag = 1;
+#if USE_ASSEMBLY == 1
+    asmbubblesort(data, length, delay);
+#else
+    int flag = 1;
 	float helper;
 	for (int i = 0; (i <= length) && flag; ++i)
 	{
@@ -23,4 +34,5 @@ void BubbleSort::sort(float* data, int length, int delay)
 		}
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 	}
+#endif
 }

@@ -1,9 +1,9 @@
 #include <GL\glew.h>
+#include <Windows.h>
 #include <iostream>
 #include <chrono>
 #include <cmath>
 
-#include "vulkangradientvisualization.h"
 #include "gradientvisualization.h"
 #include "columnvisualization.h"
 #include "renderer.h"
