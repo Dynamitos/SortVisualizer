@@ -3,6 +3,7 @@
 Visualization::Visualization(int numElements)
 {
 	this->sizeData = numElements;
+	display = new Display();
 }
 
 Visualization::~Visualization()
@@ -12,14 +13,6 @@ Visualization::~Visualization()
 void Visualization::init(int delay)
 {
 	this->delay = delay;
-	display = new Display();
-	display->createWindow();
-
-	glewExperimental = true;
-	if (glewInit())
-		std::cout << "Error glew" << std::endl;
-
-	glClearColor(0, 0, 0, 1);
 
 #pragma loop(hint_parallel(0))
 	for (int i = 0; i < sizeData; i++)

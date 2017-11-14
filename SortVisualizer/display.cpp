@@ -9,12 +9,16 @@ Display::~Display()
 {
 }
 
-void Display::createWindow()
+void Display::createWindow(bool noContext)
 {
     if (!glfwInit())
         std::cout << "Error initing glfw" << std::endl;
 
     glfwWindowHint(GLFW_SAMPLES, 4);
+	if (noContext)
+	{
+		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+	}
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     window = glfwCreateWindow(width, height, "Sort Visualizer", NULL, NULL);

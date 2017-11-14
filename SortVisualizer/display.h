@@ -9,7 +9,7 @@ class Display
 public:
 	Display(int width = 1280, int height = 720);
 	virtual ~Display();
-	void createWindow();
+	void createWindow(bool noContext = false);
 	void updateWindow();
 	void closeWindow();
 	bool shouldClose();
