@@ -1,8 +1,15 @@
 #include "rapidquicksort.h"
 
+#define USE_ASSEMBLY 1
+
 extern "C"
 {
     inline int asmpartition(float* arr, int left, int right);
+}
+
+RapidQuickSort::RapidQuickSort()
+{
+    this->name = "Rapid quick sort";
 }
 
 
@@ -66,13 +73,11 @@ void RapidQuickSort::selectionSort(float* data, int left, int right)
 
 void RapidQuickSort::quicksort(float* arr, int left, int right)
 {
-	/*if (right - left < 5)
-	{
-		selectionSort(arr, left, right);
-		return;
-	}*/
-	//int index = partition(arr, left, right);
+#if USE_ASSEMBLY == 1
     int index = asmpartition(arr, left, right);
+#else
+    int index = partition(arr, left, right);
+#endif
 	if (left < index - 1)
 		quicksort(arr, left, index - 1);
 	if (index < right)

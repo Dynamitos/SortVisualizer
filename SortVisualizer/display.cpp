@@ -1,7 +1,7 @@
 #include "display.h"
 
 Display::Display(int width, int height)
-	:width(width), height(height)
+	:width(width), height(height), ratio((float)height/width)
 {
 }
 

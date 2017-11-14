@@ -1,5 +1,10 @@
 #include "bogosort.h"
 
+BogoSort::BogoSort()
+{
+    this->name = "Bogo sort";
+}
+
 void BogoSort::sort(float* data, int size, int delay)
 {
 	bool sorted = false;

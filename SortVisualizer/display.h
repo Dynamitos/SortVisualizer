@@ -1,6 +1,6 @@
 #pragma once
 #include <GL\glew.h>
-#include <vulkan\vulkan.h>
+//#include <vulkan\vulkan.h>
 #include <GLFW\glfw3.h>
 #include <iostream>
 #include <chrono>
@@ -16,9 +16,11 @@ public:
 	GLFWwindow* getWindow();
 	int getWidth() { return width; }
 	int getHeight() { return height; }
+    float getRatio() { return ratio; }
 private:
 	GLFWwindow* window;
 	int width, height;
+    float ratio;
 	int nbFrames;
 	double lastTime;
 public:

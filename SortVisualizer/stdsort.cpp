@@ -1,5 +1,10 @@
 #include "stdsort.h"
 
+StdSort::StdSort()
+{
+    this->name = "Std sort";
+}
+
 void StdSort::sort(float* data, int size, int delay)
 {
 	std::qsort(data, size, sizeof(float), [](const void* a, const void* b)

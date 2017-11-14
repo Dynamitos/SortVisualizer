@@ -13,6 +13,7 @@ struct Partition
 class RapidQuickSort : public SortAlgorithm
 {
 public:
+    RapidQuickSort();
 	virtual void sort(float data[], int size, int intDelay);
 private:
 	void selectionSort(float* data, int left, int right);
