@@ -2,6 +2,7 @@
 
 RadixSort::RadixSort()
 {
+    this->name = "Radix sort";
 }
 
 

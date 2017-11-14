@@ -54,11 +54,13 @@ struct VulkanContext
 	std::vector<VkImageView> swapChainImageViews;
 	std::vector<VkFramebuffer> frameBuffers;
 	std::vector<VkCommandBuffer> commandBuffers;
+	std::vector<VkCommandBuffer> transferCommands;
 	VkImage depthImage;
 	MemoryBlock depthMemory;
 	VkImageView depthImageView;
 	VkSemaphore imageAvailableSemaphore;
 	VkSemaphore renderFinishedSemaphore;
+	VkSemaphore transferFinishedSemaphore;
 	VkFence utilFence;
 	QueueFamilyIndices indices;
 	ResourceAllocator* resAllocator;

@@ -33,8 +33,11 @@ protected:
 	void destroyDepthResources();
 	void destroyFramebuffers();
 	void recreateSwapChain();
+	void uploadData(int bufferIndex);
 
 	VkFence renderFence;
 	VulkanContext* context;
+	StorageBuffer* dataBlock;
+	size_t sizeGPU;
 	static void onWindowResized(GLFWwindow * window, int width, int height);
 };

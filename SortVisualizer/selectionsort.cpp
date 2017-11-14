@@ -1,5 +1,11 @@
 #include "selectionsort.h"
 
+
+SelectionSort::SelectionSort()
+{
+    this->name = "Selection sort";
+}
+
 void SelectionSort::sort(float* data, int size, int delay)
 {
 	float bestValue;

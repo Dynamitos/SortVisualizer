@@ -13,11 +13,13 @@ Visualization::~Visualization()
 void Visualization::init(int delay)
 {
 	this->delay = delay;
+	srand(time(NULL));
 
 #pragma loop(hint_parallel(0))
 	for (int i = 0; i < sizeData; i++)
     {
-		data[i] = rand() / (float)RAND_MAX;
+        //data[i] = i;
+        data[i] = rand() / (float)RAND_MAX;
 	}
 
 }
@@ -31,11 +33,12 @@ void Visualization::startSort()
 {
 	sorter = std::thread([=]
 	{
+        std::cout << "Start sorting with " << algorithm->getName().c_str() << "..." << std::endl;
 		auto start = std::chrono::high_resolution_clock::now();
 		algorithm->sort(data, sizeData, delay);
 		auto end = std::chrono::high_resolution_clock::now();
 		float runtime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-		std::cout << "Runtime: " << runtime << "ms" << std::endl;
+		std::cout << "Runtime of " << algorithm->getName() << ": " << runtime << "ms" << std::endl;
 	});
 }
 

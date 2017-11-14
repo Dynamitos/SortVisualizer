@@ -20,8 +20,6 @@ private:
 	VkPipeline pipeline;
 	std::vector<VkVertexInputBindingDescription> binding;
 	std::vector<VkVertexInputAttributeDescription> attribDesc;
-	StorageBuffer* dataBlock;
 	MeshBuffer* vertexBlock;
-	size_t sizeGPU;
 	float* gpuData;
 };

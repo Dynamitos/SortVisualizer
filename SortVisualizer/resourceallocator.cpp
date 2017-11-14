@@ -4,19 +4,19 @@
 
 
 ResourceAllocator::ResourceAllocator(VulkanContext* context) 
-	: m_ChunkAllocator{ 256 * 1024 * 1024 }
+	: m_ChunkAllocator{ 1024 * 1024 * 1024 }
 	, context(context)
 {
 
 	std::array<VkDescriptorPoolSize, 4> poolSizes;
 	poolSizes[0].type = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
-	poolSizes[0].descriptorCount = 255;
+	poolSizes[0].descriptorCount = 256;
 	poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-	poolSizes[1].descriptorCount = 255;
+	poolSizes[1].descriptorCount = 256;
 	poolSizes[2].type = VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT;
-	poolSizes[2].descriptorCount = 255;
+	poolSizes[2].descriptorCount = 256;
 	poolSizes[3].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-	poolSizes[3].descriptorCount = 255;
+	poolSizes[3].descriptorCount = 256;
 
 	VkDescriptorPoolCreateInfo poolInfo =
 		init::DescriptorPoolCreateInfo(
@@ -28,7 +28,7 @@ ResourceAllocator::ResourceAllocator(VulkanContext* context)
 }
 
 ResourceAllocator::ResourceAllocator(const ResourceAllocator & src) :
-	m_ChunkAllocator{ 256 * 1024 * 1024 }
+	m_ChunkAllocator{ 1024 * 1024 * 1024 }
 {
 	context = src.context;
 	descriptorPool = src.descriptorPool;
