@@ -1,5 +1,6 @@
 #include "vulkanvisualization.h"
 #include "loader.h"
+#include "datamanager.h"
 
 VulkanVisualization::VulkanVisualization(int numElements)
 	: Visualization(numElements) {

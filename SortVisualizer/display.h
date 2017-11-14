@@ -1,6 +1,6 @@
 #pragma once
 #include <GL\glew.h>
-//#include <vulkan\vulkan.h>
+#include <vulkan\vulkan.h>
 #include <GLFW\glfw3.h>
 #include <iostream>
 #include <chrono>
