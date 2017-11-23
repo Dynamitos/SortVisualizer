@@ -5,12 +5,12 @@ class VulkanGradientVisualization : public VulkanVisualization
 {
 public:
 	VulkanGradientVisualization(int numElements);
-	virtual ~VulkanGradientVisualization();
+	~VulkanGradientVisualization();
 	void init(int delay);
 protected:
 	void render(VkCommandBuffer& cmdBuffer);
 	void createPipeline();
-	void destroyPipeline();
+	void destroyPipeline(void);
 	void createData();
 	void createLayoutDescriptions();
 private:

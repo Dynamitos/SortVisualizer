@@ -6,7 +6,7 @@ class Visualization
 {
 public:
 	Visualization(int numElements);
-	virtual ~Visualization();
+	~Visualization();
 	virtual void init(int delay);
 	void setAlgorithm(SortAlgorithm* algorithm);
 	virtual void loop() = 0;

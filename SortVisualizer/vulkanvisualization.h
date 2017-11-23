@@ -6,8 +6,9 @@ class VulkanVisualization : public Visualization
 {
 public:
 	VulkanVisualization(int numElements);
-	virtual ~VulkanVisualization();
+	~VulkanVisualization();
 	virtual void init(int delay);
+	void destroy();
 	void loop();
 protected:
 	virtual void render(VkCommandBuffer& cmdBuffer) = 0;
@@ -26,10 +27,10 @@ protected:
 	void createDepthResources();
 	void createCommandBuffers();
 	virtual void createData() = 0;
+	virtual void destroyPipeline() = 0;
 	void destroySwapChain();
 	void destroyImageViews();
 	void destroyRenderPass();
-	virtual void destroyPipeline() = 0;
 	void destroyDepthResources();
 	void destroyFramebuffers();
 	void recreateSwapChain();
@@ -39,5 +40,5 @@ protected:
 	VulkanContext* context;
 	StorageBuffer* dataBlock;
 	size_t sizeGPU;
-	static void onWindowResized(GLFWwindow * window, int width, int height);
+	static void onWindowResized(GLFWwindow* window, int width, int height);
 };

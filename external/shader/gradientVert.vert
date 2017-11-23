@@ -2,7 +2,7 @@
 #extension GL_ARB_separate_shader_objects : enable
 
 layout(location = 0) in vec2 position_VS_in;
-layout(location = 0) in float data_VS_in;
+layout(location = 1) in float data_VS_in;
 
 layout(location = 0) out vec2 position_FS_out;
 layout(location = 1) out float data_FS_out;

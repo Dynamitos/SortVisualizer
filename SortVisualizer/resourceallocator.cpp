@@ -37,6 +37,7 @@ ResourceAllocator::ResourceAllocator(const ResourceAllocator & src) :
 
 ResourceAllocator::~ResourceAllocator()
 {
+	destroy();
 }
 /*
 void ResourceAllocator::allocateTexture(std::string fileName, VkDescriptorSetLayout layout, uint32_t imageBinding, Texture* tex)

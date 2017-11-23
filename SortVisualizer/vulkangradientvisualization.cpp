@@ -178,6 +178,12 @@ void VulkanGradientVisualization::createLayoutDescriptions()
 
 void VulkanGradientVisualization::destroyPipeline()
 {
+	vkUnmapMemory(context->device, dataBlock->stagingMemory.memory);
+	vkDestroyBuffer(context->device, dataBlock->deviceBuffer, nullptr);
+	vkDestroyBuffer(context->device, dataBlock->stagingBuffer, nullptr);
+	vkDestroyBuffer(context->device, vertexBlock->buf, nullptr);
+	vkDestroyShaderModule(context->device, vertModule, nullptr);
+	vkDestroyShaderModule(context->device, fragModule, nullptr);
 	vkDestroyPipelineLayout(context->device, pipelineLayout, nullptr);
 	vkDestroyPipeline(context->device, pipeline, nullptr);
 }
@@ -207,3 +213,4 @@ void VulkanGradientVisualization::createData()
 	data = &gpuData[1];
 
 }
+

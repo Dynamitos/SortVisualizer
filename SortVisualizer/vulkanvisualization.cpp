@@ -10,6 +10,7 @@ VulkanVisualization::VulkanVisualization(int numElements)
 
 VulkanVisualization::~VulkanVisualization()
 {
+	destroy();
 }
 void VulkanVisualization::init(int delay)
 {
@@ -34,11 +35,42 @@ void VulkanVisualization::init(int delay)
 	display->showWindow();
 	Visualization::init(delay);
 }
+void VulkanVisualization::destroy()
+{
+
+	vkDeviceWaitIdle(context->device);
+	vkFreeCommandBuffers(context->device, context->commandPool, context->commandBuffers.size(), context->commandBuffers.data());
+	vkFreeCommandBuffers(context->device, context->transferPool, context->transferCommands.size(), context->transferCommands.data());
+	for (auto fb : context->frameBuffers) {
+		vkDestroyFramebuffer(context->device, fb, nullptr);
+	}
+	vkDestroyImageView(context->device, context->depthImageView, nullptr);
+	vkDestroyImage(context->device, context->depthImage, nullptr);
+	vkDestroyFence(context->device, context->utilFence, nullptr);
+	vkDestroyFence(context->device, renderFence, nullptr);
+	vkDestroySemaphore(context->device, context->transferFinishedSemaphore, nullptr);
+	vkDestroySemaphore(context->device, context->imageAvailableSemaphore, nullptr);
+	vkDestroySemaphore(context->device, context->renderFinishedSemaphore, nullptr);
+	vkDestroyCommandPool(context->device, context->commandPool, nullptr);
+	vkDestroyCommandPool(context->device, context->cmdTempPool, nullptr);
+	vkDestroyCommandPool(context->device, context->transferPool, nullptr);
+	destroyPipeline();
+	destroyRenderPass();
+	delete context->resAllocator;
+	for (auto iv : context->swapChainImageViews)
+	{
+		vkDestroyImageView(context->device, iv, nullptr);
+	}
+	vkDestroySwapchainKHR(context->device, context->swapChain, nullptr);
+	vkDestroyDevice(context->device, nullptr);
+	DestroyDebugReportCallbackEXT(context->instance, nullptr, context->callback);
+	vkDestroyInstance(context->instance, nullptr);
+}
 #undef max
 #undef min
 void VulkanVisualization::loop()
 {
-	//startSort();
+	startSort();
 	while (!display->shouldClose())
 	{
 		//createCommandBuffers();
@@ -106,7 +138,7 @@ void VulkanVisualization::loop()
 		display->updateWindow();
 		//std::cout << "Tick" << std::endl;
 	}
-	//waitSort();
+	waitSort();
 }
 
 
