@@ -7,6 +7,8 @@
 #include <minmax.h>
 #include <string>
 
+#include "asmutil.h"
+
 class SortAlgorithm
 {
 public:

@@ -1,14 +1,6 @@
 #include "mergesort.h"
 
 
-
-extern "C"
-{
-    void memoryCopy(float* dst, float* src, int bytes);
-    void asmmerge(float* sortedData, float* readData, int leftStart, int rightStart, int leftEnd, int rightEnd);
-}
-
-
 MergeSort::MergeSort()
 {
     this->name = "Merge sort";

@@ -7,6 +7,11 @@ asmmerge:
 
 	push rbp
 	
+	mov rax, 0aabbccddeh
+	add eax, 1h
+	pop rbp
+	ret
+	
 	xor rsi, rsi
 	xor rdi, rdi
 
@@ -20,17 +25,19 @@ asmmerge:
 	; r8d = diff
 	; r9d = begin
 	; r12 = start of sortedData
+	; r13 = start of readData
 	; rdx = maximum sortedData
 	
 	;FREE
 		;r11d
 
-	; Initialize 
+	; Initialize start of sortedData and start of readData
 	mov r12, r10
+	mov r13, rbx
 	
 	; Initialize r8d and adjust to 4 Bytes
 	mov r8d, r15d
-	add r8d, esi
+	sub r8d, esi
 	inc r8d
 	mov eax, 4h
 	mul r8d
@@ -56,13 +63,12 @@ asmmerge:
 	; Initialize begin with leftStart
 	mov r9d, esi
 	
-	
 	; Calculate maximum sortedData address
 	mov rdx, r10
 	add edx, r15d
 	
 	; Adjust sortedData pointer
-	add r10, rsi
+	add r10d, esi
 	
 	cmp r10, rdx
 	ja endAll
@@ -80,7 +86,7 @@ asmmerge:
 		startSecondIf:
 			cmp edi, r15d
 			jna startThirdIf
-				cmp esi, edi
+				cmp esi, r14d
 				ja endLoop
 				mov DWORD r11d, [rbx+rsi]
 				mov DWORD [r10], r11d
@@ -88,7 +94,7 @@ asmmerge:
 				jmp endLoop
 			
 		startThirdIf:
-			fld DWORD [rbx, rsi]
+			fld DWORD [rbx+rsi]
 			fld DWORD [rbx+rdi]
 			fcomp st0, st1
 			fstp
@@ -110,11 +116,12 @@ asmmerge:
 			jna mainLoop
 				
 	endAll:
-		xor rbp, rbp
+		mov rbx, r13
 		mov ebp, r9d
 		cld
 		lea rdi, [rbx+rbp]
-		lea rsi, [r12]
+		mov rbx, r12
+		mov rsi, [rbx+rbp]
 		mov ecx, r8d
 		rep movsb
 		

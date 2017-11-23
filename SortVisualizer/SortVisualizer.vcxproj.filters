@@ -146,7 +146,7 @@
     <ClInclude Include="loader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="vulkancolumnvisualization.h">
+    <ClInclude Include="asmutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
