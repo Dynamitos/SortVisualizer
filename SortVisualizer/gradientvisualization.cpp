@@ -26,6 +26,7 @@ void GradientVisualization::init(int delay)
 {
 	Visualization::init(delay);
 
+    display->createWindow();
 	glewExperimental = true;
 	if (glewInit())
 		std::cout << "Error glew" << std::endl;

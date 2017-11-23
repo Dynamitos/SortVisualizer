@@ -121,6 +121,9 @@
     <Object Include="asmbubblesort.obj">
       <Filter>Resource Files</Filter>
     </Object>
+    <Object Include="asmmerge.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
   </ItemGroup>
   <ItemGroup>
     <None Include="copydata.asm">
@@ -133,6 +136,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="asmbubblesort.asm">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="asmmerge.asm">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
