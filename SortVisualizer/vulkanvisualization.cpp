@@ -1,5 +1,6 @@
 #include "vulkanvisualization.h"
 #include "loader.h"
+#include "datamanager.h"
 
 VulkanVisualization::VulkanVisualization(int numElements)
 	: Visualization(numElements) {
@@ -9,6 +10,7 @@ VulkanVisualization::VulkanVisualization(int numElements)
 
 VulkanVisualization::~VulkanVisualization()
 {
+	destroy();
 }
 void VulkanVisualization::init(int delay)
 {
@@ -33,6 +35,37 @@ void VulkanVisualization::init(int delay)
 	display->showWindow();
 	Visualization::init(delay);
 }
+void VulkanVisualization::destroy()
+{
+
+	vkDeviceWaitIdle(context->device);
+	vkFreeCommandBuffers(context->device, context->commandPool, context->commandBuffers.size(), context->commandBuffers.data());
+	vkFreeCommandBuffers(context->device, context->transferPool, context->transferCommands.size(), context->transferCommands.data());
+	for (auto fb : context->frameBuffers) {
+		vkDestroyFramebuffer(context->device, fb, nullptr);
+	}
+	vkDestroyImageView(context->device, context->depthImageView, nullptr);
+	vkDestroyImage(context->device, context->depthImage, nullptr);
+	vkDestroyFence(context->device, context->utilFence, nullptr);
+	vkDestroyFence(context->device, renderFence, nullptr);
+	vkDestroySemaphore(context->device, context->transferFinishedSemaphore, nullptr);
+	vkDestroySemaphore(context->device, context->imageAvailableSemaphore, nullptr);
+	vkDestroySemaphore(context->device, context->renderFinishedSemaphore, nullptr);
+	vkDestroyCommandPool(context->device, context->commandPool, nullptr);
+	vkDestroyCommandPool(context->device, context->cmdTempPool, nullptr);
+	vkDestroyCommandPool(context->device, context->transferPool, nullptr);
+	destroyPipeline();
+	destroyRenderPass();
+	delete context->resAllocator;
+	for (auto iv : context->swapChainImageViews)
+	{
+		vkDestroyImageView(context->device, iv, nullptr);
+	}
+	vkDestroySwapchainKHR(context->device, context->swapChain, nullptr);
+	vkDestroyDevice(context->device, nullptr);
+	DestroyDebugReportCallbackEXT(context->instance, nullptr, context->callback);
+	vkDestroyInstance(context->instance, nullptr);
+}
 #undef max
 #undef min
 void VulkanVisualization::loop()
@@ -40,6 +73,7 @@ void VulkanVisualization::loop()
 	startSort();
 	while (!display->shouldClose())
 	{
+		//createCommandBuffers();
 		uint32_t imageIndex;
 		VkResult result = vkAcquireNextImageKHR(context->device, context->swapChain, std::numeric_limits<uint64_t>::max(), context->imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
 
@@ -54,6 +88,14 @@ void VulkanVisualization::loop()
 		VkSubmitInfo submitInfo =
 			init::SubmitInfo();
 
+		submitInfo.commandBufferCount = 1;
+		submitInfo.pCommandBuffers = &context->transferCommands[imageIndex];
+		submitInfo.waitSemaphoreCount = 0;
+		submitInfo.signalSemaphoreCount = 0;
+		submitInfo.pSignalSemaphores = 0;
+		submitInfo.pWaitSemaphores = nullptr;
+
+		vkQueueSubmit(context->transferQueue, 1, &submitInfo, VK_NULL_HANDLE);
 
 		VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
 		submitInfo.waitSemaphoreCount = 1;
@@ -61,7 +103,6 @@ void VulkanVisualization::loop()
 		submitInfo.pWaitDstStageMask = waitStages;
 		submitInfo.commandBufferCount = 1;
 		submitInfo.pCommandBuffers = &context->commandBuffers[imageIndex];
-
 
 		VkSemaphore signalSemaphores[] = { context->renderFinishedSemaphore };
 		submitInfo.signalSemaphoreCount = 1;
@@ -94,6 +135,8 @@ void VulkanVisualization::loop()
 		else if (result != VK_SUCCESS) {
 			throw std::runtime_error("failed to present swap chain image!");
 		}
+		display->updateWindow();
+		//std::cout << "Tick" << std::endl;
 	}
 	waitSort();
 }
@@ -360,6 +403,7 @@ void VulkanVisualization::createSemaphores()
 
 	VK_CHECK(vkCreateSemaphore(context->device, &semaphoreInfo, nullptr, &context->imageAvailableSemaphore));
 	VK_CHECK(vkCreateSemaphore(context->device, &semaphoreInfo, nullptr, &context->renderFinishedSemaphore));
+	VK_CHECK(vkCreateSemaphore(context->device, &semaphoreInfo, nullptr, &context->transferFinishedSemaphore));
 
 	VkFenceCreateInfo fenceInfo =
 		init::FenceCreateInfo(0);
@@ -383,6 +427,7 @@ void VulkanVisualization::createCommandPools()
 	VK_CHECK(vkCreateCommandPool(context->device, &poolInfo, nullptr, &context->cmdTempPool));
 
 	poolInfo.queueFamilyIndex = context->indices.transferFamily;
+	poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 
 	VK_CHECK(vkCreateCommandPool(context->device, &poolInfo, nullptr, &context->transferPool));
 }
@@ -401,14 +446,21 @@ void VulkanVisualization::createDepthResources()
 void VulkanVisualization::createCommandBuffers()
 {
 	if (context->commandBuffers.size() > 0)
+	{
 		vkFreeCommandBuffers(context->device, context->commandPool, (uint32_t)context->commandBuffers.size(), context->commandBuffers.data());
-
+		vkFreeCommandBuffers(context->device, context->transferPool, (uint32_t)context->transferCommands.size(), context->transferCommands.data());
+	}
 	context->commandBuffers.resize(context->frameBuffers.size());
+	context->transferCommands.resize(context->frameBuffers.size());
 	VkCommandBufferAllocateInfo allocInfo =
 		init::CommandBufferAllocateInfo(context->commandPool, VK_COMMAND_BUFFER_LEVEL_PRIMARY, context->commandBuffers.size());
 
 	vkAllocateCommandBuffers(context->device, &allocInfo, context->commandBuffers.data());
-	//vkResetCommandBuffer(primaryCommandBuffer, 0);
+	
+	allocInfo.commandPool = context->transferPool;
+
+	vkAllocateCommandBuffers(context->device, &allocInfo, context->transferCommands.data());
+
 	for (uint32_t i = 0; i < context->frameBuffers.size(); i++)
 	{
 		VkCommandBufferBeginInfo beginInfo = {};
@@ -416,9 +468,9 @@ void VulkanVisualization::createCommandBuffers()
 		beginInfo.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
 		beginInfo.pInheritanceInfo = nullptr;
 
-		vkBeginCommandBuffer(context->commandBuffers[i], &beginInfo);
+		uploadData(i);
 
-		//		auto entities = DataManager::getInstance().getCurrentLevel()->getEntities();
+		vkBeginCommandBuffer(context->commandBuffers[i], &beginInfo);
 
 		VkRenderPassBeginInfo renderPassInfo = {};
 		renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
@@ -495,6 +547,24 @@ void VulkanVisualization::recreateSwapChain()
 	createDepthResources();
 	createPipeline();
 	createFramebuffers();
+}
+
+void VulkanVisualization::uploadData(int bufferIndex)
+{
+	VkCommandBuffer& cmdBuffer = context->transferCommands[bufferIndex];
+
+	VkCommandBufferBeginInfo beginInfo =
+		init::CommandBufferBeginInfo();
+	beginInfo.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
+
+	vkBeginCommandBuffer(cmdBuffer, &beginInfo);
+
+	VkBufferCopy copyRegion = {};
+	copyRegion.size = sizeGPU * sizeof(float);
+	vkCmdCopyBuffer(cmdBuffer, dataBlock->stagingBuffer, dataBlock->deviceBuffer, 1, &copyRegion);
+
+	vkEndCommandBuffer(cmdBuffer);
+	
 }
 
 void VulkanVisualization::onWindowResized(GLFWwindow * window, int width, int height)

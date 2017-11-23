@@ -2,7 +2,9 @@
 #include <Windows.h>
 #include <iostream>
 #include <chrono>
+#include <cmath>
 
+#include "vulkangradientvisualization.h"
 #include "gradientvisualization.h"
 #include "columnvisualization.h"
 #include "renderer.h"
@@ -17,11 +19,13 @@
 
 int main(int argc, char* argv[])
 {
-    Visualization* renderer = new ColumnVisualization(10000000);
-    MergeSort sort;
-    renderer->init(0);
-    renderer->setAlgorithm(&sort);
-    renderer->loop();
-    delete renderer;
-    return 0;
+
+	Visualization* renderer = new VulkanGradientVisualization(100000000);
+	RapidQuickSort sort;
+	renderer->init(0);
+	renderer->setAlgorithm(&sort);
+	renderer->loop();
+	delete renderer;
+	system("PAUSE");
+	return 0;
 }

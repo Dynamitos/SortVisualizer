@@ -25,6 +25,7 @@ GradientVisualization::~GradientVisualization()
 void GradientVisualization::init(int delay)
 {
 	Visualization::init(delay);
+	display->createWindow();
 
     display->createWindow();
 	glewExperimental = true;

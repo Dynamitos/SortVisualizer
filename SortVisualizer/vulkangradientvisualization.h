@@ -5,12 +5,12 @@ class VulkanGradientVisualization : public VulkanVisualization
 {
 public:
 	VulkanGradientVisualization(int numElements);
-	virtual ~VulkanGradientVisualization();
+	~VulkanGradientVisualization();
 	void init(int delay);
 protected:
 	void render(VkCommandBuffer& cmdBuffer);
 	void createPipeline();
-	void destroyPipeline();
+	void destroyPipeline(void);
 	void createData();
 	void createLayoutDescriptions();
 private:
@@ -20,8 +20,6 @@ private:
 	VkPipeline pipeline;
 	std::vector<VkVertexInputBindingDescription> binding;
 	std::vector<VkVertexInputAttributeDescription> attribDesc;
-	StorageBuffer* dataBlock;
 	MeshBuffer* vertexBlock;
-	size_t sizeGPU;
 	float* gpuData;
 };

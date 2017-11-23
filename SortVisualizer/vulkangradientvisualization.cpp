@@ -9,12 +9,13 @@ VulkanGradientVisualization::VulkanGradientVisualization(int numElements)
 
 VulkanGradientVisualization::~VulkanGradientVisualization()
 {
-	vkUnmapMemory(context->device, dataBlock->stagingMemory.memory);
+
 }
 
 void VulkanGradientVisualization::init(int delay)
 {
 	VulkanVisualization::init(delay);
+	vkUnmapMemory(context->device, dataBlock->stagingMemory.memory);
 }
 
 void VulkanGradientVisualization::render(VkCommandBuffer & cmdBuffer)
@@ -168,7 +169,7 @@ void VulkanGradientVisualization::createLayoutDescriptions()
 	attribDesc[0].format = VK_FORMAT_R32G32_SFLOAT;
 	attribDesc[0].offset = 0;
 
-	attribDesc[1].binding = 0;
+	attribDesc[1].binding = 1;
 	attribDesc[1].location = 1;
 	attribDesc[1].format = VK_FORMAT_R32_SFLOAT;
 	attribDesc[1].offset = 0;
@@ -177,40 +178,18 @@ void VulkanGradientVisualization::createLayoutDescriptions()
 
 void VulkanGradientVisualization::destroyPipeline()
 {
+	vkUnmapMemory(context->device, dataBlock->stagingMemory.memory);
+	vkDestroyBuffer(context->device, dataBlock->deviceBuffer, nullptr);
+	vkDestroyBuffer(context->device, dataBlock->stagingBuffer, nullptr);
+	vkDestroyBuffer(context->device, vertexBlock->buf, nullptr);
+	vkDestroyShaderModule(context->device, vertModule, nullptr);
+	vkDestroyShaderModule(context->device, fragModule, nullptr);
 	vkDestroyPipelineLayout(context->device, pipelineLayout, nullptr);
 	vkDestroyPipeline(context->device, pipeline, nullptr);
 }
 
 void VulkanGradientVisualization::createData()
 {
-
-	dataBlock = new StorageBuffer();
-	context->resAllocator->createBuffer(sizeGPU * sizeof(float), VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT, dataBlock->stagingBuffer, dataBlock->stagingMemory);
-	vkMapMemory(context->device, dataBlock->stagingMemory.memory, 0, VK_WHOLE_SIZE, 0, (void**)&gpuData);
-	gpuData[0] = 0.f;
-	gpuData[sizeGPU - 1] = 1.f;
-	data = &gpuData[1];
-
-	context->resAllocator->createBuffer(sizeGPU * sizeof(float), VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, dataBlock->deviceBuffer, dataBlock->deviceMemory);
-
-	VkCommandBuffer cmdBuffer = util::beginSingleTimeCommands();
-
-	VkBufferCopy copyRegion = {};
-	copyRegion.size = sizeGPU * sizeof(float);
-	vkCmdCopyBuffer(cmdBuffer, dataBlock->stagingBuffer, dataBlock->deviceBuffer, 1, &copyRegion);
-
-	VkBufferMemoryBarrier barrier = init::BufferMemoryBarrier();
-	barrier.buffer = dataBlock->deviceBuffer;
-	barrier.offset = 0;
-	barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-	barrier.dstAccessMask = 0;
-	barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-	barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-
-	vkCmdPipelineBarrier(cmdBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT, 0, 0, nullptr, 1, &barrier, 0, nullptr);
-
-	util::endSingleTimeCommands(cmdBuffer);
-
 	float* vertices = new float[sizeGPU * 2];
 	vertices[0] = 0.0f;
 	vertices[1] = 0.0f;
@@ -222,6 +201,16 @@ void VulkanGradientVisualization::createData()
 		vertices[i * 2 + 2] = cos(angle);
 		vertices[i * 2 + 3] = sin(angle);
 	}
-	vertexBlock = context->loader->createVertexBuffer(vertices, sizeGPU, sizeof(float)*2);
+	vertexBlock = context->loader->createVertexBuffer(vertices, sizeGPU, sizeof(float) * 2);
+
+
+	dataBlock = new StorageBuffer();
+	context->resAllocator->createBuffer(sizeGPU * sizeof(float), VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT, dataBlock->stagingBuffer, dataBlock->stagingMemory);
+	context->resAllocator->createBuffer(sizeGPU * sizeof(float), VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, dataBlock->deviceBuffer, dataBlock->deviceMemory);
+	vkMapMemory(context->device, dataBlock->stagingMemory.memory, dataBlock->stagingMemory.offset, sizeGPU * sizeof(float), 0, (void**)&gpuData);
+	gpuData[0] = 0.f;
+	gpuData[sizeGPU - 1] = 1.f;
+	data = &gpuData[1];
 
 }
+
