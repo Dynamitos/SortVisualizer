@@ -91,7 +91,7 @@ asmmerge:
 			fld DWORD [rbx, rsi]
 			fld DWORD [rbx+rdi]
 			fcomp st0, st1
-			fst
+			fstp
 			jnb startFourthIf
 				mov DWORD r11d, [rbx+rdi]
 				mov DWORD [r10], r11d

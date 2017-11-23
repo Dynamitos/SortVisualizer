@@ -231,6 +231,12 @@
     </Object>
   </ItemGroup>
   <ItemGroup>
+    <Object Include="asmswap.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </Object>
     <Object Include="copydata.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
@@ -248,6 +254,7 @@
     <None Include="asmbubblesort.asm" />
     <None Include="asmmerge.asm" />
     <None Include="asmpartition.asm" />
+    <None Include="asmswap.asm" />
     <None Include="copydata.asm" />
     <None Include="floattest.asm" />
   </ItemGroup>

@@ -166,6 +166,9 @@
     <Object Include="asmmerge.obj">
       <Filter>Resource Files</Filter>
     </Object>
+    <Object Include="asmswap.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
   </ItemGroup>
   <ItemGroup>
     <None Include="copydata.asm">
@@ -181,6 +184,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="asmmerge.asm">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="asmswap.asm">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
