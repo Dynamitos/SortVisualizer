@@ -30,7 +30,7 @@ extern "C"
 int main(int argc, char* argv[])
 {
 
-    Visualization* renderer = new VulkanColumnVisualization(100000000);
+    Visualization* renderer = new VulkanGradientVisualization(10000000);
 	RapidQuickSort sort;
 	renderer->init(0);
 	renderer->setAlgorithm(&sort);
