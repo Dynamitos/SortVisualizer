@@ -186,6 +186,7 @@
     <ClCompile Include="vulkanvisualization.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="asmutil.h" />
     <ClInclude Include="benchmark.h" />
     <ClInclude Include="columnvisualization.h" />
     <ClInclude Include="datamanager.h" />

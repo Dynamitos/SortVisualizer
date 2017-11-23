@@ -4,7 +4,7 @@
 
 
 ResourceAllocator::ResourceAllocator(VulkanContext* context) 
-	: m_ChunkAllocator{ 1024 * 1024 * 1024 }
+	: m_ChunkAllocator{ 512 * 1024 * 1024 }
 	, context(context)
 {
 

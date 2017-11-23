@@ -2,11 +2,6 @@
 
 #define USE_ASSEMBLY 1
 
-extern "C"
-{
-    inline int asmpartition(float* arr, int left, int right);
-}
-
 RapidQuickSort::RapidQuickSort()
 {
     this->name = "Rapid quick sort";

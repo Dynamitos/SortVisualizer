@@ -2,10 +2,6 @@
 
 #define USE_ASSEMBLY 1
 
-extern "C"
-{
-    inline void asmbubblesort(float* data, int length, int delay);
-}
 
 BubbleSort::BubbleSort()
 {
