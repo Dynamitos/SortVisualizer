@@ -429,7 +429,7 @@ inline AbstractAllocator::~AbstractAllocator()
 
 std::unique_ptr<MemoryChunk> ChunkAllocator::allocate(VkDeviceSize size, int memoryTypeIndex)
 {
-	size = (size > m_Size) ? nextPowerOfTwo(size) : m_Size;
+	size = (size > m_Size) ? (size) : m_Size;
 
 	return std::make_unique<MemoryChunk>(size, memoryTypeIndex);
 }
