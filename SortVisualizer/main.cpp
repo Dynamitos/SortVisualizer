@@ -22,7 +22,7 @@
 
 extern "C"
 {
-    void asmswap(float* f1, float* f2);
+    void inline asmswap(float* f1, float* f2);
 }
 
 
