@@ -5,6 +5,7 @@
 #include <cmath>
 
 #include "vulkangradientvisualization.h"
+#include "vulkancolumnvisualization.h"
 #include "gradientvisualization.h"
 #include "columnvisualization.h"
 #include "renderer.h"
@@ -19,8 +20,7 @@
 
 int main(int argc, char* argv[])
 {
-
-	Visualization* renderer = new VulkanGradientVisualization(100000000);
+	Visualization* renderer = new VulkanColumnVisualization(10000000);
 	RapidQuickSort sort;
 	renderer->init(0);
 	renderer->setAlgorithm(&sort);

@@ -182,6 +182,7 @@
     <ClCompile Include="stdsort.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="visualization.cpp" />
+    <ClCompile Include="vulkancolumnvisualization.cpp" />
     <ClCompile Include="vulkangradientvisualization.cpp" />
     <ClCompile Include="vulkanvisualization.cpp" />
   </ItemGroup>
@@ -205,6 +206,7 @@
     <ClInclude Include="stdsort.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="visualization.h" />
+    <ClInclude Include="vulkancolumnvisualization.h" />
     <ClInclude Include="vulkangradientvisualization.h" />
     <ClInclude Include="vulkanvisualization.h" />
   </ItemGroup>
