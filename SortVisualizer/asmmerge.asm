@@ -7,14 +7,6 @@ asmmerge:
 
 	push rbp
 	
-	mov rax, 0aabbccddeh
-	add eax, 1h
-	pop rbp
-	ret
-	
-	xor rsi, rsi
-	xor rdi, rdi
-
 	mov r10, rcx				; sortedData pointer
 	mov rbx, rdx				; readData pointer
 	mov esi, r8d				; leftStart (int)
@@ -23,17 +15,13 @@ asmmerge:
 	mov DWORD r15d, [rsp+38h]	; rightEnd(int)
 	
 	; r8d = diff
-	; r9d = begin
-	; r12 = start of sortedData
-	; r13 = start of readData
+	; r12 = begin^th element of sortedData
+	; r13 = begin^th element of readData
 	; rdx = maximum sortedData
 	
 	;FREE
-		;r11d
-
-	; Initialize start of sortedData and start of readData
-	mov r12, r10
-	mov r13, rbx
+		xor r11, r11
+		xor r9, r9
 	
 	; Initialize r8d and adjust to 4 Bytes
 	mov r8d, r15d
@@ -60,15 +48,18 @@ asmmerge:
 	mul r15d
 	mov r15d, eax
 	
-	; Initialize begin with leftStart
-	mov r9d, esi
+	; Set r12 to r10 and initialize begin^th of sortedData and readData
+	mov r12, r10
+	add r12, rsi
+	mov r13, rbx
+	add r13, rsi
 	
 	; Calculate maximum sortedData address
 	mov rdx, r10
-	add edx, r15d
+	add rdx, r15
 	
 	; Adjust sortedData pointer
-	add r10d, esi
+	add r10, rsi
 	
 	cmp r10, rdx
 	ja endAll
@@ -96,7 +87,7 @@ asmmerge:
 		startThirdIf:
 			fld DWORD [rbx+rsi]
 			fld DWORD [rbx+rdi]
-			fcomp st0, st1
+			fcomip st0, st1
 			fstp
 			jnb startFourthIf
 				mov DWORD r11d, [rbx+rdi]
@@ -108,7 +99,6 @@ asmmerge:
 			mov DWORD r11d, [rbx+rsi]
 			mov DWORD [r10], r11d
 			add esi, 4h
-			jmp endLoop
 			
 		endLoop:
 			add r10, 4h
@@ -116,13 +106,9 @@ asmmerge:
 			jna mainLoop
 				
 	endAll:
-		mov rbx, r13
-		mov ebp, r9d
-		cld
-		lea rdi, [rbx+rbp]
-		mov rbx, r12
-		mov rsi, [rbx+rbp]
 		mov ecx, r8d
+		mov rdi, r13
+		mov rsi, r12
 		rep movsb
 		
 		pop rbp
