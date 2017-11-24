@@ -1,11 +1,7 @@
 #include "rapidquicksort.h"
 
 #define USE_ASSEMBLY 1
-
-extern "C"
-{
-    inline int asmpartition(float* arr, int left, int right);
-}
+#define USE_INSERTION 1
 
 RapidQuickSort::RapidQuickSort()
 {
@@ -20,18 +16,17 @@ void RapidQuickSort::sort(float* data, int size, int delay)
 	
 	std::vector<Partition> partitions;
 	partitions.push_back(Partition(data, 0, size - 1));
-	std::vector<Partition> newPartitions;
 	while (partitions.size() < numThreads)
 	{
-		for (auto& part : partitions)
+		Partition& max = partitions[0];
+		for (int i = 1; i < partitions.size(); ++i)
 		{
-			divideData(newPartitions, part);
-			if (newPartitions.size() == numThreads)
+			if (partitions[i].size > max.size)
 			{
-				break;
+				max = partitions[i];
 			}
 		}
-		partitions = newPartitions;
+		divideData(partitions, max);
 	}
 
 	for (int i = 0; i < numThreads; ++i)
@@ -44,35 +39,31 @@ void RapidQuickSort::sort(float* data, int size, int delay)
 	}
 }
 
-void RapidQuickSort::selectionSort(float* data, int left, int right)
+void RapidQuickSort::insertionSort(float* data, int left, int right)
 {
-	float bestValue;
-	int bestPosition;
-	float helper;
-	for (int i = left; i < right; ++i)
+	int j;
+	float tmp;
+	for (int i = left + 1; i < right; ++i)
 	{
-		bestValue = data[i];
-		bestPosition = i;
-		for (int j = i + 1; j < right; ++j)
+		for (int j = i; j > left && data[j - 1] > data[j]; --j)
 		{
-			if (data[j] < bestValue)
-			{
-				bestValue = data[j];
-				bestPosition = j;
-			}
-		}
-		if (bestPosition != i)
-		{
-			helper = data[i];
-			data[i] = data[bestPosition];
-			data[bestPosition] = helper;
+			tmp = data[j];
+			data[j] = data[j - 1];
+			data[j - 1] = tmp;
 		}
 	}
-
 }
 
 void RapidQuickSort::quicksort(float* arr, int left, int right)
 {
+#if USE_INSERTION == 1
+	if (right - left < 10)
+	{
+		insertionSort(arr, left, right);
+		return;
+	}
+#endif // !USE_INSERTION
+
 #if USE_ASSEMBLY == 1
     int index = asmpartition(arr, left, right);
 #else
@@ -88,7 +79,26 @@ int RapidQuickSort::partition(float* arr, int left, int right)
 {
 	int i = left, j = right;
 	float tmp;
-	float pivot = arr[(left + right) / 2];
+	int mid = (left + right) / 2;
+	if (arr[right] < arr[left])
+	{
+		tmp = arr[left];
+		arr[left] = arr[right];
+		arr[right] = tmp;
+	}
+	if (arr[mid] < arr[left])
+	{
+		tmp = arr[left];
+		arr[left] = arr[mid];
+		arr[mid] = tmp;
+	}
+	if (arr[right] < arr[mid])
+	{
+		tmp = arr[mid];
+		arr[mid] = arr[right];
+		arr[right] = tmp;
+	}
+	float pivot = arr[mid];
 	while (i <= j)
 	{
 		while (arr[i] < pivot)
@@ -108,8 +118,8 @@ int RapidQuickSort::partition(float* arr, int left, int right)
 }
 void RapidQuickSort::divideData(std::vector<Partition>& parts, Partition & part)
 {
-	int middle = partition(part.arr, part.left, part.right);
+	int middle = asmpartition(part.arr, part.left, part.right);
 	parts.push_back(Partition(part.arr, middle, part.right));
+	std::cout << "Partitioning: " << parts.size() << "/" << std::thread::hardware_concurrency() << std::endl;
 	part.right = middle - 1;
-	parts.push_back(part);
 }

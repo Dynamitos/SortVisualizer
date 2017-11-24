@@ -1,13 +1,6 @@
 #include "mergesort.h"
 
 
-
-extern "C"
-{
-    void memoryCopy(float* dst, float* src, int bytes);
-}
-
-
 MergeSort::MergeSort()
 {
     this->name = "Merge sort";
@@ -49,7 +42,8 @@ void MergeSort::sort(float data[], int size, int intDelay)
         int incrementer = j * blockSize;
         for (int i=0, x=0, y=x+((j*blockSize)>>1)+1;  i<intCount;  i+=j, x+=incrementer, y+=incrementer)
         {
-            merge(sortedData, data, x, y, y-1, x+j*blockSize-1);
+            //merge(sortedData, data, x, y, y-1, x+j*blockSize-1);
+            asmmerge(sortedData, data, x, y, y - 1, x + j*blockSize - 1);
         }
     }
 }

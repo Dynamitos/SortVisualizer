@@ -78,6 +78,9 @@
     <ClCompile Include="loader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="vulkancolumnvisualization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sortalgorithm.h">
@@ -143,6 +146,9 @@
     <ClInclude Include="loader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="asmutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Object Include="copydata.obj">
@@ -157,6 +163,12 @@
     <Object Include="asmbubblesort.obj">
       <Filter>Resource Files</Filter>
     </Object>
+    <Object Include="asmmerge.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
+    <Object Include="asmswap.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
   </ItemGroup>
   <ItemGroup>
     <None Include="copydata.asm">
@@ -169,6 +181,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="asmbubblesort.asm">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="asmmerge.asm">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="asmswap.asm">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

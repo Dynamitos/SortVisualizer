@@ -182,10 +182,12 @@
     <ClCompile Include="stdsort.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="visualization.cpp" />
+    <ClCompile Include="vulkancolumnvisualization.cpp" />
     <ClCompile Include="vulkangradientvisualization.cpp" />
     <ClCompile Include="vulkanvisualization.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="asmutil.h" />
     <ClInclude Include="benchmark.h" />
     <ClInclude Include="columnvisualization.h" />
     <ClInclude Include="datamanager.h" />
@@ -205,11 +207,18 @@
     <ClInclude Include="stdsort.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="visualization.h" />
+    <ClInclude Include="vulkancolumnvisualization.h" />
     <ClInclude Include="vulkangradientvisualization.h" />
     <ClInclude Include="vulkanvisualization.h" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="asmbubblesort.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </Object>
+    <Object Include="asmmerge.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -223,6 +232,12 @@
     </Object>
   </ItemGroup>
   <ItemGroup>
+    <Object Include="asmswap.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </Object>
     <Object Include="copydata.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
@@ -238,7 +253,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="asmbubblesort.asm" />
+    <None Include="asmmerge.asm" />
     <None Include="asmpartition.asm" />
+    <None Include="asmswap.asm" />
     <None Include="copydata.asm" />
     <None Include="floattest.asm" />
   </ItemGroup>
