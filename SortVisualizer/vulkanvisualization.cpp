@@ -77,7 +77,7 @@ void VulkanVisualization::loop()
 		uint32_t imageIndex;
 		VkResult result = vkAcquireNextImageKHR(context->device, context->swapChain, std::numeric_limits<uint64_t>::max(), context->imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
 
-		VkSemaphore waitSemaphores[] = { context->imageAvailableSemaphore };
+		VkSemaphore waitSemaphores[] = { context->imageAvailableSemaphore, context->transferFinishedSemaphore };
 		if (result == VK_ERROR_OUT_OF_DATE_KHR) {
 			recreateSwapChain();
 			return;
@@ -91,14 +91,14 @@ void VulkanVisualization::loop()
 		submitInfo.commandBufferCount = 1;
 		submitInfo.pCommandBuffers = &context->transferCommands[imageIndex];
 		submitInfo.waitSemaphoreCount = 0;
-		submitInfo.signalSemaphoreCount = 0;
-		submitInfo.pSignalSemaphores = 0;
+		submitInfo.signalSemaphoreCount = 1;
+		submitInfo.pSignalSemaphores = &context->transferFinishedSemaphore;
 		submitInfo.pWaitSemaphores = nullptr;
 
 		vkQueueSubmit(context->transferQueue, 1, &submitInfo, VK_NULL_HANDLE);
 
-		VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
-		submitInfo.waitSemaphoreCount = 1;
+		VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT };
+		submitInfo.waitSemaphoreCount = 2;
 		submitInfo.pWaitSemaphores = waitSemaphores;
 		submitInfo.pWaitDstStageMask = waitStages;
 		submitInfo.commandBufferCount = 1;
@@ -107,6 +107,7 @@ void VulkanVisualization::loop()
 		VkSemaphore signalSemaphores[] = { context->renderFinishedSemaphore };
 		submitInfo.signalSemaphoreCount = 1;
 		submitInfo.pSignalSemaphores = signalSemaphores;
+
 
 		VK_CHECK(vkQueueSubmit(context->graphicsQueue, 1, &submitInfo, renderFence));
 		VkPresentInfoKHR presentInfo = {};
