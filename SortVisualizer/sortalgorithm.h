@@ -5,6 +5,8 @@
 #include <thread>
 #include <algorithm>
 #include <minmax.h>
+#include <mutex>
+#include <list>
 #include <string>
 
 #include "asmutil.h"

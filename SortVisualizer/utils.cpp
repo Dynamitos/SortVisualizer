@@ -779,11 +779,11 @@ QueueFamilyIndices util::findQueueFamilies(VkPhysicalDevice physicalDevice)
 		i++;
 	}
 
-	/*if (indices.dedicatedTransfer != -1)
+	if (indices.dedicatedTransfer != -1)
 	{
 		std::cout << "found dedicated transfer Queue" << std::endl;
-		indices.transferFamily = indices.dedicatedTransfer;
-	}*/
+		indices.transferFamily = indices.graphicsFamily;
+	}
 	return indices;
 }
 
