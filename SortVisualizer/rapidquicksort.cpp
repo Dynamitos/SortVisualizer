@@ -17,12 +17,12 @@ void RapidQuickSort::sort(float* data, int size, int delay)
 	partitions.push_back(Partition(data, 0, size - 1));
 	while (partitions.size() < numThreads)
 	{
-		Partition& max = partitions[0];
+		int max = 0;
 		for (int i = 1; i < partitions.size(); ++i)
 		{
-			if (partitions[i].size > max.size)
+			if (partitions[i].size > partitions[max].size)
 			{
-				max = partitions[i];
+				max = i;
 			}
 		}
 		divideData(partitions, max);
@@ -47,7 +47,6 @@ void RapidQuickSort::startThread(Partition part, int threadIndex)
 
 void RapidQuickSort::insertionSort(float* data, int left, int right)
 {
-	int j;
 	float tmp;
 	for (int i = left + 1; i < right; ++i)
 	{
@@ -84,6 +83,8 @@ void RapidQuickSort::quicksort(float* arr, int left, int right)
 		else
 		{
 			std::lock_guard<std::mutex> lock(threadLock);
+			numAvaliableThreads--;
+			runningThreads.push_back(std::thread(&RapidQuickSort::quicksort, this, arr, left, index - 1));
 		}
 	}
 	if (index < right)
@@ -131,11 +132,11 @@ int RapidQuickSort::partition(float* arr, int left, int right)
 	}
 	return i;
 }
-
-void RapidQuickSort::divideData(std::vector<Partition>& parts, Partition & part)
+void RapidQuickSort::divideData(std::vector<Partition>& parts, int index)
 {
-	int middle = asmpartition(part.arr, part.left, part.right);
-	parts.push_back(Partition(part.arr, middle, part.right));
+	int middle = asmpartition(parts[index].arr, parts[index].left, parts[index].right);
+	parts[index].right = middle - 1;
+	parts[index].size = parts[index].right - parts[index].left;
+	parts.push_back(Partition(parts[index].arr, middle, parts[index].right));
 	std::cout << "Partitioning: " << parts.size() << "/" << std::thread::hardware_concurrency() << std::endl;
-	part.right = middle - 1;
 }
