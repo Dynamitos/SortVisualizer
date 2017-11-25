@@ -55,7 +55,7 @@ void VulkanColumnVisualization::createPipeline()
 
 	VkPipelineInputAssemblyStateCreateInfo inputAssemby =
 		init::PipelineInputAssemblyStateCreateInfo(
-			VK_PRIMITIVE_TOPOLOGY_TRIANGLE_FAN,
+			VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP,
 			0,
 			VK_FALSE);
 

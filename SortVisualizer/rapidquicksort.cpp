@@ -1,7 +1,7 @@
 #include "rapidquicksort.h"
 
 #define USE_ASSEMBLY 1
-#define USE_INSERTION 1
+#define USE_INSERTION 0
 
 RapidQuickSort::RapidQuickSort()
 {
@@ -41,7 +41,6 @@ void RapidQuickSort::sort(float* data, int size, int delay)
 
 void RapidQuickSort::insertionSort(float* data, int left, int right)
 {
-	int j;
 	float tmp;
 	for (int i = left + 1; i < right; ++i)
 	{
@@ -116,6 +115,7 @@ int RapidQuickSort::partition(float* arr, int left, int right)
 	}
 	return i;
 }
+
 void RapidQuickSort::divideData(std::vector<Partition>& parts, Partition & part)
 {
 	int middle = asmpartition(part.arr, part.left, part.right);
