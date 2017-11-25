@@ -11,94 +11,100 @@ asmmerge:
 	mov rbx, rdx				; readData pointer
 	mov esi, r8d				; leftStart (int)
 	mov edi, r9d				; rightStart (int)
-	mov DWORD r14d, [rsp+30h]	; leftEnd (int)
-	mov DWORD r15d, [rsp+38h]	; rightEnd(int)
-	
+	mov DWORD r11d, [rsp+30h]	; leftEnd (int)
+	mov DWORD r12d, [rsp+38h]	; rightEnd(int)
+
 	; r8d = diff
+	; r10 = sortedData pointer
+	; r11 = free
 	; r12 = begin^th element of sortedData
 	; r13 = begin^th element of readData
 	; rdx = maximum sortedData
+	; r14 = leftEnd pointer
+	; r15 = rightEnd pointer
+	; FREE
+	; r11
 	
-	;FREE
-		xor r11, r11
-		xor r9, r9
-	
-	; Initialize r8d and adjust to 4 Bytes
-	mov r8d, r15d
-	sub r8d, esi
-	inc r8d
-	mov eax, 4h
-	mul r8d
-	mov r8d, eax
-	
-	; Adjust leftStart, rightStart, leftEnd and rightEnd address offsets
+	; Set leftStart and rightStart data pointers (on readData) (r9 now contains leftStart)
 	mov eax, 4h
 	mul esi
-	mov esi, eax
+	mov r9, rax
+	add rax, rbx
+	mov rsi, rax
 	
 	mov eax, 4h
 	mul edi
-	mov edi, eax
+	add rax, rbx
+	mov rdi, rax
+	
+	; Set leftEnd and rightEnd data pointers (rcx now contains rightEnd)
+	mov eax, 4h
+	mul r11d
+	add rax, rbx
+	mov r14, rax
 	
 	mov eax, 4h
-	mul r14d
-	mov r14d, eax
+	mul r12d
+	mov rcx, rax
+	add rax, rbx
+	mov r15, rax
 	
-	mov eax, 4h
-	mul r15d
-	mov r15d, eax
-	
+	; Initialize r8d(diff) and adjust to 4 Bytes
+	mov r8, r15
+	sub r8, rsi
+	add r8, 4h
+
 	; Set r12 to r10 and initialize begin^th of sortedData and readData
 	mov r12, r10
-	add r12, rsi
 	mov r13, rbx
-	add r13, rsi
+	add r12, r9
+	add r13, r9
 	
 	; Calculate maximum sortedData address
 	mov rdx, r10
-	add rdx, r15
+	add rdx, rcx
 	
 	; Adjust sortedData pointer
-	add r10, rsi
+	add r10, r9
 	
 	cmp r10, rdx
 	ja endAll
 	mainLoop:
 		startFirstIf:
-			cmp esi, r14d
+			cmp rsi, r14
 			jna startSecondIf
-				cmp edi, r15d
-				ja endLoop
-				mov DWORD r11d, [rbx+rdi]
-				mov DWORD [r10], r11d
-				add edi, 4h
+				cmp rdi, r15
+				ja endAll
+				mov DWORD r11d, [rdi]
+				add rdi, 4h
+				mov DWORD [r10], r11d				
 				jmp endLoop
 		
 		startSecondIf:
-			cmp edi, r15d
+			cmp rdi, r15
 			jna startThirdIf
-				cmp esi, r14d
-				ja endLoop
-				mov DWORD r11d, [rbx+rsi]
-				mov DWORD [r10], r11d
-				add esi, 4h
+				cmp rsi, r14
+				ja endAll
+				mov DWORD r11d, [rsi]
+				add rsi, 4h
+				mov DWORD [r10], r11d				
 				jmp endLoop
 			
 		startThirdIf:
-			fld DWORD [rbx+rsi]
-			fld DWORD [rbx+rdi]
+			fld DWORD [rsi]
+			fld DWORD [rdi]
 			fcomip st0, st1
 			fstp
 			jnb startFourthIf
-				mov DWORD r11d, [rbx+rdi]
-				mov DWORD [r10], r11d
-				add edi, 4h
+				mov DWORD r11d, [rdi]
+				add rdi, 4h
+				mov DWORD [r10], r11d				
 				jmp endLoop
 		
 		startFourthIf:
-			mov DWORD r11d, [rbx+rsi]
-			mov DWORD [r10], r11d
-			add esi, 4h
+			mov DWORD r11d, [rsi]
+			add rsi, 4h
+			mov DWORD [r10], r11d		
 			
 		endLoop:
 			add r10, 4h

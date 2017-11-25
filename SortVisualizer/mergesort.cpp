@@ -1,5 +1,7 @@
 #include "mergesort.h"
 
+#define USE_ASSEMBLY 0
+
 
 MergeSort::MergeSort()
 {
@@ -13,15 +15,9 @@ void MergeSort::sort(float data[], int size, int intDelay)
 
     float* sortedData = new float[size];
 
-    float realCount = 1;// std::thread::hardware_concurrency();
+    float realCount = std::thread::hardware_concurrency();
     int intCount = (int)realCount;
     int blockSize = size / intCount;
-
-    /*printf("\n[FIRST]\n");
-    for (int i = 0; i < size; i++)
-    {
-        printf("%f ", data[i]);
-    }*/
 
     std::thread* threads = new std::thread[intCount];
 
@@ -48,16 +44,14 @@ void MergeSort::sort(float data[], int size, int intDelay)
         int incrementer = j * blockSize;
         for (int i=0, x=0, y=x+((j*blockSize)>>1)+1;  i<intCount;  i+=j, x+=incrementer, y+=incrementer)
         {
-            //merge(sortedData, data, x, y, y-1, x+j*blockSize-1);
-            //asmmerge(sortedData, data, x, y, y - 1, x + j*blockSize - 1);
+#if USE_ASSEMBLY == 1
+            asmmerge(sortedData, data, x, y, y - 1, x + j*blockSize - 1);
+#else
+            merge(sortedData, data, x, y, y-1, x+j*blockSize-1);
+#endif
         }
     }
 
-    /*printf("\n[SECOND]\n");
-    for (int i = 0; i < size; i++)
-    {
-        printf("%f ", data[i]);
-    }*/
     printf("\n");
 }
 
@@ -105,41 +99,12 @@ void MergeSort::recursiveSort(float* sortedData, float* readData, int start, int
             sortedData[x] = readData[i++];
     }*/
     
+#if USE_ASSEMBLY == 1
     asmmerge(sortedData, readData, start, j, zzz, end);
-
+#else
+    merge(sortedData, readData, start, j, zzz, end);
+#endif
     //memcpy(&(readData[start]), &(sortedData[start]), sizeof(float) * (diff + 1));
-
-    /*float* test = new float[2]{ 21, 34 };
-    //memoryCopy(&(readData[start]), &(sortedData[start]), sizeof(float) * (end - start + 1));
-    memoryCopy(test, test, 10);
-    std::cout << test[0] << std::endl;
-    delete test;
-
-    /*int k = 1, l = 10, m = 100;
-    std::vector<int> v1{ 1, 2 };
-    std::vector<int> v2{ 3, 4 };
-
-    void* f = &v1;
-
-
-
-    mov rax, rcx
-    mov rbx, rdx
-    mov rcx, r8
-    
-    copy:
-        add QWORD [rax], 1
-
-        dec rcx
-        cmp rcx, 0
-        jne copy
-
-        
-
-    memoryCopy(f, &v2, m);
-
-    std::cout << "Hello world: " << v1[0] << " " << v1[1] << std::endl;*/
-
 
     std::this_thread::sleep_for(std::chrono::nanoseconds(intDelay));
 }

@@ -20,7 +20,7 @@
 
 int main(int argc, char* argv[])
 {
-    Visualization* renderer = new VulkanGradientVisualization(1000000);
+    Visualization* renderer = new GradientVisualization(100000000);
 	MergeSort sort;
 	renderer->init(0);
 	renderer->setAlgorithm(&sort);
