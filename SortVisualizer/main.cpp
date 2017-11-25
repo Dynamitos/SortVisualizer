@@ -21,9 +21,8 @@
 
 int main(int argc, char* argv[])
 {
-
-	Visualization* renderer = new VulkanColumnVisualization(100);
-	RapidQuickSort sort;
+	Visualization* renderer = new VulkanColumnVisualization(5000000);
+	QuickSort sort;
 	renderer->init(0);
 	renderer->setAlgorithm(&sort);
 	renderer->loop();

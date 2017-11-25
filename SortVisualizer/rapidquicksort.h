@@ -17,10 +17,14 @@ class RapidQuickSort : public SortAlgorithm
 {
 public:
     RapidQuickSort();
-	virtual void sort(float data[], int size, int intDelay);
+	void sort(float data[], int size, int intDelay);
 private:
+	uint32_t numAvaliableThreads;
+	std::vector<std::thread> runningThreads;
+	std::mutex threadLock;
+	void startThread(Partition part, int threadIndex);
 	void insertionSort(float* data, int left, int right);
 	void quicksort(float *data, int left, int right);
 	int partition(float* data, int left, int right);
-	void divideData(std::vector<Partition>& parts, Partition& part);
+	void divideData(std::vector<Partition>& parts, int index);
 };
