@@ -254,6 +254,7 @@
   <ItemGroup>
     <None Include="asmbubblesort.asm" />
     <None Include="asmmerge.asm" />
+    <None Include="asmmergebackup.asm" />
     <None Include="asmpartition.asm" />
     <None Include="asmswap.asm" />
     <None Include="copydata.asm" />
