@@ -16,14 +16,16 @@
 #include "rapidquicksort.h"
 #include "stdsort.h"
 #include "quicksort.h"
+#include "insertionsort.h"
 #include "mergesort.h"
+#include "cyclesort.h"
 #include <openoptimize\asmutil.h>
 
 
 int main(int argc, char* argv[])
 {
-	Visualization* renderer = new VulkanGradientVisualization(100000000);
-	RapidQuickSort sort;
+	Visualization* renderer = new VulkanColumnVisualization(100000);
+	CycleSort sort;
 	renderer->init(0);
 	renderer->setAlgorithm(&sort);
 	renderer->loop();

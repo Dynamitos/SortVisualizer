@@ -40,7 +40,6 @@ void RapidQuickSort::sort(float* data, int size, int delay)
 
 void RapidQuickSort::insertionSort(float* data, int left, int right)
 {
-	float tmp;
 	for (int i = left + 1; i < right; ++i)
 	{
 		for (int j = i; j > left && data[j - 1] > data[j]; --j)
