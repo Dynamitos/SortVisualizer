@@ -1,51 +1,153 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="benchmark.cpp" />
-    <ClCompile Include="columnvisualization.cpp" />
-    <ClCompile Include="datamanager.cpp" />
-    <ClCompile Include="gradientvisualization.cpp" />
-    <ClCompile Include="loader.cpp" />
-    <ClCompile Include="rapidquicksort.cpp" />
-    <ClCompile Include="bogosort.cpp" />
-    <ClCompile Include="bubblesort.cpp" />
-    <ClCompile Include="display.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="mergesort.cpp" />
-    <ClCompile Include="quicksort.cpp" />
-    <ClCompile Include="radixsort.cpp" />
-    <ClCompile Include="renderer.cpp" />
-    <ClCompile Include="resourceallocator.cpp" />
-    <ClCompile Include="selectionsort.cpp" />
-    <ClCompile Include="stdsort.cpp" />
-    <ClCompile Include="utils.cpp" />
-    <ClCompile Include="visualization.cpp" />
-    <ClCompile Include="vulkancolumnvisualization.cpp" />
-    <ClCompile Include="vulkangradientvisualization.cpp" />
-    <ClCompile Include="vulkanvisualization.cpp" />
+    <ClCompile Include="benchmark.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bogosort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bubblesort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="columnvisualization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="datamanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="display.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gradientvisualization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hostallocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="loader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mergesort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="quicksort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="radixsort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rapidquicksort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="resourceallocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="selectionsort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdsort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="visualization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vulkancolumnvisualization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vulkangradientvisualization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vulkanvisualization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="benchmark.h" />
-    <ClInclude Include="columnvisualization.h" />
-    <ClInclude Include="datamanager.h" />
-    <ClInclude Include="gradientvisualization.h" />
-    <ClInclude Include="loader.h" />
-    <ClInclude Include="rapidquicksort.h" />
-    <ClInclude Include="bogosort.h" />
-    <ClInclude Include="bubblesort.h" />
-    <ClInclude Include="display.h" />
-    <ClInclude Include="mergesort.h" />
-    <ClInclude Include="quicksort.h" />
-    <ClInclude Include="radixsort.h" />
-    <ClInclude Include="renderer.h" />
-    <ClInclude Include="resourceallocator.h" />
-    <ClInclude Include="selectionsort.h" />
-    <ClInclude Include="sortalgorithm.h" />
-    <ClInclude Include="stdsort.h" />
-    <ClInclude Include="utils.h" />
-    <ClInclude Include="visualization.h" />
-    <ClInclude Include="vulkancolumnvisualization.h" />
-    <ClInclude Include="vulkangradientvisualization.h" />
-    <ClInclude Include="vulkanvisualization.h" />
+    <ClInclude Include="benchmark.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bogosort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bubblesort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="columnvisualization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="datamanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="display.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gradientvisualization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hostallocator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mergesort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="quicksort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="radixsort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidquicksort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resourceallocator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="selectionsort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sortalgorithm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdsort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="visualization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vulkancolumnvisualization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vulkangradientvisualization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vulkanvisualization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{06d5dd13-2939-48c7-bb3b-7f8a410a5e9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{657f3c3e-93fc-471d-837c-a3ae87dca611}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
