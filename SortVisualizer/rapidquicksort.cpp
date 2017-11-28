@@ -1,7 +1,7 @@
 #include "rapidquicksort.h"
 
 #define USE_ASSEMBLY 1
-#define USE_INSERTION 0
+#define USE_INSERTION 1
 
 RapidQuickSort::RapidQuickSort()
 {
@@ -38,13 +38,6 @@ void RapidQuickSort::sort(float* data, int size, int delay)
 	}
 }
 
-void RapidQuickSort::startThread(Partition part, int threadIndex)
-{
-	quicksort(part.arr, part.left, part.right);
-	std::lock_guard<std::mutex> lock(threadLock);
-	numAvaliableThreads++;
-}
-
 void RapidQuickSort::insertionSort(float* data, int left, int right)
 {
 	float tmp;
@@ -52,9 +45,7 @@ void RapidQuickSort::insertionSort(float* data, int left, int right)
 	{
 		for (int j = i; j > left && data[j - 1] > data[j]; --j)
 		{
-			tmp = data[j];
-			data[j] = data[j - 1];
-			data[j - 1] = tmp;
+			asmswap(&data[j], &data[j - 1]);
 		}
 	}
 }
@@ -62,7 +53,7 @@ void RapidQuickSort::insertionSort(float* data, int left, int right)
 void RapidQuickSort::quicksort(float* arr, int left, int right)
 {
 #if USE_INSERTION == 1
-	if (right - left < 10)
+	if (right - left < 20)
 	{
 		insertionSort(arr, left, right);
 		return;
@@ -75,18 +66,8 @@ void RapidQuickSort::quicksort(float* arr, int left, int right)
     int index = partition(arr, left, right);
 #endif
 	if (left < index - 1)
-	{
-		if (!numAvaliableThreads)
-		{
-			quicksort(arr, left, index - 1);
-		}
-		else
-		{
-			std::lock_guard<std::mutex> lock(threadLock);
-			numAvaliableThreads--;
-			runningThreads.push_back(std::thread(&RapidQuickSort::quicksort, this, arr, left, index - 1));
-		}
-	}
+		quicksort(arr, left, index - 1);
+
 	if (index < right)
 		quicksort(arr, index, right);
 }
