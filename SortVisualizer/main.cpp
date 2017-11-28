@@ -22,8 +22,8 @@
 
 int main(int argc, char* argv[])
 {
-	Visualization* renderer = new VulkanGradientVisualization(1000000);
-	QuickSort sort;
+	Visualization* renderer = new VulkanColumnVisualization(10000);
+	RapidQuickSort sort;
 	renderer->init(0);
 	renderer->setAlgorithm(&sort);
 	renderer->loop();

@@ -136,8 +136,9 @@ int RapidQuickSort::partition(float* arr, int left, int right)
 void RapidQuickSort::divideData(std::vector<Partition>& parts, int index)
 {
 	int middle = asmpartition(parts[index].arr, parts[index].left, parts[index].right);
+	parts.push_back(Partition(parts[index].arr, middle, parts[index].right));
 	parts[index].right = middle - 1;
 	parts[index].size = parts[index].right - parts[index].left;
-	parts.push_back(Partition(parts[index].arr, middle, parts[index].right));
+
 	std::cout << "Partitioning: " << parts.size() << "/" << std::thread::hardware_concurrency() << std::endl;
 }
