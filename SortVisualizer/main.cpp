@@ -16,12 +16,16 @@
 #include "stdsort.h"
 #include "quicksort.h"
 #include "mergesort.h"
+#include <openoptimize\asmutil.h>
 
 
 int main(int argc, char* argv[])
 {
-    Visualization* renderer = new GradientVisualization(100000000);
-	MergeSort sort;
+    //asmtests();
+    //return 0;
+
+    Visualization* renderer = new GradientVisualization(100000);
+	BubbleSort sort;
 	renderer->init(0);
 	renderer->setAlgorithm(&sort);
 	renderer->loop();

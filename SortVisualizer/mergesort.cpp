@@ -33,7 +33,6 @@ void MergeSort::sort(float data[], int size, int intDelay)
     if(realCount > intCount)
         threads[i] = std::thread(&MergeSort::recursiveSort, this, std::ref(sortedData), std::ref(data), x, size-1);
 
-
     for (int i = 0; i < intCount; i++)
     {
         threads[i].join();  
@@ -60,6 +59,9 @@ void MergeSort::sort(float data[], int size, int intDelay)
 
 void MergeSort::recursiveSort(float* sortedData, float* readData, int start, int end)
 {
+/*#if USE_ASSEMBLY == 2
+    asmrecursivesort(sortedData, readData, start, end);
+//#else*/
     if (start == end)
         return;
     if (end & start == 1)
@@ -79,34 +81,14 @@ void MergeSort::recursiveSort(float* sortedData, float* readData, int start, int
     int i = start;
     int j = zzz + 1;
     
-    /*for (int x = start; x <= end; x++)
-    {
-        if (i > zzz)
-        {
-            if (j > end)
-                break;
-            sortedData[x] = readData[j++];
-        }
-        else if (j > end)
-        {
-            if (i > zzz)
-                break;
-            sortedData[x] = readData[i++];
-        }
-        else if (readData[j] < readData[i])
-            sortedData[x] = readData[j++];
-        else
-            sortedData[x] = readData[i++];
-    }*/
-    
-#if USE_ASSEMBLY == 1
+/*#if USE_ASSEMBLY == 1
     asmmerge(sortedData, readData, start, j, zzz, end);
-#else
+#else*/
     merge(sortedData, readData, start, j, zzz, end);
-#endif
-    //memcpy(&(readData[start]), &(sortedData[start]), sizeof(float) * (diff + 1));
+//#endif
 
     std::this_thread::sleep_for(std::chrono::nanoseconds(intDelay));
+//#endif
 }
 
 

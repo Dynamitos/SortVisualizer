@@ -9,7 +9,7 @@
 #include <list>
 #include <string>
 
-#include "asmutil.h"
+#include <openoptimize\asmutil.h>
 
 class SortAlgorithm
 {
