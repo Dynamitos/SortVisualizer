@@ -21,7 +21,6 @@ void Display::createWindow(bool noContext)
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 	}
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
     window = glfwCreateWindow(width, height, "Sort Visualizer", NULL, NULL);
     if (!window)
         std::cout << "ERROROROROROROROR" << std::endl;

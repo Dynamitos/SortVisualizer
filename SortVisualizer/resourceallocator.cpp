@@ -327,7 +327,7 @@ MemoryChunk::MemoryChunk(VkDeviceSize size, int memoryTypeIndex):
 	block.offset = 0;
 	block.size = size;
 	
-	VK_CHECK(vkAllocateMemory(m_context->device, &allocateInfo, nullptr, &m_Memory));
+	VK_CHECK(vkAllocateMemory(m_context->device, &allocateInfo, m_context->allocator, &m_Memory));
 	block.memory = m_Memory;
 	
 	VkPhysicalDeviceMemoryProperties memProperties;
@@ -411,7 +411,7 @@ MemoryChunk::~MemoryChunk()
 }
 void MemoryChunk::destroy()
 {
-	vkFreeMemory(m_context->device, m_Memory, nullptr);
+	vkFreeMemory(m_context->device, m_Memory, m_context->allocator);
 }
 ChunkAllocator::ChunkAllocator(VkDeviceSize size):
 	m_Size{ size }

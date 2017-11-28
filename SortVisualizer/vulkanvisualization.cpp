@@ -1,11 +1,13 @@
 #include "vulkanvisualization.h"
 #include "loader.h"
 #include "datamanager.h"
+#include "hostallocator.h"
 
 VulkanVisualization::VulkanVisualization(int numElements)
 	: Visualization(numElements) {
 	context = DataManager::getInstance().getContext();
-	
+	context->allocator = new VkAllocationCallbacks();
+	*context->allocator = HostAllocator();
 }
 
 VulkanVisualization::~VulkanVisualization()
@@ -73,7 +75,7 @@ void VulkanVisualization::loop()
 	startSort();
 	while (!display->shouldClose())
 	{
-		//createCommandBuffers();
+		memcpy(stagingPointer, data, sizeof(float)*sizeGPU);
 		uint32_t imageIndex;
 		VkResult result = vkAcquireNextImageKHR(context->device, context->swapChain, std::numeric_limits<uint64_t>::max(), context->imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
 

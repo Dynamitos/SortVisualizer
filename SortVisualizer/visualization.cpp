@@ -15,24 +15,24 @@ void Visualization::init(int delay)
 	this->delay = delay;
 	srand(time(NULL));
 
-    /*
+    
 #pragma loop(hint_parallel(0))
 	for (int i = 0; i < sizeData; i++)
     {
         //data[i] = i;
         data[i] = rand() / (float)RAND_MAX;
 	}
-    */
+    
 
     // TESTING
-    
+  /*  
 #pragma loop(hint_parallel(0))
     for (int i = 0; i < sizeData; i++)
     {
         //data[i] = i;
         data[i] = 1 - ((float)i / sizeData);
     }
-    
+    */
 }
 
 void Visualization::setAlgorithm(SortAlgorithm * algorithm)
@@ -44,7 +44,7 @@ void Visualization::startSort()
 {
 	sorter = std::thread([=]
 	{
-        std::cout << "Start sorting with " << algorithm->getName().c_str() << "..." << std::endl;
+//        std::cout << "Start sorting with " << algorithm->getName().c_str() << "..." << std::endl;
 		auto start = std::chrono::high_resolution_clock::now();
 		algorithm->sort(data, sizeData, delay);
 		auto end = std::chrono::high_resolution_clock::now();

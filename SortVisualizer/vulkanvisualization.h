@@ -39,6 +39,7 @@ protected:
 	VkFence renderFence;
 	VulkanContext* context;
 	StorageBuffer* dataBlock;
+	float* stagingPointer;
 	size_t sizeGPU;
 	static void onWindowResized(GLFWwindow* window, int width, int height);
 };

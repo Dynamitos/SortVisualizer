@@ -167,6 +167,7 @@
     <ClCompile Include="columnvisualization.cpp" />
     <ClCompile Include="datamanager.cpp" />
     <ClCompile Include="gradientvisualization.cpp" />
+    <ClCompile Include="hostallocator.cpp" />
     <ClCompile Include="loader.cpp" />
     <ClCompile Include="rapidquicksort.cpp" />
     <ClCompile Include="bogosort.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="columnvisualization.h" />
     <ClInclude Include="datamanager.h" />
     <ClInclude Include="gradientvisualization.h" />
+    <ClInclude Include="hostallocator.h" />
     <ClInclude Include="loader.h" />
     <ClInclude Include="rapidquicksort.h" />
     <ClInclude Include="bogosort.h" />

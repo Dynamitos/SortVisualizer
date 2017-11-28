@@ -64,6 +64,7 @@ struct VulkanContext
 	VkFence utilFence;
 	QueueFamilyIndices indices;
 	ResourceAllocator* resAllocator;
+	VkAllocationCallbacks* allocator;
 	Loader* loader;
 };
 

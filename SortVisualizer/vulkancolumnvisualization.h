@@ -22,7 +22,6 @@ private:
 	std::vector<VkVertexInputAttributeDescription> attribDesc;
 	MeshBuffer* vertexBlock;
 	MeshBuffer* positionBlock;
-	float* gpuData;
 	float* vertices;
 	float* positions;
 };

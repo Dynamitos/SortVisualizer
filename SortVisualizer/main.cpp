@@ -21,12 +21,11 @@
 
 int main(int argc, char* argv[])
 {
-	Visualization* renderer = new VulkanColumnVisualization(5000000);
+	Visualization* renderer = new VulkanGradientVisualization(1000000);
 	QuickSort sort;
 	renderer->init(0);
 	renderer->setAlgorithm(&sort);
 	renderer->loop();
 	delete renderer;
-	system("PAUSE");
 	return 0;
 }

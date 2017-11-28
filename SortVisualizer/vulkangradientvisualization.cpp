@@ -205,10 +205,10 @@ void VulkanGradientVisualization::createData()
 	dataBlock = new StorageBuffer();
 	context->resAllocator->createBuffer(sizeGPU * sizeof(float), VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT, dataBlock->stagingBuffer, dataBlock->stagingMemory);
 	context->resAllocator->createBuffer(sizeGPU * sizeof(float), VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, dataBlock->deviceBuffer, dataBlock->deviceMemory);
-	vkMapMemory(context->device, dataBlock->stagingMemory.memory, dataBlock->stagingMemory.offset, sizeGPU * sizeof(float), 0, (void**)&gpuData);
+	vkMapMemory(context->device, dataBlock->stagingMemory.memory, dataBlock->stagingMemory.offset, sizeGPU * sizeof(float), 0, (void**)&stagingPointer);
+	gpuData = new float[sizeGPU];
 	gpuData[0] = 0.f;
 	gpuData[sizeGPU - 1] = 1.f;
 	data = &gpuData[1];
-
 }
 

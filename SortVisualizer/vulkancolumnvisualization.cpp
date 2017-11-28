@@ -61,7 +61,7 @@ void VulkanColumnVisualization::createPipeline()
 
 	VkViewport viewPort =
 		init::Viewport(
-		(float)context->swapChainExtent.width,
+			(float)context->swapChainExtent.width,
 			(float)context->swapChainExtent.height,
 			0.0f,
 			1.0f);
@@ -160,10 +160,10 @@ void VulkanColumnVisualization::createData()
 	float width = 2.f / sizeData;
 	vertices = new float[8]
 	{
-		-width / 2.f, 1.f,
-		width / 2.f, 1.f,
-		-width / 2.f, -1.f,
-		width / 2.f, -1.f
+		0, 1.f,
+		width, 1.f,
+		0, -1.f,
+		width, -1.f
 	};
 
 	positions = new float[sizeData];
@@ -178,7 +178,8 @@ void VulkanColumnVisualization::createData()
 	dataBlock = new StorageBuffer();
 	context->resAllocator->createBuffer(sizeGPU * sizeof(float), VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT, dataBlock->stagingBuffer, dataBlock->stagingMemory);
 	context->resAllocator->createBuffer(sizeGPU * sizeof(float), VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, dataBlock->deviceBuffer, dataBlock->deviceMemory);
-	vkMapMemory(context->device, dataBlock->stagingMemory.memory, dataBlock->stagingMemory.offset, sizeGPU * sizeof(float), 0, (void**)&data);
+	vkMapMemory(context->device, dataBlock->stagingMemory.memory, dataBlock->stagingMemory.offset, sizeGPU * sizeof(float), 0, (void**)&stagingPointer);
+	data = new float[sizeGPU];
 }
 
 void VulkanColumnVisualization::createLayoutDescriptions()
