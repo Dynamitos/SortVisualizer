@@ -17,6 +17,7 @@
 #include "stdsort.h"
 #include "quicksort.h"
 #include "mergesort.h"
+#include <openoptimize\asmutil.h>
 
 
 int main(int argc, char* argv[])
