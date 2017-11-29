@@ -18,11 +18,11 @@
 #include "quicksort.h"
 #include "mergesort.h"
 #include "insertionsort.h"
-#include <openoptimize\asmutil.h>
+
 
 int main(int argc, char* argv[])
 {
-	Visualization* renderer = new VulkanGradientVisualization(100000000);
+	Visualization* renderer = new VulkanColumnVisualization(100000);
 	RapidQuickSort sort;
 	renderer->init(0);
 	renderer->setAlgorithm(&sort);

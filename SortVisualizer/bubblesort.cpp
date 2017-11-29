@@ -1,6 +1,6 @@
 #include "bubblesort.h"
 
-#define USE_ASSEMBLY 1
+#define USE_ASSEMBLY 0
 
 
 BubbleSort::BubbleSort()
@@ -15,7 +15,7 @@ void BubbleSort::sort(float* data, int length, int delay)
 #else
     int flag = 1;
 	float helper;
-	for (int i = 0; (i <= length) && flag; ++i)
+	for (int i = 0; (i < length) && flag; ++i)
 	{
 		flag = 0;
 		for (int j = 0; j < (length - 1 - i); ++j)
@@ -27,8 +27,8 @@ void BubbleSort::sort(float* data, int length, int delay)
 				data[j + 1] = helper;
 				flag = 1;
 			}
+            std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 		}
-        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 	}
 #endif
 }

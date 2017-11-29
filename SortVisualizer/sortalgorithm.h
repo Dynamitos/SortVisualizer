@@ -16,6 +16,8 @@ class SortAlgorithm
 public:
 	virtual void sort(float data[], int size, int intDelay) = 0;
     std::string getName() { return name; }
+    
+    void setDelay(int intDelay) { this->intDelay = intDelay; }
 protected:
     int intHelper, intDelay;
     float floatHelper;
