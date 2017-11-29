@@ -15,7 +15,7 @@ void MergeSort::sort(float data[], int size, int intDelay)
 
     float* sortedData = new float[size];
 
-	float realCount = std::thread::hardware_concurrency();
+    float realCount = std::thread::hardware_concurrency();
     int intCount = (int)realCount;
     int blockSize = size / intCount;
 
