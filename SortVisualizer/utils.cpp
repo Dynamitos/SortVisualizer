@@ -781,8 +781,8 @@ QueueFamilyIndices util::findQueueFamilies(VkPhysicalDevice physicalDevice)
 
 	if (indices.dedicatedTransfer != -1)
 	{
-		std::cout << "using graphics for transfer" << std::endl;
-		indices.transferFamily = indices.graphicsFamily;
+		std::cout << "using dedicated transfer" << std::endl;
+		indices.transferFamily = indices.dedicatedTransfer;
 	}
 	return indices;
 }
