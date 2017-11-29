@@ -17,17 +17,13 @@
 #include "stdsort.h"
 #include "quicksort.h"
 #include "mergesort.h"
+#include "insertionsort.h"
 #include <openoptimize\asmutil.h>
-
-extern "C"
-{
-    asminsertionsort();
-}
 
 int main(int argc, char* argv[])
 {
 	Visualization* renderer = new VulkanGradientVisualization(100000000);
-	MergeSort sort;
+	RapidQuickSort sort;
 	renderer->init(0);
 	renderer->setAlgorithm(&sort);
 	renderer->loop();

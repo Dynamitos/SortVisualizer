@@ -54,7 +54,7 @@ void RapidQuickSort::quicksort(float* arr, int left, int right)
 #if USE_INSERTION == 1
 	if (right - left < 20)
 	{
-		insertionSort(arr, left, right);
+        asminsertionsort(&arr[left], right-left, 0);
 		return;
 	}
 #endif // !USE_INSERTION

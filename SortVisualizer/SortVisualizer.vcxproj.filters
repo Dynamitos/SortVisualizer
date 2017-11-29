@@ -158,14 +158,4 @@
       <UniqueIdentifier>{657f3c3e-93fc-471d-837c-a3ae87dca611}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="fastcopy.asm">
-      <Filter>Source Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="fastcopy.obj">
-      <Filter>Source Files</Filter>
-    </Object>
-  </ItemGroup>
 </Project>
