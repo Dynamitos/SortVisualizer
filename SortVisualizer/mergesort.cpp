@@ -15,14 +15,16 @@ void MergeSort::sort(float data[], int size, int intDelay)
 
     float* sortedData = new float[size];
 
-    float realCount = 1;// std::thread::hardware_concurrency();
-    int intCount = (int)realCount;
+    int intCount = std::thread::hardware_concurrency();
     int blockSize = size / intCount;
+    float fBlockSize = (float)(size) / intCount;
 
     std::thread* threads = new std::thread[intCount];
 
-    if (realCount > intCount)
+    if (blockSize < fBlockSize)
+    {
         intCount--;
+    }
 
     int i, x, y;
     for(i = 0, x = 0, y=blockSize;  i<intCount;  i++, x+=blockSize, y+=blockSize)
@@ -30,7 +32,7 @@ void MergeSort::sort(float data[], int size, int intDelay)
         threads[i] = std::thread(&MergeSort::recursiveSort, this, std::ref(sortedData), std::ref(data), x, y-1);
     }
 
-    if(realCount > intCount)
+    if(blockSize < fBlockSize)
         threads[i] = std::thread(&MergeSort::recursiveSort, this, std::ref(sortedData), std::ref(data), x, size-1);
 
     for (int i = 0; i < intCount; i++)
@@ -64,13 +66,15 @@ void MergeSort::recursiveSort(float* sortedData, float* readData, int start, int
 //#else*/
     if (start == end)
         return;
-    if (end & start == 1)
+    if (end - start == 1)
     {
         floatHelper = readData[start];
         readData[start] = min(readData[start], readData[end]);
         readData[end] = max(floatHelper, readData[end]);
         return;
     }
+    //printf("dlsajfldasfjlkfjasdlfk");
+    //std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     int diff = end - start;
     int zzz = start + (diff >> 1);
