@@ -10,6 +10,7 @@ asminsertionsort:
 	; rsi = A[i]
 	; rdi = A[j]
 	; r8d = i
+	; r9d = j
 	; ebx = einzusortierender_wert
 	; eax = FREE
 	; r10d = FREE
@@ -28,8 +29,11 @@ asminsertionsort:
 		
 		; Set j to i thus set rdi to rsi
 		mov rdi, rsi
+		mov r9d, r8d
 		
 		startSecondLoop:
+			cmp r9d, 0h
+			jna endFirstLoop
 			cmp [rdi-4h], ebx
 			jna endFirstLoop
 			
@@ -39,13 +43,14 @@ asminsertionsort:
 			dec r9d
 			sub rdi, 4h
 			
-			jmp startSecondLoop
+			jmp startSecondLoop		
 	
 		endFirstLoop:
 			mov [rdi], ebx
 			add rsi, 4h
 			inc r8d
-			loop startFirstLoop
+			loop startFirstLoop			
+			
 	
 	endAll:
 		ret

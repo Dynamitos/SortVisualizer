@@ -12,7 +12,7 @@
 class Benchmark
 {
 public:
-    Benchmark(int delay, std::vector<SortAlgorithm> sortAlgorithms);
+    Benchmark(int delay, std::vector<SortAlgorithm*> sortAlgorithms);
     ~Benchmark();
     
     void setDelay(int intDelay);
@@ -28,7 +28,7 @@ public:
 private:
     std::chrono::high_resolution_clock::time_point startPoint;
 
-    std::list<SortAlgorithm> sortAlgorithms;
+    std::vector<SortAlgorithm*> sortAlgorithms;
 
     SortAlgorithm* currSortAlgorithm;
     float* currSortingData;

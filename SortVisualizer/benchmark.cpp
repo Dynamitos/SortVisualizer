@@ -2,15 +2,17 @@
 
 
 
-Benchmark::Benchmark(int delay, std::vector<SortAlgorithm> sortAlgorithms)
-    :sortAlgorithms(sortAlgorithms)
+Benchmark::Benchmark(int delay, std::vector<SortAlgorithm*> sortAlgorithms)
 {
+    this->sortAlgorithms = sortAlgorithms;
+
     GlobalMemoryStatusEx(&memoryStatus);
 }
 
 
 Benchmark::~Benchmark()
 {
+    delete currSortingData;
 }
 
 
@@ -20,7 +22,7 @@ void Benchmark::setDelay(int intDelay)
 
     for (auto it = sortAlgorithms.begin(); it != sortAlgorithms.end(); it++)
     {
-        (*it).setDelay(intDelay);
+        (*it)->setDelay(intDelay);
     }
 
     benchmarkMutex.unlock();
@@ -39,7 +41,7 @@ void Benchmark::addSortingAlgorithm(SortAlgorithm& sa)
 {
     benchmarkMutex.lock();
 
-    sortAlgorithms.push_back(sa);
+    sortAlgorithms.push_back(&sa);
 
     benchmarkMutex.unlock();
 }
@@ -51,6 +53,8 @@ void Benchmark::generateDataSet(Datatype type, int count)
 
     usedCount = count;
     requiredKBytes = (count * sizeof(type)) / 1000;
+
+    currSortingData = new currSortingData[count];y
 
     benchmarkMutex.unlock();
 }
@@ -77,6 +81,9 @@ void Benchmark::startBenchmark()
         printf("ERROR: Swap file needed but no swap filename given!\n\n");
         return;
     }
+
+    ofSwapStream.open(swapFilename, std::ios_base::out | std::ios_base::binary);
+
 
 
     benchmarkMutex.unlock();

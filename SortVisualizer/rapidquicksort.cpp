@@ -40,11 +40,12 @@ void RapidQuickSort::sort(float* data, int size, int delay)
 
 void RapidQuickSort::insertionSort(float* data, int left, int right)
 {
+    float helper;
 	for (int i = left + 1; i < right; ++i)
 	{
 		for (int j = i; j > left && data[j - 1] > data[j]; --j)
 		{
-			asmswap(&data[j], &data[j - 1]);
+	        asmswap(&data[j], &data[j - 1]);
 		}
 	}
 }
@@ -54,7 +55,8 @@ void RapidQuickSort::quicksort(float* arr, int left, int right)
 #if USE_INSERTION == 1
 	if (right - left < 20)
 	{
-        asminsertionsort(&arr[left], right-left, 0);
+        //insertionSort(arr, left, right);
+        asminsertionsort(&arr[left], right-left+1, 0);
 		return;
 	}
 #endif // !USE_INSERTION

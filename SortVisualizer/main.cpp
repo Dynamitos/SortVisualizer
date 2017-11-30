@@ -22,7 +22,7 @@
 
 int main(int argc, char* argv[])
 {
-	Visualization* renderer = new VulkanColumnVisualization(100000);
+	Visualization* renderer = new VulkanColumnVisualization(10000000);
 	RapidQuickSort sort;
 	renderer->init(0);
 	renderer->setAlgorithm(&sort);
