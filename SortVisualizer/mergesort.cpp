@@ -8,6 +8,34 @@ MergeSort::MergeSort()
     this->name = "Merge sort";
 }
 
+void merge2(float* sortedData, float* readData, int leftStart, int rightStart, int leftEnd, int rightEnd)
+{
+    int diff = (rightEnd - leftStart) + 1;
+    int begin = leftStart;
+
+    for (int x = leftStart; x <= rightEnd; x++)
+    {
+        printf("%d\n", x);
+        if (leftStart > leftEnd)
+        {
+            if (rightStart > rightEnd)
+                break;
+            sortedData[x] = readData[rightStart++];
+        }
+        else if (rightStart > rightEnd)
+        {
+            if (leftStart > leftEnd)
+                break;
+            sortedData[x] = readData[leftStart++];
+        }
+        else if (readData[rightStart] < readData[leftStart])
+            sortedData[x] = readData[rightStart++];
+        else
+            sortedData[x] = readData[leftStart++];
+    }
+    memcpy(&(readData[begin]), &(sortedData[begin]), sizeof(float) * diff);
+}
+
 
 void MergeSort::sort(float data[], int size, int intDelay)
 {
@@ -15,16 +43,14 @@ void MergeSort::sort(float data[], int size, int intDelay)
 
     float* sortedData = new float[size];
 
-    int intCount = std::thread::hardware_concurrency();
+    int intCount = 2;// std::thread::hardware_concurrency();
     int blockSize = size / intCount;
-    float fBlockSize = (float)(size) / intCount;
+    int remainder = size % intCount;
 
     std::thread* threads = new std::thread[intCount];
 
-    if (blockSize < fBlockSize)
-    {
+    if (remainder)
         intCount--;
-    }
 
     int i, x, y;
     for(i = 0, x = 0, y=blockSize;  i<intCount;  i++, x+=blockSize, y+=blockSize)
@@ -32,23 +58,27 @@ void MergeSort::sort(float data[], int size, int intDelay)
         threads[i] = std::thread(&MergeSort::recursiveSort, this, std::ref(sortedData), std::ref(data), x, y-1);
     }
 
-    if(blockSize < fBlockSize)
-        threads[i] = std::thread(&MergeSort::recursiveSort, this, std::ref(sortedData), std::ref(data), x, size-1);
+    if (remainder)
+    {
+        printf("REMAINDER");
+        threads[i] = std::thread(&MergeSort::recursiveSort, this, std::ref(sortedData), std::ref(data), x, size - 1);
+        intCount++;
+    }
 
     for (int i = 0; i < intCount; i++)
     {
-        threads[i].join();  
+        threads[i].join();
     }
 
     for (int j = 2; j <= intCount; j*=2)
     {       
         int incrementer = j * blockSize;
-        for (int i=0, x=0, y=x+((j*blockSize)>>1)+1;  i<intCount;  i+=j, x+=incrementer, y+=incrementer)
+        for (int i=0, x=0, y=x+((j*blockSize)>>1);  i<intCount;  i+=j, x+=incrementer, y+=incrementer)
         {
 #if USE_ASSEMBLY == 1
             asmmerge(sortedData, data, x, y, y - 1, x + j*blockSize - 1);
 #else
-            merge(sortedData, data, x, y, y-1, x+j*blockSize-1);
+            merge(sortedData, data, x, y, y-1, x+incrementer-1);
 #endif
         }
     }
@@ -73,23 +103,21 @@ void MergeSort::recursiveSort(float* sortedData, float* readData, int start, int
         readData[end] = max(floatHelper, readData[end]);
         return;
     }
-    //printf("dlsajfldasfjlkfjasdlfk");
-    //std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    int diff = end - start;
+    int diff = end - start + 1;
     int zzz = start + (diff >> 1);
 
-    recursiveSort(sortedData, readData, start, zzz);
-    recursiveSort(sortedData, readData, zzz + 1, end);
+    recursiveSort(sortedData, readData, start, zzz-1);
+    recursiveSort(sortedData, readData, zzz, end);
 
     int i = start;
-    int j = zzz + 1;
+    int j = zzz;
     
-/*#if USE_ASSEMBLY == 1
-    asmmerge(sortedData, readData, start, j, zzz, end);
-#else*/
-    merge(sortedData, readData, start, j, zzz, end);
-//#endif
+#if USE_ASSEMBLY == 1
+    asmmerge(sortedData, readData, start, j, zzz - 1, end);
+#else
+    merge(sortedData, readData, start, j, zzz - 1, end);
+#endif
 
     std::this_thread::sleep_for(std::chrono::nanoseconds(intDelay));
 //#endif
@@ -122,8 +150,6 @@ void MergeSort::merge(float* sortedData, float* readData, int leftStart, int rig
     }
     memcpy(&(readData[begin]), &(sortedData[begin]), sizeof(float) * diff);
 }
-
-
  
 
 
