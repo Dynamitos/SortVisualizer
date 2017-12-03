@@ -19,7 +19,7 @@
 #include "cyclesort.h"
 #include "mergesort.h"
 #include "insertionsort.h"
-#include <openoptimize\asmutil.h>
+
 
 int main(int argc, char* argv[])
 {

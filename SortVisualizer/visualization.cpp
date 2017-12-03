@@ -50,6 +50,23 @@ void Visualization::startSort()
 		auto end = std::chrono::high_resolution_clock::now();
 		float runtime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 		std::cout << "Runtime of " << algorithm->getName() << ": " << runtime << "ms" << std::endl;
+
+        for (int i = 0; i < sizeData/2-1; i++)
+        {
+            if (data[i] > data[i + 1])
+            {
+                printf("\n\n[ERROR]: Not sorted correctly at: %d!\n\n", i);
+                return;
+            }
+        }
+        for (int i = sizeData/2; i < sizeData - 1; i++)
+        {
+            if (data[i] > data[i + 1])
+            {
+                printf("\n\n[ERROR]: Not sorted correctly at: %d!\n\n", i);
+                return;
+            }
+        }
 	});
 }
 

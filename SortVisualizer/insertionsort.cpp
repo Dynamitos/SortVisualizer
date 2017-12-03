@@ -9,6 +9,7 @@ InsertionSort::InsertionSort()
 
 void InsertionSort::sort(float data[], int size, int intDelay)
 {
+    printf("\n");
 #if USE_ASSEMBLY == 1
     asminsertionsort(data, size, intDelay);
 #else
