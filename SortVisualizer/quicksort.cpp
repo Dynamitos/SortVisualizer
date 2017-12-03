@@ -16,7 +16,6 @@ void QuickSort::quicksort(float* arr, int left, int right)
 {
     int index = 0;
     index = partition(arr, left, right);
-	std::this_thread::sleep_for(std::chrono::milliseconds(intDelay));
     //index = asmpartition(arr, left, right);
 	if (left < index - 1)
 		quicksort(arr, left, index - 1);
@@ -37,6 +36,7 @@ int QuickSort::partition(float* arr, int left, int right)
 			j--;
 		if (i <= j)
 		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(intDelay));
 			tmp = arr[i];
 			arr[i] = arr[j];
 			arr[j] = tmp;

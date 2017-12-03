@@ -1,12 +1,7 @@
 #pragma once
 #include "visualization.h"
-const int SIZE_HISTORY = 8;
-struct Line
-{
-	float value;
-	int currentIndex;
-	float* history;
-};
+const int SIZE_HISTORY = 16;
+
 class LineVisualization : public Visualization
 {
 public:
@@ -15,9 +10,15 @@ public:
 	void init(int delay);
 	virtual void loop() override;
 private:
-	float* history;
 	GLuint vaoID;
 	GLuint vertexBuffer;
 	GLuint historyBuffer;
-	Line* lines;
+	GLuint valueBuffer;
+	GLuint programID;
+	GLuint vertShader;
+	GLuint fragShader;
+	GLint location_history;
+	GLint location_data;
+	float* values;
+	float* history;
 };
