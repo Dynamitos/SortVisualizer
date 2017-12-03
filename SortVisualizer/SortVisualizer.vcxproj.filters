@@ -70,8 +70,15 @@
     <ClCompile Include="vulkanvisualization.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="insertionsort.cpp" />
-    <ClCompile Include="cyclesort.cpp" />
+    <ClCompile Include="cyclesort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="insertionsort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="linevisualization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="benchmark.h">
@@ -147,6 +154,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cyclesort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="linevisualization.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
