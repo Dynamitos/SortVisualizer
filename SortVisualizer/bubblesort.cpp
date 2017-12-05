@@ -1,6 +1,6 @@
 #include "bubblesort.h"
 
-#define USE_ASSEMBLY 0
+#define USE_ASSEMBLY 1
 
 
 BubbleSort::BubbleSort()
