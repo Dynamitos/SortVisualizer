@@ -51,6 +51,12 @@ void CommandParser::parseCommandLine(int argc, char * argv[])
 {
 	auto result = options.parse(argc, argv);
 
+	if (result["h"].as<bool>())
+	{
+		std::cout << options.help({"Sorting Algorithms", "Visualizations", "Misc" }) << std::endl;
+		exit(0);
+	}
+
 	if (result["bogosort"].as<bool>())
 	{
 		algorithm = new BogoSort();
