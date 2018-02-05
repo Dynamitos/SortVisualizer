@@ -66,6 +66,7 @@ void LineVisualization::init(int delay)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
+	glLineWidth(5);
 	programID = glCreateProgram();
 	vertShader = loadShader("line.vert", GL_VERTEX_SHADER);
 	fragShader = loadShader("line.frag", GL_FRAGMENT_SHADER);
@@ -92,7 +93,11 @@ void LineVisualization::loop()
 			{
 				if (values[i] == data[j])
 				{
-					memcpy(&history[i * SIZE_HISTORY + 1], &history[i * SIZE_HISTORY], sizeof(float) * (SIZE_HISTORY - 1));
+//					memcpy(&history[i * SIZE_HISTORY + 1], &history[i * SIZE_HISTORY], sizeof(float) * (SIZE_HISTORY - 1));
+					for (int k = SIZE_HISTORY - 1; k > 0; --k)
+					{
+						history[i * SIZE_HISTORY + k] = history[i * SIZE_HISTORY + k - 1];
+					}
 					history[i * SIZE_HISTORY] = 2.f * (float)j / sizeData;
 					break;
 				}
@@ -111,8 +116,8 @@ void LineVisualization::loop()
 			glDrawArrays(GL_LINE_STRIP, 0, SIZE_HISTORY);
 		}
 		glBindVertexArray(0);
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 		display->updateWindow();
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 	waitSort();
 }

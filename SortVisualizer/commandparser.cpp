@@ -51,43 +51,43 @@ void CommandParser::parseCommandLine(int argc, char * argv[])
 {
 	auto result = options.parse(argc, argv);
 
-	if (result.count("bogosort"))
+	if (result["bogosort"].as<bool>())
 	{
 		algorithm = new BogoSort();
 	}
-	if (result.count("bubblesort"))
+	else if (result["bubblesort"].as<bool>())
 	{
 		algorithm = new BubbleSort();
 	}
-	if (result.count("cyclesort"))
+	else if (result["cyclesort"].as<bool>())
 	{
 		algorithm = new CycleSort();
 	}
-	if (result.count("insertionsort"))
+	else if (result["insertionsort"].as<bool>())
 	{
 		algorithm = new InsertionSort();
 	}
-	if (result.count("mergesort"))
+	else if (result["mergesort"].as<bool>())
 	{
 		algorithm = new MergeSort();
 	}
-	if (result.count("quicksort"))
+	else if (result["quicksort"].as<bool>())
 	{
 		algorithm = new QuickSort();
 	}
-	if (result.count("radixsort"))
+	else if (result["radixsort"].as<bool>())
 	{
 		algorithm = new RadixSort();
 	}
-	if (result.count("rapidquicksort"))
+	else if (result["rapidquicksort"].as<bool>())
 	{
 		algorithm = new RapidQuickSort();
 	}
-	if (result.count("selectionsort"))
+	else if (result["selectionsort"].as<bool>())
 	{
 		algorithm = new SelectionSort();
 	}
-	if (result.count("stdsort"))
+	else if (result["stdsort"].as<bool>())
 	{
 		algorithm = new StdSort();
 	}
@@ -99,11 +99,11 @@ void CommandParser::parseCommandLine(int argc, char * argv[])
 		{
 			visualization = new VulkanGradientVisualization(number);
 		}
-		if (result.count("c"))
+		else if (result.count("c"))
 		{
 			visualization = new VulkanColumnVisualization(number);
 		}
-		if (result.count("l"))
+		else if (result.count("l"))
 		{
 			visualization = new LineVisualization(number);
 		}
@@ -114,11 +114,11 @@ void CommandParser::parseCommandLine(int argc, char * argv[])
 		{
 			visualization = new GradientVisualization(number);
 		}
-		if (result.count("c"))
+		else if (result.count("c"))
 		{
 			visualization = new ColumnVisualization(number);
 		}
-		if (result.count("l"))
+		else if (result.count("l"))
 		{
 			visualization = new LineVisualization(number);
 		}
