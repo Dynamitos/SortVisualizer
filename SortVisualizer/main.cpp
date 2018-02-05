@@ -20,14 +20,16 @@
 #include "cyclesort.h"
 #include "mergesort.h"
 #include "insertionsort.h"
-
+#include "commandparser.h"
 
 int main(int argc, char* argv[])
 {
-	Visualization* renderer = new LineVisualization(100);
-	QuickSort sort;
+	CommandParser* parser = new CommandParser();
+	parser->parseCommandLine(argc, argv);
+	SortAlgorithm* algo = parser->getAlgorithm();
+	Visualization* renderer = parser->getVisualization();
 	renderer->init(1000);
-	renderer->setAlgorithm(&sort);
+	renderer->setAlgorithm(algo);
 	renderer->loop();
 	delete renderer;
 	return 0;

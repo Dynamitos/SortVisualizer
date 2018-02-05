@@ -1,7 +1,5 @@
 #include "mergesort.h"
 
-#define USE_ASSEMBLY 0
-
 
 MergeSort::MergeSort()
 {
@@ -75,11 +73,14 @@ void MergeSort::sort(float data[], int size, int intDelay)
         int incrementer = j * blockSize;
         for (int i=0, x=0, y=x+((j*blockSize)>>1);  i<intCount;  i+=j, x+=incrementer, y+=incrementer)
         {
-#if USE_ASSEMBLY == 1
-            asmmerge(sortedData, data, x, y, y - 1, x + j*blockSize - 1);
-#else
-            merge(sortedData, data, x, y, y-1, x+incrementer-1);
-#endif
+			if (useAssembly)
+			{
+				asmmerge(sortedData, data, x, y, y - 1, x + j * blockSize - 1);
+			}
+			else
+			{
+				merge(sortedData, data, x, y, y - 1, x + incrementer - 1);
+			}
         }
     }
 
@@ -113,11 +114,14 @@ void MergeSort::recursiveSort(float* sortedData, float* readData, int start, int
     int i = start;
     int j = zzz;
     
-#if USE_ASSEMBLY == 1
-    asmmerge(sortedData, readData, start, j, zzz - 1, end);
-#else
-    merge(sortedData, readData, start, j, zzz - 1, end);
-#endif
+	if (useAssembly)
+	{
+		asmmerge(sortedData, readData, start, j, zzz - 1, end);
+	}
+	else
+	{
+		merge(sortedData, readData, start, j, zzz - 1, end);
+	}
 
     std::this_thread::sleep_for(std::chrono::nanoseconds(intDelay));
 //#endif

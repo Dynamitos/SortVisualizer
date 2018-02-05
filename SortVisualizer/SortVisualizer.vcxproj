@@ -165,6 +165,7 @@
   <ItemGroup>
     <ClCompile Include="benchmark.cpp" />
     <ClCompile Include="columnvisualization.cpp" />
+    <ClCompile Include="commandparser.cpp" />
     <ClCompile Include="cyclesort.cpp" />
     <ClCompile Include="datamanager.cpp" />
     <ClCompile Include="gradientvisualization.cpp" />
@@ -193,6 +194,7 @@
   <ItemGroup>
     <ClInclude Include="benchmark.h" />
     <ClInclude Include="columnvisualization.h" />
+    <ClInclude Include="commandparser.h" />
     <ClInclude Include="cyclesort.h" />
     <ClInclude Include="datamanager.h" />
     <ClInclude Include="gradientvisualization.h" />

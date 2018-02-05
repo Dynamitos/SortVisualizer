@@ -1,8 +1,5 @@
 #include "rapidquicksort.h"
 
-#define USE_ASSEMBLY 1
-#define USE_INSERTION 1
-
 RapidQuickSort::RapidQuickSort()
 {
     this->name = "Rapid quick sort";
@@ -52,20 +49,19 @@ void RapidQuickSort::insertionSort(float* data, int left, int right)
 
 void RapidQuickSort::quicksort(float* arr, int left, int right)
 {
-#if USE_INSERTION == 1
 	if (right - left < 20)
 	{
         //insertionSort(arr, left, right);
         asminsertionsort(&arr[left], right-left+1, 0);
 		return;
 	}
-#endif // !USE_INSERTION
-
-#if USE_ASSEMBLY == 1
-    int index = asmpartition(arr, left, right);
-#else
-    int index = partition(arr, left, right);
-#endif
+	int index;
+	if (useAssembly) {
+		index = asmpartition(arr, left, right);
+	}
+	else {
+		index = partition(arr, left, right);
+	}
 	if (left < index - 1)
 		quicksort(arr, left, index - 1);
 

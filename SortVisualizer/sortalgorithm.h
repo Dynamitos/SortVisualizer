@@ -11,6 +11,7 @@
 
 #include <openoptimize\asmutil.h>
 
+class CommandParser;
 class SortAlgorithm
 {
 public:
@@ -21,5 +22,9 @@ public:
 protected:
     int intHelper, intDelay;
     float floatHelper;
+	bool useMultithreading;
+	bool useAssembly;
     std::string name;
+
+	friend class CommandParser;
 };

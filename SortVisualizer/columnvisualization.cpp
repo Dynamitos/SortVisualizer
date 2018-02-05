@@ -11,6 +11,7 @@ ColumnVisualization::~ColumnVisualization()
 {
 	delete data;
 	delete vertices;
+	delete positions;
 }
 
 void ColumnVisualization::init(int delay)
