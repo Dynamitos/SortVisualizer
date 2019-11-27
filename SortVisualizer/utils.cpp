@@ -781,6 +781,7 @@ QueueFamilyIndices util::findQueueFamilies(VkPhysicalDevice physicalDevice)
 
 	if (indices.dedicatedTransfer != -1)
 	{
+		//std::cout << "Disabled dedicated transfer, uncomment to enable" << std::endl;
 		std::cout << "using dedicated transfer" << std::endl;
 		indices.transferFamily = indices.dedicatedTransfer;
 	}

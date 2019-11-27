@@ -12,7 +12,12 @@ public:
 	SortAlgorithm* getAlgorithm() { return algorithm; }
 	int getDelay() { return delay; }
 private:
-	bool a, mt;
+	bool vulkan{ false };
+	bool a{ false };
+	bool mt{ false };
+	bool g{ false };
+	bool c{ false };
+	bool l{ false };
 	int delay;
 	int number;
 	cxxopts::Options options;

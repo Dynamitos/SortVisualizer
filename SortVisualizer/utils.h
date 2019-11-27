@@ -110,7 +110,8 @@ struct SwapChainSupportDetails {
 	std::vector<VkPresentModeKHR> presentModes;
 };
 static const std::vector<const char*> validationLayers = {
-	"VK_LAYER_LUNARG_standard_validation"
+	"VK_LAYER_LUNARG_standard_validation",
+	"VK_LAYER_LUNARG_api_dump"
 };
 static const std::vector<const char*> deviceExtensions = {
 	"VK_KHR_swapchain"
