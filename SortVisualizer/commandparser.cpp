@@ -14,6 +14,7 @@
 #include "quicksort.h"
 #include "cyclesort.h"
 #include "mergesort.h"
+#include "slowsort.h"
 #include "insertionsort.h"
 
 CommandParser::CommandParser()
@@ -29,6 +30,7 @@ CommandParser::CommandParser()
 		("radixsort", "Radix Sort, chooses parameters for maximum performance considering available resources")
 		("rapidquicksort", "Quick Sort, multithreaded implementation using Insertion Sort at high recursions")
 		("selectionsort", "Selection Sort, standard implementation")
+		("slowsort", "Slow sort, a pessimistic multiply-and-surrender approach")
 		("stdsort", "qsort() algorithm used by the c++ standard library");
 	options.add_options("Visualizations")
 		("g,gradient", "Gradient Visualization. An ellipse as base, every array entry is a vertex and the value of a vertex is represented by it's HSV hue value, with the sorted array being the 2D HSV colorspace", cxxopts::value<bool>(g))
@@ -92,6 +94,10 @@ void CommandParser::parseCommandLine(int argc, char * argv[])
 	else if (result["selectionsort"].as<bool>())
 	{
 		algorithm = new SelectionSort();
+	}
+	else if (result["slowsort"].as<bool>())
+	{
+		algorithm = new SlowSort();
 	}
 	else if (result["stdsort"].as<bool>())
 	{

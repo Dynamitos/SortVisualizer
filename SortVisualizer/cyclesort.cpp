@@ -29,6 +29,7 @@ void CycleSort::sort(float data[], int size, int intDelay)
 			pos++;
 		}
 		asmswap(&data[pos], &item);
+		std::this_thread::sleep_for(std::chrono::milliseconds(intDelay));
 		writes++;
 		while (pos != cycleStart)
 		{

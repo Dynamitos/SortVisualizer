@@ -188,6 +188,7 @@
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="resourceallocator.cpp" />
     <ClCompile Include="selectionsort.cpp" />
+    <ClCompile Include="slowsort.cpp" />
     <ClCompile Include="stdsort.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="visualization.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="renderer.h" />
     <ClInclude Include="resourceallocator.h" />
     <ClInclude Include="selectionsort.h" />
+    <ClInclude Include="slowsort.h" />
     <ClInclude Include="sortalgorithm.h" />
     <ClInclude Include="stdsort.h" />
     <ClInclude Include="utils.h" />
