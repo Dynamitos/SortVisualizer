@@ -1,15 +1,12 @@
 #include "radixsort.h"
 
-RadixSort::RadixSort()
+RadixSort::RadixSort(bool mt, bool assembly, int delay)
+    : SortAlgorithm(mt, assembly, delay)
 {
     this->name = "Radix sort";
 }
 
-
-
-
-
-void RadixSort::sort(float data[], int arraySize, int intDelay)
+void RadixSort::sort(float data[], int arraySize)
 {
     static const int MAX_BYTES_RAM = 2100000000;
 
@@ -83,9 +80,7 @@ void RadixSort::sort(float data[], int arraySize, int intDelay)
     }
 }
 
-
-
-void RadixSort::sort2(float data[], int arraySize, int intDelay)
+void RadixSort::sort2(float data[], int arraySize)
 {
 	static const int BITS = 8;
 

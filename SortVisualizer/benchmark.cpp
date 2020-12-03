@@ -22,7 +22,8 @@ void Benchmark::setDelay(int intDelay)
 
     for (auto it = sortAlgorithms.begin(); it != sortAlgorithms.end(); it++)
     {
-        (*it)->setDelay(intDelay);
+        //TODO:
+        //(*it)->setDelay(intDelay);
     }
 
     benchmarkMutex.unlock();

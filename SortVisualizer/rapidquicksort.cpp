@@ -1,12 +1,12 @@
 #include "rapidquicksort.h"
 
-RapidQuickSort::RapidQuickSort()
+RapidQuickSort::RapidQuickSort(bool mt, bool assembly, int delay)
+	: SortAlgorithm(mt, assembly, delay)
 {
     this->name = "Rapid quick sort";
 }
 
-
-void RapidQuickSort::sort(float* data, int size, int delay)
+void RapidQuickSort::sort(float* data, int size)
 {
 	int numThreads = std::thread::hardware_concurrency();
 
@@ -76,21 +76,15 @@ int RapidQuickSort::partition(float* arr, int left, int right)
 	int mid = (left + right) / 2;
 	if (arr[right] < arr[left])
 	{
-		tmp = arr[left];
-		arr[left] = arr[right];
-		arr[right] = tmp;
+		swap(&arr[left], &arr[right]);
 	}
 	if (arr[mid] < arr[left])
 	{
-		tmp = arr[left];
-		arr[left] = arr[mid];
-		arr[mid] = tmp;
+		swap(&arr[left], &arr[mid]);
 	}
 	if (arr[right] < arr[mid])
 	{
-		tmp = arr[mid];
-		arr[mid] = arr[right];
-		arr[right] = tmp;
+		swap(&arr[mid], &arr[right]);
 	}
 	float pivot = arr[mid];
 	while (i <= j)
@@ -101,9 +95,7 @@ int RapidQuickSort::partition(float* arr, int left, int right)
 			j--;
 		if (i <= j)
 		{
-			tmp = arr[i];
-			arr[i] = arr[j];
-			arr[j] = tmp;
+			swap(&arr[i], &arr[j]);
 			i++;
 			j--;
 		}

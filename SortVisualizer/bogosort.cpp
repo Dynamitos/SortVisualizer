@@ -1,14 +1,15 @@
 #include "bogosort.h"
 #include <atomic>
 
-BogoSort::BogoSort()
+BogoSort::BogoSort(bool mt, bool assembly, int delay)
+	: SortAlgorithm(mt, assembly, delay)
 {
 	this->name = "Bogo sort";
 }
 std::mutex mutex;
 std::atomic_bool sorted = false;
 int32_t sortedThreadIndex = -1;
-void BogoSort::sort(float* data, int size, int delay)
+void BogoSort::sort(float* data, int size)
 {
 	uint32_t numThreads = useMultithreading ? std::thread::hardware_concurrency() : 1;
 	float** threadData = new float* [numThreads];
@@ -20,7 +21,7 @@ void BogoSort::sort(float* data, int size, int delay)
 	}
 	std::vector<std::thread> threads(numThreads);
 
-	auto runLambda = [threadData, size](int threadIndex, bool useAssembly) {
+	auto runLambda = [this, threadData, size](int threadIndex, bool useAssembly) {
 		bool localSorted = false;
 		while (!localSorted && !sorted)
 		{
@@ -28,16 +29,7 @@ void BogoSort::sort(float* data, int size, int delay)
 			for (int i = 0; i < size; i++)
 			{
 				randomIndex = rand() % size;
-				if (useAssembly)
-				{
-					asmswap(&threadData[threadIndex][i], &threadData[threadIndex][randomIndex]);
-				}
-				else
-				{
-					float floatHelper = threadData[threadIndex][i];
-					threadData[threadIndex][i] = threadData[threadIndex][randomIndex];
-					threadData[threadIndex][randomIndex] = floatHelper;
-				}
+				swap(&threadData[threadIndex][i], &threadData[threadIndex][randomIndex]);
 			}
 			localSorted = true;
 			for (int i = 0; i < size - 1; ++i)

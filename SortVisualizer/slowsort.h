@@ -4,8 +4,8 @@
 class SlowSort : public SortAlgorithm
 {
 public:
-	SlowSort();
-	virtual void sort(float data[], int size, int intDelay);
+	SlowSort(bool mt, bool assembly, int delay);
+	virtual void sort(float data[], int size);
 private:
 	void slowsort(float data[], int i, int j);
 };

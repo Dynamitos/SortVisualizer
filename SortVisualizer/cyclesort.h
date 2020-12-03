@@ -4,6 +4,6 @@
 class CycleSort : public SortAlgorithm
 {
 public:
-	CycleSort();
-	void sort(float data[], int size, int intDelay);
+	CycleSort(bool mt, bool assembly, int delay);
+	void sort(float data[], int size);
 };

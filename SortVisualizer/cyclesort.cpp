@@ -1,11 +1,12 @@
 #include "cyclesort.h"
 
-CycleSort::CycleSort()
+CycleSort::CycleSort(bool mt, bool assembly, int delay)
+	: SortAlgorithm(mt, assembly, delay)
 {
 	this->name = "Cycle Sort";
 }
 
-void CycleSort::sort(float data[], int size, int intDelay)
+void CycleSort::sort(float data[], int size)
 {
 	int writes = 0;
 
@@ -28,8 +29,7 @@ void CycleSort::sort(float data[], int size, int intDelay)
 		{
 			pos++;
 		}
-		asmswap(&data[pos], &item);
-		std::this_thread::sleep_for(std::chrono::milliseconds(intDelay));
+		swap(&data[pos], &item);
 		writes++;
 		while (pos != cycleStart)
 		{
@@ -45,8 +45,7 @@ void CycleSort::sort(float data[], int size, int intDelay)
 			{
 				pos++;
 			}
-			asmswap(&data[pos], &item);
-			std::this_thread::sleep_for(std::chrono::milliseconds(intDelay));
+			swap(&data[pos], &item);
 			writes++;
 		}
 	}

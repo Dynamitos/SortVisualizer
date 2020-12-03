@@ -1,7 +1,8 @@
 #include "mergesort.h"
 
 
-MergeSort::MergeSort()
+MergeSort::MergeSort(bool mt, bool assembly, int delay)
+    : SortAlgorithm(mt, assembly, delay)
 {
     this->name = "Merge sort";
 }
@@ -35,7 +36,7 @@ void merge2(float* sortedData, float* readData, int leftStart, int rightStart, i
 }
 
 
-void MergeSort::sort(float data[], int size, int intDelay)
+void MergeSort::sort(float data[], int size)
 {
     this->intDelay = intDelay;
 
@@ -99,7 +100,7 @@ void MergeSort::recursiveSort(float* sortedData, float* readData, int start, int
         return;
     if (end - start == 1)
     {
-        floatHelper = readData[start];
+        float floatHelper = readData[start];
         readData[start] = min(readData[start], readData[end]);
         readData[end] = max(floatHelper, readData[end]);
         return;
@@ -123,7 +124,6 @@ void MergeSort::recursiveSort(float* sortedData, float* readData, int start, int
 		merge(sortedData, readData, start, j, zzz - 1, end);
 	}
 
-    std::this_thread::sleep_for(std::chrono::nanoseconds(intDelay));
 //#endif
 }
 

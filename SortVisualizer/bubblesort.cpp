@@ -1,15 +1,16 @@
 #include "bubblesort.h"
 
-BubbleSort::BubbleSort()
+BubbleSort::BubbleSort(bool mt, bool assembly, int delay)
+	: SortAlgorithm(mt, assembly, delay)
 {
     this->name = "Bubble sort";
 }
 
-void BubbleSort::sort(float* data, int length, int delay)
+void BubbleSort::sort(float* data, int length)
 {
 	if (useAssembly)
 	{
-		asmbubblesort(data, length, delay);
+		asmbubblesort(data, length, intDelay);
 	}
 	else
 	{
@@ -22,11 +23,8 @@ void BubbleSort::sort(float* data, int length, int delay)
 			{
 				if (data[j + 1] < data[j])
 				{
-					helper = data[j];
-					data[j] = data[j + 1];
-					data[j + 1] = helper;
+					swap(&data[j], &data[j + 1]);
 					flag = 1;
-					std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 				}
 			}
 		}

@@ -5,9 +5,9 @@
 class RadixSort : public SortAlgorithm
 {
 public:
-    RadixSort();
-	virtual void sort(float data[], int size, int intDelay);
-    virtual void sort2(float data[], int size, int intDelay);
+    RadixSort(bool mt, bool assembly, int delay);
+	virtual void sort(float data[], int size);
+    virtual void sort2(float data[], int size);
 };
 
 template <typename T>

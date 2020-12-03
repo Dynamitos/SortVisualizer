@@ -4,6 +4,6 @@
 class BogoSort : public SortAlgorithm
 {
 public:
-    BogoSort();
-	virtual void sort(float data[], int size, int intDelay);
+    BogoSort(bool mt, bool assembly, int delay);
+	virtual void sort(float data[], int size);
 };

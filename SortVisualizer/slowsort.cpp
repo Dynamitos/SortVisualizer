@@ -1,11 +1,12 @@
 #include "slowsort.h"
 
-SlowSort::SlowSort()
+SlowSort::SlowSort(bool mt, bool assembly, int delay)
+    : SortAlgorithm(mt, assembly, delay)
 {
     this->name = "Slowsort";
 }
 
-void SlowSort::sort(float data[], int size, int intDelay)
+void SlowSort::sort(float data[], int size)
 {
     this->intDelay = intDelay;
     slowsort(data, 0, size);
@@ -25,17 +26,7 @@ void SlowSort::slowsort(float data[], int i, int j)
     
     if (data[m] > data[j])
     {
-        if (useAssembly)
-        {
-            asmswap(&data[m], &data[j]);
-        }
-        else
-        {
-            float tempFloat = data[m];
-            data[m] = data[j];
-            data[j] = tempFloat;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(intDelay));
+        swap(&data[m], &data[j]);
     }
     slowsort(data, i, j - 1);
 }

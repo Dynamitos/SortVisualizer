@@ -132,7 +132,7 @@ void Renderer::loop()
 	std::thread sorter([this] 
 	{
 		auto start = std::chrono::high_resolution_clock::now();
-		algo->sort(data.data(), data.size(), delay); 
+		algo->sort(data.data(), data.size()); 
 		auto end = std::chrono::high_resolution_clock::now();
 		float runtime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 		std::cout << "Runtime: " << runtime << std::endl; 

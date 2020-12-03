@@ -1,13 +1,13 @@
 #include "insertionsort.h"
 
-InsertionSort::InsertionSort()
+InsertionSort::InsertionSort(bool mt, bool assembly, int delay)
+	: SortAlgorithm(mt, assembly, delay)
 {
 	this->name = "Insertion Sort";
 }
 
-void InsertionSort::sort(float data[], int size, int intDelay)
+void InsertionSort::sort(float data[], int size)
 {
-	printf("\n");
 	if (useAssembly)
 	{
 		asminsertionsort(data, size, intDelay);
@@ -18,7 +18,7 @@ void InsertionSort::sort(float data[], int size, int intDelay)
 		{
 			for (int j = i; j > 0 && data[j - 1] > data[j]; --j)
 			{
-				asmswap(&data[j], &data[j - 1]);
+				swap(&data[j], &data[j - 1]);
 			}
 		}
 	}

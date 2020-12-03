@@ -1,11 +1,12 @@
 #include "stdsort.h"
 
-StdSort::StdSort()
+StdSort::StdSort(bool mt, bool assembly, int delay)
+	: SortAlgorithm(mt, assembly, delay)
 {
     this->name = "Std sort";
 }
 
-void StdSort::sort(float* data, int size, int delay)
+void StdSort::sort(float* data, int size)
 {
 	std::qsort(data, size, sizeof(float), [](const void* a, const void* b)
 	{

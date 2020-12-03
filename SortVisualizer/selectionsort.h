@@ -3,6 +3,6 @@
 class SelectionSort : public SortAlgorithm
 {
 public:
-    SelectionSort();
-	virtual void sort(float data[], int size, int intDelay);
+    SelectionSort(bool mt, bool assembly, int delay);
+	virtual void sort(float data[], int size);
 };

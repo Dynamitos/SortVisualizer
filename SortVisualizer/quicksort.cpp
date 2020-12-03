@@ -1,14 +1,14 @@
 #include "quicksort.h"
 
 
-QuickSort::QuickSort()
+QuickSort::QuickSort(bool mt, bool assembly, int delay)
+	: SortAlgorithm(mt, assembly, delay)
 {
     this->name = "Quick sort";
 }
 
-void QuickSort::sort(float data[], int arraySize, int intDelay)
+void QuickSort::sort(float data[], int arraySize)
 {
-	this->intDelay = intDelay;
 	quicksort(data, 0, arraySize - 1);
 }
 
@@ -36,10 +36,7 @@ int QuickSort::partition(float* arr, int left, int right)
 			j--;
 		if (i <= j)
 		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(intDelay));
-			tmp = arr[i];
-			arr[i] = arr[j];
-			arr[j] = tmp;
+			swap(&arr[i], &arr[j]);
 			i++;
 			j--;
 		}

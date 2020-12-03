@@ -1,12 +1,13 @@
 #include "selectionsort.h"
 
 
-SelectionSort::SelectionSort()
+SelectionSort::SelectionSort(bool mt, bool assembly, int delay)
+	: SortAlgorithm(mt, assembly, delay)
 {
     this->name = "Selection sort";
 }
 
-void SelectionSort::sort(float* data, int size, int delay)
+void SelectionSort::sort(float* data, int size)
 {
 	float bestValue;
 	int bestPosition;
@@ -25,10 +26,7 @@ void SelectionSort::sort(float* data, int size, int delay)
 		}
 		if (bestPosition != i)
 		{
-			helper = data[i];
-			data[i] = data[bestPosition];
-			data[bestPosition] = helper;
+			swap(&data[i], &data[bestPosition]);
 		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 	}
 }

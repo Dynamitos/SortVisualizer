@@ -4,6 +4,6 @@
 class BubbleSort : public SortAlgorithm
 {
 public:
-	BubbleSort();
-	virtual void sort(float data[], int size, int intDelay);
+	BubbleSort(bool mt, bool assembly, int delay);
+	virtual void sort(float data[], int size);
 };

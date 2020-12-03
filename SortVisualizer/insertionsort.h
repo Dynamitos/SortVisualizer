@@ -4,7 +4,6 @@
 class InsertionSort : public SortAlgorithm
 {
 public:
-	InsertionSort();
-	void sort(float data[], int size, int intDelay);
-private:
+	InsertionSort(bool mt, bool assembly, int delay);
+	virtual void sort(float data[], int size);
 };

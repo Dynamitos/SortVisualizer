@@ -46,7 +46,7 @@ void Visualization::startSort()
 	{
 //        std::cout << "Start sorting with " << algorithm->getName().c_str() << "..." << std::endl;
 		auto start = std::chrono::high_resolution_clock::now();
-		algorithm->sort(data, sizeData, delay);
+		algorithm->sort(data, sizeData);
 		auto end = std::chrono::high_resolution_clock::now();
 		float runtime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 		std::cout << "Runtime of " << algorithm->getName() << ": " << runtime << "ms" << std::endl;

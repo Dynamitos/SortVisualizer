@@ -10,8 +10,8 @@
 class MergeSort : public SortAlgorithm
 {
 public:
-    MergeSort();
-    virtual void sort(float data[], int size, int intDelay);
+    MergeSort(bool mt, bool assembly, int delay);
+    virtual void sort(float data[], int size);
 
 private:
     void recursiveSort(float* sortedData, float* readData, int start, int end);

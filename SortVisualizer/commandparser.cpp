@@ -58,54 +58,51 @@ void CommandParser::parseCommandLine(int argc, char * argv[])
 		std::cout << options.help({"Sorting Algorithms", "Visualizations", "Misc" }) << std::endl;
 		exit(0);
 	}
-
 	if (result["bogosort"].as<bool>())
 	{
-		algorithm = new BogoSort();
+		algorithm = new BogoSort(mt, a, delay);
 	}
 	else if (result["bubblesort"].as<bool>())
 	{
-		algorithm = new BubbleSort();
+		algorithm = new BubbleSort(mt, a, delay);
 	}
 	else if (result["cyclesort"].as<bool>())
 	{
-		algorithm = new CycleSort();
+		algorithm = new CycleSort(mt, a, delay);
 	}
 	else if (result["insertionsort"].as<bool>())
 	{
-		algorithm = new InsertionSort();
+		algorithm = new InsertionSort(mt, a, delay);
 	}
 	else if (result["mergesort"].as<bool>())
 	{
-		algorithm = new MergeSort();
+		algorithm = new MergeSort(mt, a, delay);
 	}
 	else if (result["quicksort"].as<bool>())
 	{
-		algorithm = new QuickSort();
+		algorithm = new QuickSort(mt, a, delay);
 	}
 	else if (result["radixsort"].as<bool>())
 	{
-		algorithm = new RadixSort();
+		algorithm = new RadixSort(mt, a, delay);
 	}
 	else if (result["rapidquicksort"].as<bool>())
 	{
-		algorithm = new RapidQuickSort();
+		algorithm = new RapidQuickSort(mt, a, delay);
 	}
 	else if (result["selectionsort"].as<bool>())
 	{
-		algorithm = new SelectionSort();
+		algorithm = new SelectionSort(mt, a, delay);
 	}
 	else if (result["slowsort"].as<bool>())
 	{
-		algorithm = new SlowSort();
+		algorithm = new SlowSort(mt, a, delay);
 	}
 	else if (result["stdsort"].as<bool>())
 	{
-		algorithm = new StdSort();
+		algorithm = new StdSort(mt, a, delay);
 	}
-	algorithm->intDelay = delay;
-	algorithm->useAssembly = a;
-	algorithm->useMultithreading = mt;
+	std::cout << "Starting Algorithm " << algorithm->getName() << " with delay: " << delay << std::endl;
 	if (vulkan)
 	{
 		if (g)
